@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "mysql.dsv.su.se",
+            "port": 3306,
+            "driver": "MariaDB",
+            "name": "eljo9864 MariaDB database",
+            "database": "eljo9864",
+            "username": "eljo9864"
+        }
+    ]
+}
