@@ -1,11 +1,13 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/app_decoration.dart';
 import 'package:studentloppet/theme/custom_button_style.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/size_utils.dart';
+import 'package:studentloppet/networking/network.dart';
 
 import '../widgets/custom_elevated_button.dart';
 import '../widgets/custom_outlined_button.dart';
@@ -164,7 +166,7 @@ class LoginScreen extends StatelessWidget {
             buttonStyle: CustomButtonStyles.outlinePrimaryTL8,
             buttonTextStyle: CustomTextStyles.titleMedium16,
             onPressed: () {
-              //TODO
+              Navigator.pushNamed(context, AppRoutes.signupScreen);
             },
           ),
           CustomElevatedButton(
@@ -172,12 +174,26 @@ class LoginScreen extends StatelessWidget {
             text: "Log In",
             margin: EdgeInsets.only(left: 8.h),
             buttonTextStyle: CustomTextStyles.titleMediumWhiteA700,
-            onPressed: () {
-              //TODO
+            onPressed: () async {
+              await Signin();
             },
           )
         ],
       ),
     );
+  }
+
+  Future<void> Signin() async {
+  
+    // Fetch data asynchronously and wait for the result
+    final response = await network.callLogIn(userNameController.text, passwordController.text);
+
+    // Check if the request was successful
+    if (response.statusCode == 200) {
+      // Print the body of the HTTP response
+      print("Response: " + response.body);
+    } else {
+      print("Error: " + response.statusCode.toString());
+    }
   }
 }
