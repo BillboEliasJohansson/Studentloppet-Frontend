@@ -1,7 +1,7 @@
 // ignore_for_file: use_super_parameters
 
 import 'package:flutter/material.dart';
-import 'package:studentloppet/utils/size_utils';
+import 'package:studentloppet/utils/size_utils.dart';
 import 'base_button.dart';
 
 class CustomOutlinedButton extends BaseButton {

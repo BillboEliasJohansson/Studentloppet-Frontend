@@ -1,6 +1,6 @@
-import 'dart:ui' as ui;
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
-import '../app_export.dart'; // These are the Viewport values of your Figma Design.
 
 const num FIGMA_DESIGN_WIDTH = 360;
 const num FIGMA_DESIGN_HEIGHT = 640;
@@ -23,7 +23,7 @@ extension ResponsiveExtension on num {
 
 extension FormatExtension on double {
   double toDoubleValue({int fractionDigits = 2}) {
-    return double.parse(this.toStringAsFixed(fractionDigits));
+    return double.parse(toStringAsFixed(fractionDigits));
   }
 
   double isNonZero({num defaultValue = 0.0}) {
@@ -37,7 +37,7 @@ typedef ResponsiveBuild = Widget Function(
     BuildContext context, Orientation orientation, DeviceType deviceType);
 
 class Sizer extends StatelessWidget {
-  const Sizer({Key? key, required this.builder}) : super(key: key);
+  const Sizer({super.key, required this.builder});
 
   /// Builds the widget whenever the orientation changes.
   final ResponsiveBuild builder;
@@ -52,9 +52,7 @@ class Sizer extends StatelessWidget {
     });
   }
 }
-// ignore_for_file: must_be_immutable
 
-// ignore_for_file: must_be_immutable
 class SizeUtils {
   /// Device's BoxConstraints
   static late BoxConstraints boxConstraints;

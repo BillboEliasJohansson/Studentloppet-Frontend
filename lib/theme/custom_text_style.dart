@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
-import 'package:studentloppet/utils/size_utils';
+import 'package:studentloppet/utils/size_utils.dart';
 
 /// A collection of pre-defined text styles for customizing text appearance,
 /// categorized by different font families and weights.

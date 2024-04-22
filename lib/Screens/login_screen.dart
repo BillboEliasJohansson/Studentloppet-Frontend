@@ -1,11 +1,12 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:studentloppet/theme/app_decoration.dart';
 import 'package:studentloppet/theme/custom_button_style.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
-import 'package:studentloppet/utils/size_utils';
+import 'package:studentloppet/utils/size_utils.dart';
 
-import '../routes/app_routes.dart';
 import '../widgets/custom_elevated_button.dart';
 import '../widgets/custom_outlined_button.dart';
 import '../widgets/custom_text_form_field.dart';
@@ -66,7 +67,7 @@ class LoginScreen extends StatelessWidget {
 
   TextEditingController passwordController = TextEditingController();
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   /// Section Widget
   Widget _buildTopbar(BuildContext context) {
@@ -93,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                     text: "Part of the Midnight Race",
                     style: theme.textTheme.labelLarge,
                   ),
-                  TextSpan(
+                  const TextSpan(
                     text: "        ",
                   )
                 ],

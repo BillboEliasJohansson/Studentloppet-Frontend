@@ -1,7 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
-import 'package:studentloppet/utils/size_utils';
+import 'package:studentloppet/utils/size_utils.dart';
 
 import '../theme/custom_button_style.dart';
 import 'base_button.dart';

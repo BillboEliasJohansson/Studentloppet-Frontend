@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
-import 'package:studentloppet/utils/size_utils';
+import 'package:studentloppet/utils/size_utils.dart';
 import '../theme/custom_button_style.dart';
 
 class CustomFloatingButton extends StatelessWidget {

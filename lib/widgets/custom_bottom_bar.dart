@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable, constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:studentloppet/utils/size_utils';
+import 'package:studentloppet/utils/size_utils.dart';
 
 import '../theme/custom_text_style.dart';
 import '../theme/theme_helper.dart';
