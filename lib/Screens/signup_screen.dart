@@ -43,6 +43,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future<List<DropdownMenuEntry<String>>>? universityListFuture;
 
+  late String uni;
+
   @override
   void initState() {
     super.initState();
@@ -96,6 +98,8 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> Signup(BuildContext context) async {
+    print("TEST: " + uni);
+
     if (!isValidEmail(emailController.text)) {
       showErrorSnackbar(context, "Invalid Email");
       return;
@@ -106,9 +110,9 @@ class _SignupScreenState extends State<SignupScreen> {
     }
 
     // Fetch data asynchronously and wait for the result
-    final response = await network.callSignUp(universitySelectorController.text,
+    final response = await network.callSignUp(uni,
         emailController.text, passwordController.text);
-
+    
     // Check if the request was successful
     if (response.statusCode == 200) {
       print("Response: " + response.body);
@@ -171,6 +175,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 controller: universitySelectorController,
                 entries: snapshot.data!,
                 onSelected: (value) {
+                  uni = value;
                   print("Selected value: $value");
                 },
               ),
