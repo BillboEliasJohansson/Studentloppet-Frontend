@@ -63,6 +63,7 @@ class CustomDropDownMenu extends StatelessWidget {
         child: DropdownMenu(
           textStyle: theme.textTheme.bodyMedium,
           hintText: hintText,
+          menuHeight: 300,
           enableSearch: true,
           enableFilter: true,
           dropdownMenuEntries: entries,
@@ -71,6 +72,7 @@ class CustomDropDownMenu extends StatelessWidget {
           requestFocusOnTap: true,
           expandedInsets:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+
           onSelected: onSelected, // Pass the function here
         ),
       );
