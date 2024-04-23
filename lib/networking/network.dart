@@ -31,14 +31,15 @@ class network {
           'https://group-15-2.pvt.dsv.su.se/api/universities/representation'),
       headers: {'Accept': 'application/json'},
     );
-    
+
     if (response.statusCode == 200) {
       // Decode the JSON response
       Map<String, dynamic> universities = json.decode(response.body);
 
       // Convert the map to a list of DropdownMenuEntry<String>
       List<DropdownMenuEntry<String>> entries = universities.entries
-          .map((entry) => DropdownMenuEntry<String>(value: entry.key, label: entry.value))
+          .map((entry) =>
+              DropdownMenuEntry<String>(value: entry.key, label: entry.value))
           .toList();
 
       // Print out the labels of the entries for debugging purposes
