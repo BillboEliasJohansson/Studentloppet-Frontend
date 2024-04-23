@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:studentloppet/networking/network.dart';
 import 'package:studentloppet/routes/app_routes.dart';
@@ -24,13 +26,13 @@ class SignupScreen extends StatelessWidget {
 
   TextEditingController fullNameController = TextEditingController();
 
-  TextEditingController universityplaceController = TextEditingController();
-
   TextEditingController emailController = TextEditingController();
 
   TextEditingController graduationyearpController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
+
+  TextEditingController universitySelectorController = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -56,17 +58,11 @@ class SignupScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _buildInputUniversityDropDown(context),
-                    SizedBox(height: 14.v),
-                    _buildInputFullName(context),
-                    SizedBox(height: 14.v),
-                    _buildInputUniversityPlace(context),
+                    _buildInputUniversityDropDown(),
                     SizedBox(height: 14.v),
                     _buildInputEmail(context),
                     SizedBox(height: 14.v),
                     _buildInputPassword(context),
-                    SizedBox(height: 14.v),
-                    _buildInputGraduationYearP(context),
                     SizedBox(height: 14.v),
                     CustomElevatedButton(
                       text: "Submit",
@@ -97,7 +93,7 @@ class SignupScreen extends StatelessWidget {
     }
 
     // Fetch data asynchronously and wait for the result
-    final response = await network.callSignUp(universityplaceController.text,
+    final response = await network.callSignUp(universitySelectorController.text,
         emailController.text, passwordController.text);
 
     // Check if the request was successful
@@ -142,40 +138,38 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  /// Section Widget
-  Widget _buildInputFullName(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Full Name",
-          style: theme.textTheme.titleSmall,
-        ),
-        SizedBox(height: 5.v),
-        CustomTextFormField(
-          controller: fullNameController,
-          hintText: "Enter your full name",
-        )
-      ],
+  Widget _buildInputUniversityDropDown() {
+    return FutureBuilder<List<DropdownMenuEntry<String>>>(
+      future: network.requestUniverityList(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // While waiting for the future, show a loading indicator.
+        } else if (snapshot.hasError) {
+          return Text(
+              'Error: ${snapshot.error}'); // If there's an error, display it.
+        } else if (snapshot.hasData) {
+          // If we have data, build the dropdown menu.
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("University", style: Theme.of(context).textTheme.titleSmall),
+              SizedBox(height: 5),
+              CustomDropDownMenu(
+                controller: universitySelectorController,
+                entries: snapshot.data!,
+                onSelected: (value) {
+                  print("Selected value: $value");
+                },
+              ),
+            ],
+          );
+        }
+        return SizedBox.shrink(); // Default empty widget
+      },
     );
   }
 
-  Widget _buildInputUniversityDropDown(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Full Name",
-          style: theme.textTheme.titleSmall,
-        ),
-        SizedBox(height: 5.v),
-        CustomDropDownMenu(entries: <DropdownMenuEntry<Color>>[
-          DropdownMenuEntry(value: Colors.red, label: "Uppsala Universitet"),
-          DropdownMenuEntry(value: Colors.black, label: "black")
-        ])
-      ],
-    );
-  }
+  method() {}
 
   /// Section Widget
   Widget _buildInputPassword(BuildContext context) {
@@ -197,24 +191,6 @@ class SignupScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildInputUniversityPlace(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "University",
-          style: theme.textTheme.titleSmall,
-        ),
-        SizedBox(height: 4.v),
-        CustomTextFormField(
-          controller: universityplaceController,
-          hintText: "Enter your University",
-        )
-      ],
-    );
-  }
-
-  /// Section Widget
   Widget _buildInputEmail(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,25 +204,6 @@ class SignupScreen extends StatelessWidget {
           controller: emailController,
           hintText: "Enter your university email",
           textInputType: TextInputType.emailAddress,
-        )
-      ],
-    );
-  }
-
-  /// Section Widget
-  Widget _buildInputGraduationYearP(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Graduation year",
-          style: theme.textTheme.titleSmall,
-        ),
-        SizedBox(height: 4.v),
-        CustomTextFormField(
-          controller: graduationyearpController,
-          hintText: "Enter when you are graduating",
-          textInputAction: TextInputAction.done,
         )
       ],
     );
