@@ -18,12 +18,17 @@ import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_text_form_field.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   SignupScreen({Key? key})
       : super(
           key: key,
         );
 
+  @override
+  _SignupScreenState createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   TextEditingController fullNameController = TextEditingController();
 
   TextEditingController emailController = TextEditingController();
@@ -35,6 +40,14 @@ class SignupScreen extends StatelessWidget {
   TextEditingController universitySelectorController = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Future<List<DropdownMenuEntry<String>>>? universityListFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    universityListFuture = network.requestUniverityList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +153,7 @@ class SignupScreen extends StatelessWidget {
 
   Widget _buildInputUniversityDropDown() {
     return FutureBuilder<List<DropdownMenuEntry<String>>>(
-      future: network.requestUniverityList(),
+      future: universityListFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator(); // While waiting for the future, show a loading indicator.

@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:studentloppet/Screens/signup_screen.dart';
 import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/app_decoration.dart';
 import 'package:studentloppet/theme/custom_button_style.dart';
@@ -166,7 +167,7 @@ class LoginScreen extends StatelessWidget {
             text: "Sign Up",
             buttonStyle: CustomButtonStyles.outlinePrimaryTL8,
             buttonTextStyle: CustomTextStyles.titleMedium16,
-            onPressed: () {
+            onPressed: () async {
               Navigator.pushNamed(context, AppRoutes.signupScreen);
             },
           ),
@@ -203,5 +204,4 @@ class LoginScreen extends StatelessWidget {
       showErrorSnackbar(context, "Invalid Email Or Password");
     }
   }
-
 }
