@@ -9,6 +9,7 @@ import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/validation_functions.dart';
 import 'package:studentloppet/utils/snackbars_util.dart';
+import 'package:studentloppet/widgets/custom_dropdownmenu.dart';
 import '../../widgets/app_bar/appbar_leading_image.dart';
 import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
@@ -55,6 +56,8 @@ class SignupScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
+                    _buildInputUniversityDropDown(context),
+                    SizedBox(height: 14.v),
                     _buildInputFullName(context),
                     SizedBox(height: 14.v),
                     _buildInputUniversityPlace(context),
@@ -153,6 +156,23 @@ class SignupScreen extends StatelessWidget {
           controller: fullNameController,
           hintText: "Enter your full name",
         )
+      ],
+    );
+  }
+
+  Widget _buildInputUniversityDropDown(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Full Name",
+          style: theme.textTheme.titleSmall,
+        ),
+        SizedBox(height: 5.v),
+        CustomDropDownMenu(entries: <DropdownMenuEntry<Color>>[
+          DropdownMenuEntry(value: Colors.red, label: "Uppsala Universitet"),
+          DropdownMenuEntry(value: Colors.black, label: "black")
+        ])
       ],
     );
   }
