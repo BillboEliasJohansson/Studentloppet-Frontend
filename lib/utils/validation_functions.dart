@@ -18,7 +18,7 @@ bool isValidPassword(String? inputString, {bool isRequired = false}) {
   }
   if (inputString != null && inputString.isNotEmpty) {
     const pattern =
-        r'^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$';
+        r'^(?=.*?[A-ZÅÄÖ])(?=(.*[a-zåäö]){1,})(?=(.*[\d]){1,})(?!.*\s).{8,}$';
     final regExp = RegExp(pattern);
     isInputStringValid = regExp.hasMatch(inputString);
   }

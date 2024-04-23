@@ -9,6 +9,7 @@ import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/networking/network.dart';
 
+import '../utils/snackbars_util.dart';
 import '../widgets/custom_elevated_button.dart';
 import '../widgets/custom_outlined_button.dart';
 import '../widgets/custom_text_form_field.dart';
@@ -117,13 +118,13 @@ class LoginScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Username",
+            "Email",
             style: theme.textTheme.titleSmall,
           ),
           SizedBox(height: 5.v),
           CustomTextFormField(
             controller: userNameController,
-            hintText: "Enter your username",
+            hintText: "Enter your email",
           )
         ],
       ),
@@ -175,7 +176,7 @@ class LoginScreen extends StatelessWidget {
             margin: EdgeInsets.only(left: 8.h),
             buttonTextStyle: CustomTextStyles.titleMediumWhiteA700,
             onPressed: () async {
-              await Signin();
+              await Signin(context);
             },
           )
         ],
@@ -183,17 +184,24 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<void> Signin() async {
-  
+  Future<void> Signin(BuildContext context) async {
     // Fetch data asynchronously and wait for the result
-    final response = await network.callLogIn(userNameController.text, passwordController.text);
+    final response = await network.callLogIn(
+        userNameController.text, passwordController.text);
 
     // Check if the request was successful
     if (response.statusCode == 200) {
       // Print the body of the HTTP response
       print("Response: " + response.body);
+      if (response.body == "true") {
+        Navigator.pushNamed(context, AppRoutes.homeScreen);
+      } else {
+        showErrorSnackbar(context, "Invalid Email Or Password");
+      }
     } else {
       print("Error: " + response.statusCode.toString());
+      showErrorSnackbar(context, "Invalid Email Or Password");
     }
   }
+
 }

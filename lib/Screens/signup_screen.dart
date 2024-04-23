@@ -2,10 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:studentloppet/networking/network.dart';
+import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
+import 'package:studentloppet/utils/validation_functions.dart';
+import 'package:studentloppet/utils/snackbars_util.dart';
 import '../../widgets/app_bar/appbar_leading_image.dart';
 import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
@@ -59,14 +62,14 @@ class SignupScreen extends StatelessWidget {
                     _buildInputEmail(context),
                     SizedBox(height: 14.v),
                     _buildInputPassword(context),
-                    SizedBox(height: 14.v),                   
+                    SizedBox(height: 14.v),
                     _buildInputGraduationYearP(context),
                     SizedBox(height: 14.v),
                     CustomElevatedButton(
                       text: "Submit",
                       buttonTextStyle: CustomTextStyles.titleMediumWhiteA700,
                       onPressed: () async {
-                        await Signup();
+                        await Signup(context);
                       },
                     ),
                     SizedBox(height: 5.v)
@@ -80,16 +83,35 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  Future<void> Signup() async {
-  
+  Future<void> Signup(BuildContext context) async {
+    if (!isValidEmail(emailController.text)) {
+      showErrorSnackbar(context, "Invalid Email");
+      return;
+    }
+    if (!isValidPassword(passwordController.text)) {
+      showErrorSnackbar(context, "Invalid Password");
+      return;
+    }
+
     // Fetch data asynchronously and wait for the result
-    final response = await network.callSignUp(universityplaceController.text, emailController.text, passwordController.text);
+    final response = await network.callSignUp(universityplaceController.text,
+        emailController.text, passwordController.text);
 
     // Check if the request was successful
     if (response.statusCode == 200) {
-      // Print the body of the HTTP response
       print("Response: " + response.body);
+      if (response.body.contains("saved")) {
+        showSuccesfulSnackbar(context, "Success");
+        Navigator.pushNamed(context, AppRoutes.initialRoute);
+      }
+      if (response.body.contains("Email not valid")) {
+        showErrorSnackbar(context, "Email not valid");
+      }
+      if (response.body.contains("Email already exists")) {
+        showErrorSnackbar(context, "Email already exists");
+      }
     } else {
+      showErrorSnackbar(context, "Internal Server Error");
       print("Error: " + response.statusCode.toString());
     }
   }
@@ -153,7 +175,7 @@ class SignupScreen extends StatelessWidget {
       ],
     );
   }
-  
+
   /// Section Widget
   Widget _buildInputUniversityPlace(BuildContext context) {
     return Column(
