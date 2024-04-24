@@ -34,7 +34,8 @@ class network {
 
     if (response.statusCode == 200) {
       // Decode the JSON response
-      Map<String, dynamic> universities = json.decode(response.body);
+      Map<String, dynamic> universities =
+          json.decode(utf8.decode(response.bodyBytes));
 
       // Convert the map to a list of DropdownMenuEntry<String>
       List<DropdownMenuEntry<String>> entries = universities.entries
