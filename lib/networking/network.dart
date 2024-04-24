@@ -25,6 +25,26 @@ class network {
     return response;
   }
 
+  static Future<http.Response> callOtp(String email) async {
+    final response = await http.get(Uri.parse(
+        'https://group-15-2.pvt.dsv.su.se/forgotPassword/verifyEmail/' +
+            email));
+    return response;
+  }
+
+  static Future<http.Response> sendOtp(String otp , String email) async {
+    final response = await http.get(Uri.parse(
+        "https://group-15-2.pvt.dsv.su.se/forgotPassword/verifyOtp/" + otp + "/" + email));
+    return response;
+  }
+
+  //TODO RECORD 
+  static Future<http.Response> updatePassword(String password , String email) async {
+    final response = await http.get(Uri.parse(
+        "https://group-15-2.pvt.dsv.su.se/forgotPassword/verifyOtp/" + password + "/" + email));
+    return response;
+  }
+
   static Future<List<DropdownMenuEntry<String>>> requestUniverityList() async {
     final response = await http.get(
       Uri.parse(

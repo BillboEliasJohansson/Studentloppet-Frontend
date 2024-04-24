@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:studentloppet/Screens/signup_screen.dart';
 import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/app_decoration.dart';
 import 'package:studentloppet/theme/custom_button_style.dart';
@@ -14,7 +13,7 @@ import '../utils/snackbars_util.dart';
 import '../widgets/custom_elevated_button.dart';
 import '../widgets/custom_outlined_button.dart';
 import '../widgets/custom_text_form_field.dart';
-import 'forgot_password_screen.dart';
+import 'reset_screens/forgot_password_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -68,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                       },
                       child: Text(
                         "Forgot password?",
-                        style: theme.textTheme.bodyText1!.copyWith(
+                        style: theme.textTheme.bodyLarge!.copyWith(
                           color: Colors.blue,
                         ),
                       ),
@@ -213,11 +212,11 @@ class LoginScreen extends StatelessWidget {
       if (response.body == "true") {
         Navigator.pushNamed(context, AppRoutes.homeScreen);
       } else {
-        showErrorSnackbar(context, "Invalid Email Or Password");
+        showErrorSnackbar(context, "Invalid email or password");
       }
     } else {
       print("Error: " + response.statusCode.toString());
-      showErrorSnackbar(context, "Invalid Email Or Password");
+      showErrorSnackbar(context, "invalid email or password");
     }
   }
 }
