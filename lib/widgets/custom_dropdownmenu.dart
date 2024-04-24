@@ -63,7 +63,7 @@ class CustomDropDownMenu extends StatelessWidget {
         child: DropdownMenu(
           textStyle: theme.textTheme.bodyMedium,
           hintText: hintText,
-          menuHeight: 300,
+          menuHeight: 300, //Fixade hur stor dropdown baren är
           enableSearch: true,
           enableFilter: true,
           dropdownMenuEntries: entries,

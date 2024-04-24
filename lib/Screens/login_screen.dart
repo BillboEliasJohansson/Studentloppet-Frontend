@@ -14,6 +14,7 @@ import '../utils/snackbars_util.dart';
 import '../widgets/custom_elevated_button.dart';
 import '../widgets/custom_outlined_button.dart';
 import '../widgets/custom_text_form_field.dart';
+import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -56,7 +57,22 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 5.v)
+                    SizedBox(height: 5.v),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ForgotPasswordScreen()),
+                        );
+                      },
+                      child: Text(
+                        "Forgot password?",
+                        style: theme.textTheme.bodyText1!.copyWith(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
