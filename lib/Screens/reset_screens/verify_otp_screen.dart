@@ -122,7 +122,7 @@ class VerifyOtpScreen extends StatelessWidget {
       print("Response: " + response.body);
       if (response.body.contains("token verified!")) {
         showSuccesfulSnackbar(context, "Success");
-        Navigator.pushNamed(context, AppRoutes.initialRoute);
+        Navigator.pushNamed(context, AppRoutes.updatePasswordScreen);
       }
       if (response.body.contains("Invalid token for") ||
           response.body.contains("Email not found")) {

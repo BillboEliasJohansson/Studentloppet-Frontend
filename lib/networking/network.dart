@@ -26,14 +26,14 @@ class network {
   }
 
   static Future<http.Response> callOtp(String email) async {
-    final response = await http.get(Uri.parse(
+    final response = await http.post(Uri.parse(
         'https://group-15-2.pvt.dsv.su.se/forgotPassword/verifyEmail/' +
             email));
     return response;
   }
 
   static Future<http.Response> sendOtp(String otp , String email) async {
-    final response = await http.get(Uri.parse(
+    final response = await http.post(Uri.parse(
         "https://group-15-2.pvt.dsv.su.se/forgotPassword/verifyOtp/" + otp + "/" + email));
     return response;
   }
@@ -62,11 +62,6 @@ class network {
           .map((entry) =>
               DropdownMenuEntry<String>(value: entry.key, label: entry.value))
           .toList();
-
-      // Print out the labels of the entries for debugging purposes
-      for (var entry in entries) {
-        print('Value: ${entry.value}, Label: ${entry.label}');
-      }
 
       return entries;
     } else {
