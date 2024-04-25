@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:studentloppet/Screens/app_screens/profile_screen.dart';
 import 'package:studentloppet/Screens/login_signup/signup_details_screen.dart';
 import 'package:studentloppet/Screens/reset_screens/forgot_password_screen.dart';
 import 'package:studentloppet/Screens/login_signup/login_screen.dart';
 import 'package:studentloppet/Screens/login_signup/signup_screen.dart';
-import 'package:studentloppet/Screens/home_screen.dart';
+import 'package:studentloppet/Screens/app_screens/home_screen.dart';
 import 'package:studentloppet/Screens/reset_screens/verify_otp_screen.dart';
 import 'package:studentloppet/Screens/reset_screens/update_password_screen.dart';
 
@@ -25,6 +26,8 @@ class AppRoutes {
   static const String signUpDetailsScreen =
       '/Screens/signup_details_screen.dart';
 
+  static const String profileScreen = '/Screens/profileScreen';
+
   static Map<String, WidgetBuilder> routes = {
     initialRoute: (context) => LoginScreen(),
     signupScreen: (context) => SignupScreen(),
@@ -32,6 +35,7 @@ class AppRoutes {
     forgotPasswordScreen: (context) => ForgotPasswordScreen(),
     verifyOtpScreen: (context) => VerifyOtpScreen(),
     updatePasswordScreen: (context) => UpdatePasswordScreen(),
-    signUpDetailsScreen: (context) => SignupDetailsScreen()
+    signUpDetailsScreen: (context) => SignupDetailsScreen(),
+    profileScreen: (contect) => ProfileScreen(),
   };
 }

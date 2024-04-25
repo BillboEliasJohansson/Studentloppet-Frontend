@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 
@@ -10,6 +11,14 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: _buildTopbar(context),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.profileScreen);
+            },
+            icon: const Icon(Icons.account_circle),
+          )
+        ],
       ),
       body: Center(
           child: Image.network(
@@ -33,7 +42,7 @@ class HomeScreen extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "Midnattsloppet   \n",
+                  text: "Midnattsloppet  \n",
                   style: theme.textTheme.titleLarge,
                 ),
               ],

@@ -144,4 +144,6 @@ class PrimaryColors {
   Color get gray600 => const Color(0XFF787676);
 // White
   Color get whiteA700 => const Color(0XFFFFFFFF);
+
+  Color get black900 => Color(0XFF000000);
 }
