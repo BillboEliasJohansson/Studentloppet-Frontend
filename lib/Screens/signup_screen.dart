@@ -110,9 +110,9 @@ class _SignupScreenState extends State<SignupScreen> {
     }
 
     // Fetch data asynchronously and wait for the result
-    final response = await network.callSignUp(uni,
-        emailController.text, passwordController.text);
-    
+    final response = await network.callSignUp(
+        uni, emailController.text, passwordController.text);
+
     // Check if the request was successful
     if (response.statusCode == 200) {
       print("Response: " + response.body);
@@ -186,8 +186,6 @@ class _SignupScreenState extends State<SignupScreen> {
       },
     );
   }
-
-  method() {}
 
   /// Section Widget
   Widget _buildInputPassword(BuildContext context) {

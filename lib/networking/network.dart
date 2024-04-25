@@ -32,16 +32,29 @@ class network {
     return response;
   }
 
-  static Future<http.Response> sendOtp(String otp , String email) async {
+  static Future<http.Response> sendOtp(String otp, String email) async {
     final response = await http.post(Uri.parse(
-        "https://group-15-2.pvt.dsv.su.se/forgotPassword/verifyOtp/" + otp + "/" + email));
+        "https://group-15-2.pvt.dsv.su.se/forgotPassword/verifyOtp/" +
+            otp +
+            "/" +
+            email));
     return response;
   }
 
-  //TODO RECORD 
-  static Future<http.Response> updatePassword(String password , String email) async {
-    final response = await http.get(Uri.parse(
-        "https://group-15-2.pvt.dsv.su.se/forgotPassword/verifyOtp/" + password + "/" + email));
+  static Future<http.Response> updatePassword(
+      Map<String, String> passwordData, String email) async {
+    String url =
+        'https://group-15-2.pvt.dsv.su.se/forgotPassword/changePassword/' +
+            email;
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(passwordData),
+    );
+
     return response;
   }
 

@@ -139,6 +139,7 @@ class LoginScreen extends StatelessWidget {
           ),
           SizedBox(height: 5.v),
           CustomTextFormField(
+            textInputType: TextInputType.emailAddress,
             controller: userNameController,
             hintText: "Enter your email",
           )

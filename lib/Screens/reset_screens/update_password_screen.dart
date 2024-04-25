@@ -76,13 +76,14 @@ class UpdatePasswordScreen extends StatelessWidget {
         CustomTextFormField(
           controller: passwordController,
           hintText: "Enter your password",
-          textInputType: TextInputType.emailAddress,
+          textInputType: TextInputType.visiblePassword,
+          obscureText: true,
         )
       ],
     );
   }
 
-   Widget _buildInputPasswordCheck(BuildContext context) {
+  Widget _buildInputPasswordCheck(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -94,11 +95,13 @@ class UpdatePasswordScreen extends StatelessWidget {
         CustomTextFormField(
           controller: passwordControllerTwo,
           hintText: "Enter your password",
-          textInputType: TextInputType.emailAddress,
+          textInputType: TextInputType.visiblePassword,
+          obscureText: true,
         )
       ],
     );
   }
+
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 32.h,
@@ -126,31 +129,25 @@ class UpdatePasswordScreen extends StatelessWidget {
   }
 
   Future<void> changePassword(BuildContext context, user) async {
-    if (passwordController.text.contains("hej")){
-      showSuccesfulSnackbar(context, "Success");
-      Navigator.pushNamed(context, AppRoutes.initialRoute);
-      return;
-    }
+    Map<String, String> passwordData = {
+      'password': passwordController.text,
+      'repeatedPassword': passwordControllerTwo.text,
+    };
 
     // Fetch data asynchronously and wait for the result
-    final response = await network.updatePassword(
-      passwordController.text, user.email
-    );
+    final response = await network.updatePassword(passwordData, user.email);
 
     // Check if the request was successful
     if (response.statusCode == 200) {
-      print("Response: " + response.body);
-      if (response.body.contains("token verified!")) {
+      if (response.body.contains("Password has updated sucessfully")) {
         showSuccesfulSnackbar(context, "Success");
         Navigator.pushNamed(context, AppRoutes.initialRoute);
       }
-      if (response.body.contains("Invalid token for") ||
-          response.body.contains("Email not found")) {
-        showErrorSnackbar(context, "Invalid");
+      if (response.body.contains("Enter the password again")) {
+        showErrorSnackbar(context, "Invalid password");
       }
     } else {
       showErrorSnackbar(context, "Internal Server Error");
-      print("Error: " + response.statusCode.toString());
     }
   }
 }
