@@ -3,6 +3,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/networking/network.dart';
 import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
@@ -12,11 +14,11 @@ import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/validation_functions.dart';
 import 'package:studentloppet/utils/snackbars_util.dart';
 import 'package:studentloppet/widgets/custom_dropdownmenu.dart';
-import '../../widgets/app_bar/appbar_leading_image.dart';
-import '../../widgets/app_bar/appbar_title.dart';
-import '../../widgets/app_bar/custom_app_bar.dart';
-import '../../widgets/custom_elevated_button.dart';
-import '../../widgets/custom_text_form_field.dart';
+import '../../../widgets/app_bar/appbar_leading_image.dart';
+import '../../../widgets/app_bar/appbar_title.dart';
+import '../../../widgets/app_bar/custom_app_bar.dart';
+import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/custom_text_form_field.dart';
 
 class SignupScreen extends StatefulWidget {
   SignupScreen({Key? key})
@@ -53,6 +55,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -83,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       text: "Submit",
                       buttonTextStyle: CustomTextStyles.titleMediumWhiteA700,
                       onPressed: () async {
-                        await Signup(context);
+                        await Signup(context, user);
                       },
                     ),
                     SizedBox(height: 5.v)
@@ -97,8 +100,8 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  Future<void> Signup(BuildContext context) async {
-    print("TEST: " + uni);
+  Future<void> Signup(BuildContext context, User user) async {
+    user.email = emailController.text;
 
     if (!isValidEmail(emailController.text)) {
       showErrorSnackbar(context, "Invalid Email");
@@ -118,7 +121,7 @@ class _SignupScreenState extends State<SignupScreen> {
       print("Response: " + response.body);
       if (response.body.contains("saved")) {
         showSuccesfulSnackbar(context, "Success");
-        Navigator.pushNamed(context, AppRoutes.initialRoute);
+        Navigator.pushNamed(context, AppRoutes.signUpDetailsScreen);
       }
       if (response.body.contains("Email not valid")) {
         showErrorSnackbar(context, "Email not valid");

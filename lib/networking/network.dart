@@ -58,6 +58,18 @@ class network {
     return response;
   }
 
+  static Future<http.Response> updateName(
+      String email, String first, String last) async {
+    final response = await http.get(Uri.parse(
+        "https://group-15-2.pvt.dsv.su.se/studentloppet/set/" +
+            email +
+            "/" +
+            first +
+            "/" +
+            last));
+    return response;
+  }
+
   static Future<List<DropdownMenuEntry<String>>> requestUniverityList() async {
     final response = await http.get(
       Uri.parse(

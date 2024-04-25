@@ -9,11 +9,11 @@ import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/networking/network.dart';
 
-import '../utils/snackbars_util.dart';
-import '../widgets/custom_elevated_button.dart';
-import '../widgets/custom_outlined_button.dart';
-import '../widgets/custom_text_form_field.dart';
-import 'reset_screens/forgot_password_screen.dart';
+import '../../utils/snackbars_util.dart';
+import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/custom_outlined_button.dart';
+import '../../widgets/custom_text_form_field.dart';
+import '../reset_screens/forgot_password_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});

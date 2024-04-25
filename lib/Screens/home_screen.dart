@@ -11,9 +11,12 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         title: _buildTopbar(context),
       ),
-      body: Container(),
+      body: Center(
+          child: Image.network(
+        'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3JyczlqOHhibzEwNGh5c3hwcWo3MmVnZzEzZWpkYjJpMG1jNTdicyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/etOX3h7ApZuDe7Fc5w/giphy-downsized-large.gif',
+        fit: BoxFit.cover,
+      )),
     );
-    
   }
 
   /// Section Widget
