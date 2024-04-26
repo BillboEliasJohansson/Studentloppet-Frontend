@@ -184,7 +184,7 @@ class LoginScreen extends StatelessWidget {
             buttonStyle: CustomButtonStyles.outlinePrimaryTL8,
             buttonTextStyle: CustomTextStyles.titleMedium16,
             onPressed: () async {
-              Navigator.pushNamed(context, AppRoutes.profileScreen);
+              Navigator.pushNamed(context, AppRoutes.signupScreen);
             },
           ),
           CustomElevatedButton(
