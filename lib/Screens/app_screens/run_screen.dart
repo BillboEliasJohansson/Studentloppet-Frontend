@@ -1,6 +1,10 @@
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:studentloppet/Constants/constants.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/image_constant.dart';
@@ -19,6 +23,21 @@ class RunScreen extends StatefulWidget {
 }
 
 class _RunScreenState extends State<RunScreen> {
+  final Completer<GoogleMapController> mapController = Completer();
+
+  static const LatLng sourceLocation = LatLng(37.33500926, -122.03272188);
+  static const LatLng destination = LatLng(37.33429383, -122.06600055);
+
+  List<LatLng> polylineCoordinates = [];
+
+  LocationData? currentLocation;
+
+  @override
+  void initState() {
+    getCurrentLocation();
+    getPolyPoints();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +77,33 @@ class _RunScreenState extends State<RunScreen> {
     );
   }
 
+  void getCurrentLocation() {
+    Location location = Location();
+
+    location.getLocation().then(
+      (location) {
+        currentLocation = location;
+      },
+    );
+  }
+
+  void getPolyPoints() async {
+    PolylinePoints polylinePoints = PolylinePoints();
+
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      google_api_key,
+      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+      PointLatLng(destination.latitude, destination.longitude),
+    );
+
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) => polylineCoordinates.add(
+            LatLng(point.latitude, point.longitude),
+          ));
+      setState(() {});
+    }
+  }
+
   /// Section Widget
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
@@ -85,28 +131,45 @@ class _RunScreenState extends State<RunScreen> {
   Widget _buildMap(BuildContext context) {
     return Center(
       child: Container(
-        height: 386.adaptSize,
-        width: 336.adaptSize,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey, 
-            width: 2, 
-          ),
-          borderRadius:
-              BorderRadius.circular(10), 
-        ),
-        child: FlutterMap(
-          options: MapOptions(
-            initialZoom: 1,
-          ),
-          children: [
-            TileLayer(
-              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.example.app',
+          height: 386.adaptSize,
+          width: 336.adaptSize,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.grey,
+              width: 2,
             ),
-          ],
-        ),
-      ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: currentLocation == null
+              ? const Center(child: CircularProgressIndicator())
+              : GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                      target: LatLng(currentLocation!.latitude!,
+                          currentLocation!.longitude!),
+                      zoom: 14.5),
+                  polylines: {
+                    Polyline(
+                        polylineId: PolylineId("route"),
+                        points: polylineCoordinates,
+                        color: Colors.purple,
+                        width: 6)
+                  },
+                  markers: {
+                    Marker(
+                      markerId: const MarkerId("currentLocation"),
+                      position: LatLng(currentLocation!.latitude!,
+                          currentLocation!.longitude!),
+                    ),
+                    const Marker(
+                      markerId: MarkerId("source"),
+                      position: sourceLocation,
+                    ),
+                    const Marker(
+                      markerId: MarkerId("destination"),
+                      position: destination,
+                    ),
+                  },
+                )),
     );
   }
 
