@@ -25,6 +25,15 @@ class HomeScreen extends StatelessWidget {
         'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3JyczlqOHhibzEwNGh5c3hwcWo3MmVnZzEzZWpkYjJpMG1jNTdicyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/etOX3h7ApZuDe7Fc5w/giphy-downsized-large.gif',
         fit: BoxFit.cover,
       )),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add, color: Colors.black,),
+        backgroundColor: Colors.grey,
+        autofocus: true,
+        onPressed: () {
+          Navigator.pushNamed(context, AppRoutes.runScreen);
+        },
+
+      ),
     );
   }
 

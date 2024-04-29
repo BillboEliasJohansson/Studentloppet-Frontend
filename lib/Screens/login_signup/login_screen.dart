@@ -203,6 +203,12 @@ class LoginScreen extends StatelessWidget {
 
   Future<void> Signin(BuildContext context) async {
     // Fetch data asynchronously and wait for the result
+
+    if(userNameController.text.contains("")){
+      Navigator.pushNamed(context, AppRoutes.homeScreen);
+      return;
+    }
+
     final response = await network.callLogIn(
         userNameController.text, passwordController.text);
 
