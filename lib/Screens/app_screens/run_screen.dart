@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -23,20 +22,92 @@ class RunScreen extends StatefulWidget {
 }
 
 class _RunScreenState extends State<RunScreen> {
-  final Completer<GoogleMapController> mapController = Completer();
+  Completer<GoogleMapController>? _controller;
+  List<LatLng> polylineCoordinates = [];
+  StreamSubscription<LocationData>? _locationSubscription;
+  LocationData? currentLocation;
 
   static const LatLng sourceLocation = LatLng(37.33500926, -122.03272188);
   static const LatLng destination = LatLng(37.33429383, -122.06600055);
 
-  List<LatLng> polylineCoordinates = [];
-
-  LocationData? currentLocation;
-
   @override
   void initState() {
+    super.initState();
+    _controller = Completer();
     getCurrentLocation();
     getPolyPoints();
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Cancel the location subscription in dispose
+    _locationSubscription?.cancel();
+    _controller = null; // Avoid completing the controller after disposal
+    super.dispose();
+  }
+
+  void getCurrentLocation() async {
+    Location location = Location();
+
+    // Subscribe to location changes and update the camera
+    _locationSubscription = location.onLocationChanged.listen((newLoc) async {
+      currentLocation = newLoc;
+
+      if (_controller != null && _controller!.isCompleted) {
+        final controller = await _controller!.future;
+        controller.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              zoom: 13.5,
+              target: LatLng(newLoc.latitude!, newLoc.longitude!),
+            ),
+          ),
+        );
+      }
+
+      // Only call setState if the widget is still mounted
+      if (mounted) {
+        setState(() {
+          // Any additional state changes
+        });
+      }
+    });
+
+    // Get initial location and update the camera
+    final initialLocation = await location.getLocation();
+    if (mounted) {
+      currentLocation = initialLocation;
+
+      final controller = await _controller!.future;
+      controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            zoom: 13.5,
+            target:
+                LatLng(initialLocation.latitude!, initialLocation.longitude!),
+          ),
+        ),
+      );
+    }
+  }
+
+  void getPolyPoints() async {
+    PolylinePoints polylinePoints = PolylinePoints();
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      google_api_key,
+      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+      PointLatLng(destination.latitude, destination.longitude),
+    );
+
+    if (result.points.isNotEmpty && mounted) {
+      setState(() {
+        polylineCoordinates = result.points
+            .map(
+              (point) => LatLng(point.latitude, point.longitude),
+            )
+            .toList();
+      });
+    }
   }
 
   @override
@@ -77,36 +148,6 @@ class _RunScreenState extends State<RunScreen> {
     );
   }
 
-  void getCurrentLocation() {
-    Location location = Location();
-
-    location.getLocation().then(
-      (location) {
-        currentLocation = location;
-      },
-    );
-
-    
-  }
-
-  void getPolyPoints() async {
-    PolylinePoints polylinePoints = PolylinePoints();
-
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      google_api_key,
-      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
-      PointLatLng(destination.latitude, destination.longitude),
-    );
-
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) => polylineCoordinates.add(
-            LatLng(point.latitude, point.longitude),
-          ));
-      setState(() {});
-    }
-  }
-
-  /// Section Widget
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 32.h,
@@ -118,7 +159,7 @@ class _RunScreenState extends State<RunScreen> {
           bottom: 12.v,
         ),
         onTap: () {
-          onTapArrowleftone(context);
+          Navigator.pop(context);
         },
       ),
       title: AppbarTitle(
@@ -129,73 +170,78 @@ class _RunScreenState extends State<RunScreen> {
     );
   }
 
-  /// Section Widget
   Widget _buildMap(BuildContext context) {
     return Center(
       child: Container(
-          height: 386.adaptSize,
-          width: 336.adaptSize,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.grey,
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: currentLocation == null
-              ? const Center(child: CircularProgressIndicator())
-              : GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                      target: LatLng(currentLocation!.latitude!,
-                          currentLocation!.longitude!),
-                      zoom: 14.5),
-                  polylines: {
-                    Polyline(
-                        polylineId: PolylineId("route"),
-                        points: polylineCoordinates,
-                        color: Colors.purple,
-                        width: 6)
-                  },
-                  markers: {
-                    Marker(
-                      markerId: const MarkerId("currentLocation"),
-                      position: LatLng(currentLocation!.latitude!,
-                          currentLocation!.longitude!),
-                    ),
-                    const Marker(
-                      markerId: MarkerId("source"),
-                      position: sourceLocation,
-                    ),
-                    const Marker(
-                      markerId: MarkerId("destination"),
-                      position: destination,
-                    ),
-                  },
-                )),
+        height: 386.adaptSize,
+        width: 336.adaptSize,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey, width: 2),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: currentLocation == null
+            ? Center(
+                child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 200.0,
+                  ),
+                  SizedBox(
+                    child: Center(child: CircularProgressIndicator()),
+                    height: 50.0,
+                    width: 50.0,
+                  ),
+                ],
+              ))
+            : GoogleMap(
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(currentLocation!.latitude!,
+                        currentLocation!.longitude!),
+                    zoom: 14.5),
+                polylines: {
+                  Polyline(
+                      polylineId: PolylineId("route"),
+                      points: polylineCoordinates,
+                      color: Colors.purple,
+                      width: 6),
+                },
+                markers: {
+                  Marker(
+                    markerId: MarkerId("currentLocation"),
+                    position: LatLng(currentLocation!.latitude!,
+                        currentLocation!.longitude!),
+                  ),
+                  const Marker(
+                    markerId: MarkerId("source"),
+                    position: sourceLocation,
+                  ),
+                  const Marker(
+                    markerId: MarkerId("destination"),
+                    position: destination,
+                  ),
+                },
+                onMapCreated: (mapController) {
+                  _controller!.complete(mapController);
+                },
+              ),
+      ),
     );
   }
 
-  /// Section Widget
   Widget _buildMetricsList(BuildContext context) {
     return SizedBox(
       height: 76.v,
       child: ListView.separated(
         padding: EdgeInsets.only(left: 12.h),
         scrollDirection: Axis.horizontal,
-        separatorBuilder: (context, index) {
-          return SizedBox(
-            width: 8.h,
-          );
-        },
+        separatorBuilder: (context, index) => SizedBox(width: 8.h),
         itemCount: 3,
-        itemBuilder: (context, index) {
-          return MetricslistItemWidget();
-        },
+        itemBuilder: (context, index) => MetricslistItemWidget(),
       ),
     );
   }
 
-  /// Section Widget
   Widget _buildStartRun(BuildContext context) {
     return CustomElevatedButton(
       text: "Start Run",
@@ -206,10 +252,5 @@ class _RunScreenState extends State<RunScreen> {
       ),
       buttonTextStyle: CustomTextStyles.titleMediumWhiteA700,
     );
-  }
-
-  /// Navigates back to the previous screen.
-  onTapArrowleftone(BuildContext context) {
-    Navigator.pop(context);
   }
 }
