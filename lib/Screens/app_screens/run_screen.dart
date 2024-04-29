@@ -85,6 +85,8 @@ class _RunScreenState extends State<RunScreen> {
         currentLocation = location;
       },
     );
+
+    
   }
 
   void getPolyPoints() async {
