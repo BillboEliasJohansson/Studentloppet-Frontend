@@ -26,9 +26,10 @@ class _RunScreenState extends State<RunScreen> {
   List<LatLng> polylineCoordinates = [];
   StreamSubscription<LocationData>? _locationSubscription;
   LocationData? currentLocation;
-
-  static const LatLng sourceLocation = LatLng(37.33500926, -122.03272188);
-  static const LatLng destination = LatLng(37.33429383, -122.06600055);
+  LocationData? startLocation;
+  bool activeRun = false;
+  String buttonText = "Start Run";
+  Marker start = Marker(markerId: MarkerId("Start Location"));
 
   @override
   void initState() {
@@ -55,14 +56,16 @@ class _RunScreenState extends State<RunScreen> {
 
       if (_controller != null && _controller!.isCompleted) {
         final controller = await _controller!.future;
-        controller.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              zoom: 13.5,
-              target: LatLng(newLoc.latitude!, newLoc.longitude!),
+        if (activeRun) {
+          controller.animateCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(
+                zoom: await controller.getZoomLevel(),
+                target: LatLng(newLoc.latitude!, newLoc.longitude!),
+              ),
             ),
-          ),
-        );
+          );
+        }
       }
 
       // Only call setState if the widget is still mounted
@@ -72,42 +75,45 @@ class _RunScreenState extends State<RunScreen> {
         });
       }
     });
-
-    // Get initial location and update the camera
-    final initialLocation = await location.getLocation();
-    if (mounted) {
-      currentLocation = initialLocation;
-
-      final controller = await _controller!.future;
-      controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            zoom: 13.5,
-            target:
-                LatLng(initialLocation.latitude!, initialLocation.longitude!),
-          ),
-        ),
-      );
-    }
   }
 
   void getPolyPoints() async {
+    Location location = Location();
     PolylinePoints polylinePoints = PolylinePoints();
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      google_api_key,
-      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
-      PointLatLng(destination.latitude, destination.longitude),
-    );
 
-    if (result.points.isNotEmpty && mounted) {
-      setState(() {
-        polylineCoordinates = result.points
-            .map(
-              (point) => LatLng(point.latitude, point.longitude),
-            )
-            .toList();
-      });
-    }
+    _locationSubscription = location.onLocationChanged.listen((newLoc) async {
+      if (activeRun) {
+        currentLocation = newLoc;
+        PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+          google_api_key,
+          PointLatLng(startLocation!.latitude!, startLocation!.longitude!),
+          PointLatLng(newLoc.latitude!, newLoc.longitude!),
+        );
+
+        setState(() {
+          polylineCoordinates = result.points
+              .map(
+                (point) => LatLng(point.latitude, point.longitude),
+              )
+              .toList();
+        });
+      }
+    });
+  }
+
+  void startRun() {
+    startLocation = currentLocation;
+    setState(() {
+      buttonText = "Stop Run";
+      activeRun = true;
+    });
+  }
+
+  void stopRun() {
+    setState(() {
+      buttonText = "Start Run";
+      activeRun = false;
+    });
   }
 
   @override
@@ -198,7 +204,7 @@ class _RunScreenState extends State<RunScreen> {
                 initialCameraPosition: CameraPosition(
                     target: LatLng(currentLocation!.latitude!,
                         currentLocation!.longitude!),
-                    zoom: 14.5),
+                    zoom: 15),
                 polylines: {
                   Polyline(
                       polylineId: PolylineId("route"),
@@ -211,15 +217,7 @@ class _RunScreenState extends State<RunScreen> {
                     markerId: MarkerId("currentLocation"),
                     position: LatLng(currentLocation!.latitude!,
                         currentLocation!.longitude!),
-                  ),
-                  const Marker(
-                    markerId: MarkerId("source"),
-                    position: sourceLocation,
-                  ),
-                  const Marker(
-                    markerId: MarkerId("destination"),
-                    position: destination,
-                  ),
+                  )
                 },
                 onMapCreated: (mapController) {
                   _controller!.complete(mapController);
@@ -244,13 +242,20 @@ class _RunScreenState extends State<RunScreen> {
 
   Widget _buildStartRun(BuildContext context) {
     return CustomElevatedButton(
-      text: "Start Run",
+      text: buttonText,
       margin: EdgeInsets.only(
         left: 12.h,
         right: 12.h,
         bottom: 12.v,
       ),
       buttonTextStyle: CustomTextStyles.titleMediumWhiteA700,
+      onPressed: () {
+        if (activeRun) {
+          stopRun();
+        } else {
+          startRun();
+        }
+      },
     );
   }
 }
