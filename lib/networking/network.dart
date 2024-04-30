@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'dart:convert'; // for JSON parsing
+import 'dart:convert';
+import 'package:studentloppet/Screens/app_screens/home_screen.dart'; // for JSON parsing
 
 class network {
   static Future<http.Response> callSignUp(
@@ -92,6 +93,24 @@ class network {
     } else {
       // Handle the case when the server isn't returning a 200 OK response
       throw Exception('Failed to load university list');
+    }
+  }
+
+  static Future<List<University>> getLeaderboard() async {
+    final response = await http.get(Uri.parse(
+      'https://group-15-2.pvt.dsv.su.se/api/universities/scoreboard'
+    ));
+
+    if (response.statusCode == 200) {  // Check if the request was successful
+      List<dynamic> data = jsonDecode(response.body);  // Decode JSON
+
+      List<University> universities = data.map((item) {
+        return University.fromJson(item);
+      }).toList();  // Convert each item to a University object
+
+      return universities;  // Return the list of universities
+    } else {
+      throw Exception("Failed to load leaderboard");  // Handle failure cases
     }
   }
 }

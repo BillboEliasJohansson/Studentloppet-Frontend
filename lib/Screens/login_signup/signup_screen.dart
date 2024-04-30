@@ -119,7 +119,7 @@ class _SignupScreenState extends State<SignupScreen> {
     // Check if the request was successful
     if (response.statusCode == 200) {
       print("Response: " + response.body);
-      if (response.body.contains("saved")) {
+      if (response.body.contains("User registered successfully")) {
         showSuccesfulSnackbar(context, "Success");
         Navigator.pushNamed(context, AppRoutes.signUpDetailsScreen);
       }

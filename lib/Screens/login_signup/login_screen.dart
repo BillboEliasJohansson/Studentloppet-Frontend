@@ -1,6 +1,10 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/app_decoration.dart';
 import 'package:studentloppet/theme/custom_button_style.dart';
@@ -20,6 +24,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -41,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(height: 13.v),
                     _buildInput1(context),
                     SizedBox(height: 12.v),
-                    _buildButton(context),
+                    _buildButton(context, user),
                     SizedBox(height: 12.v),
                     Container(
                       width: 294.h,
@@ -172,7 +177,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(BuildContext context) {
+  Widget _buildButton(BuildContext context, User user) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 12.h),
       child: Row(
@@ -193,7 +198,7 @@ class LoginScreen extends StatelessWidget {
             margin: EdgeInsets.only(left: 8.h),
             buttonTextStyle: CustomTextStyles.titleMediumWhiteA700,
             onPressed: () async {
-              await Signin(context);
+              await Signin(context, user);
             },
           )
         ],
@@ -201,10 +206,10 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<void> Signin(BuildContext context) async {
+  Future<void> Signin(BuildContext context, User user) async {
     // Fetch data asynchronously and wait for the result
 
-    if(userNameController.text.contains("")){
+    if (passwordController.text.contains("hej")) {
       Navigator.pushNamed(context, AppRoutes.homeScreen);
       return;
     }
@@ -216,7 +221,18 @@ class LoginScreen extends StatelessWidget {
     if (response.statusCode == 200) {
       // Print the body of the HTTP response
       print("Response: " + response.body);
-      if (response.body == "true") {
+      if (response.body.contains(userNameController.text)) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        user.setUser(
+          newEmail: responseBody['email'] as String?, 
+          newScore: responseBody['score'] as int?, 
+          newFirstName:
+              responseBody['firstName'] as String?, 
+          newLastName:
+              responseBody['lastName'] as String?, 
+          newUniversity:
+              responseBody['university'] as String?, 
+        );
         Navigator.pushNamed(context, AppRoutes.homeScreen);
       } else {
         showErrorSnackbar(context, "Invalid email or password");
