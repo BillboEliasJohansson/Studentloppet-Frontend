@@ -16,4 +16,10 @@ class ImageConstant {
   static String imageNotFound = 'assets/images/image_not_found.png';
 
   static String imgTelevision = '$imagePath/img_television.svg';
+
+  static String imgHat = '$imagePath/img_hat.png';
+
+  static String imgFive = '$imagePath/img_five.png';
+
+  static String imgTen = '$imagePath/img_ten.png';
 }
