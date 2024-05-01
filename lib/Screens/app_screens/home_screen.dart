@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(height: 16.v),
                     _buildSectionTitle(context),
                     SizedBox(height: 11.v),
-                    _buildMetricList(context),
+                    _buildMetricList(context, user),
                     SizedBox(height: 29.v),
                     _buildSectionTitle1(context),
                     SizedBox(height: 23.v),
@@ -84,10 +84,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: universityData.isEmpty
                           ? CircularProgressIndicator()
                           : _buildRowTitle(
-                        context,
-                        titleText: universityData[1].university,
-                        pointsCounterText: universityData[1].score.toString(),
-                      ),
+                              context,
+                              titleText: universityData[1].university,
+                              pointsCounterText:
+                                  universityData[1].score.toString(),
+                            ),
                     ),
                     SizedBox(height: 12.v),
                     Divider(
@@ -100,10 +101,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: universityData.isEmpty
                           ? CircularProgressIndicator()
                           : _buildRowTitle(
-                        context,
-                        titleText: universityData[2].university,
-                        pointsCounterText: universityData[2].score.toString(),
-                      ),
+                              context,
+                              titleText: universityData[2].university,
+                              pointsCounterText:
+                                  universityData[2].score.toString(),
+                            ),
                     ),
                     SizedBox(height: 12.v),
                     Divider(
@@ -212,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildMetricList(BuildContext context) {
+  Widget _buildMetricList(BuildContext context, User user) {
     return SizedBox(
       height: 76.v,
       child: ListView.separated(
@@ -220,7 +222,18 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         separatorBuilder: (context, index) => SizedBox(width: 8.h),
         itemCount: 3,
-        itemBuilder: (context, index) => MetricslistItemWidget(),
+        itemBuilder: (context, index) {
+          List<String> titles = ["Points", "Title 2", "Title 3"];
+          List<String> subtitles = [
+            user.score.toString(),
+            "Subtitle 2",
+            "Subtitle 3"
+          ];
+          return MetricslistItemWidget(
+            upperText: titles[index],
+            lowerText: subtitles[index],
+          );
+        },
       ),
     );
   }

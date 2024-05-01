@@ -230,12 +230,16 @@ class _RunScreenState extends State<RunScreen> {
   Widget _buildMetricsList(BuildContext context) {
     return SizedBox(
       height: 76.v,
-      child: ListView.separated(
-        padding: EdgeInsets.only(left: 12.h),
-        scrollDirection: Axis.horizontal,
-        separatorBuilder: (context, index) => SizedBox(width: 8.h),
-        itemCount: 3,
-        itemBuilder: (context, index) => MetricslistItemWidget(),
+      child: Padding(
+        padding: EdgeInsets.only(right: 12.h),
+        child: ListView.separated(
+          padding: EdgeInsets.only(left: 12.h),
+          scrollDirection: Axis.horizontal,
+          separatorBuilder: (context, index) => SizedBox(width: 8.h),
+          itemCount: 3,
+          itemBuilder: (context, index) =>
+              MetricslistItemWidget(upperText: 'Test', lowerText: "TestTwo"),
+        ),
       ),
     );
   }

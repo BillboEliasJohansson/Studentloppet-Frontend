@@ -123,7 +123,7 @@ class _SignupScreenState extends State<SignupScreen> {
         showSuccesfulSnackbar(context, "Success");
         Navigator.pushNamed(context, AppRoutes.signUpDetailsScreen);
       }
-      if (response.body.contains("Email not valid")) {
+      if (response.body.contains("Invalid email address")) {
         showErrorSnackbar(context, "Email not valid");
       }
       if (response.body.contains("Email already exists")) {

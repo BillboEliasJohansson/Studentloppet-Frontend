@@ -4,10 +4,14 @@ import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 
 class MetricslistItemWidget extends StatelessWidget {
-  const MetricslistItemWidget({Key? key})
-      : super(
-          key: key,
-        );
+  final String upperText;
+  final String lowerText;
+
+  const MetricslistItemWidget({
+    Key? key,
+    required this.upperText,
+    required this.lowerText,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +29,12 @@ class MetricslistItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Placeholder",
+            upperText,
             style: theme.textTheme.bodyMedium,
           ),
           SizedBox(height: 7.v),
           Text(
-            "Placeholder",
+            lowerText,
             style: theme.textTheme.titleLarge,
           )
         ],
