@@ -59,6 +59,23 @@ class network {
     return response;
   }
 
+  static Future<http.Response> postActivity(
+      String email, double distance, Duration duration) async {
+    String url =
+        "https://group-15-2.pvt.dsv.su.se/api/activities/addActivity/" +
+            email +
+            "/" +
+            (distance / 1000).toString() +
+            "/" +
+            duration.inMinutes.toString();
+
+    final response = await http.post(Uri.parse(url));
+
+    print(response.body);
+
+    return response;
+  }
+
   static Future<http.Response> updateName(
       String email, String first, String last) async {
     final response = await http.get(Uri.parse(
@@ -98,19 +115,19 @@ class network {
 
   static Future<List<University>> getLeaderboard() async {
     final response = await http.get(Uri.parse(
-      'https://group-15-2.pvt.dsv.su.se/api/universities/scoreboard'
-    ));
+        'https://group-15-2.pvt.dsv.su.se/api/universities/scoreboard'));
 
-    if (response.statusCode == 200) {  // Check if the request was successful
-      List<dynamic> data = jsonDecode(response.body);  // Decode JSON
+    if (response.statusCode == 200) {
+      // Check if the request was successful
+      List<dynamic> data = jsonDecode(response.body); // Decode JSON
 
       List<University> universities = data.map((item) {
         return University.fromJson(item);
-      }).toList();  // Convert each item to a University object
+      }).toList(); // Convert each item to a University object
 
-      return universities;  // Return the list of universities
+      return universities; // Return the list of universities
     } else {
-      throw Exception("Failed to load leaderboard");  // Handle failure cases
+      throw Exception("Failed to load leaderboard"); // Handle failure cases
     }
   }
 }

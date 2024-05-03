@@ -22,4 +22,6 @@ class ImageConstant {
   static String imgFive = '$imagePath/img_five.png';
 
   static String imgTen = '$imagePath/img_ten.png';
+
+  static String imgFrog = '$imagePath/frog.jpg';
 }

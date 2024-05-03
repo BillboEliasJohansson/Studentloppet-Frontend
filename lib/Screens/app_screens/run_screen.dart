@@ -4,10 +4,12 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:studentloppet/Constants/constants.dart';
+import 'package:studentloppet/Screens/app_screens/save_screen.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
+import 'package:studentloppet/utils/timer.utils.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_title.dart';
 import 'package:studentloppet/widgets/app_bar/custom_app_bar.dart';
@@ -30,7 +32,6 @@ class _RunScreenState extends State<RunScreen> {
   LocationData? startLocation;
   bool activeRun = false;
   String buttonText = "Start Run";
-  Marker start = Marker(markerId: MarkerId("Start Location"));
   Timer? _timer;
   DateTime? _startTime;
   Duration _elapsedTime = Duration.zero;
@@ -116,13 +117,6 @@ class _RunScreenState extends State<RunScreen> {
     });
   }
 
-  String formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String minutes = twoDigits(duration.inMinutes.remainder(60));
-    String seconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$minutes:$seconds';
-  }
-
   void startRun() {
     startLocation = currentLocation;
 
@@ -148,6 +142,19 @@ class _RunScreenState extends State<RunScreen> {
       buttonText = "Start Run";
       activeRun = false;
     });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SaveScreen(
+          startLocation: startLocation,
+          endLocation: currentLocation,
+          totalDistance: totalDistance,
+          time: _elapsedTime,
+          polylineCoordinates: polylineCoordinates,
+        ),
+      ),
+    );
   }
 
   @override
@@ -299,6 +306,24 @@ class _RunScreenState extends State<RunScreen> {
       ),
       buttonTextStyle: CustomTextStyles.titleMediumWhiteA700,
       onPressed: () {
+        if (currentLocation == null) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Please Wait"),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text("Dissmiss"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              });
+          return;
+        }
         if (activeRun) {
           stopRun();
         } else {
