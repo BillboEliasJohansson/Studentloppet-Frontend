@@ -13,6 +13,7 @@ import 'package:studentloppet/widgets/app_bar/appbar_title.dart';
 import 'package:studentloppet/widgets/app_bar/custom_app_bar.dart';
 import 'package:studentloppet/widgets/custom_elevated_button.dart';
 import 'package:studentloppet/widgets/metricslist_item_widget.dart';
+import 'package:geolocator/geolocator.dart';
 
 class RunScreen extends StatefulWidget {
   const RunScreen({super.key});
@@ -33,6 +34,7 @@ class _RunScreenState extends State<RunScreen> {
   Timer? _timer;
   DateTime? _startTime;
   Duration _elapsedTime = Duration.zero;
+  double totalDistance = 0.0;
 
   @override
   void initState() {
@@ -93,6 +95,16 @@ class _RunScreenState extends State<RunScreen> {
           PointLatLng(newLoc.latitude!, newLoc.longitude!),
         );
 
+        if (polylineCoordinates.isNotEmpty) {
+          final lastPoint = polylineCoordinates.last;
+          totalDistance += Geolocator.distanceBetween(
+            lastPoint.latitude,
+            lastPoint.longitude,
+            newLoc.latitude!,
+            newLoc.longitude!,
+          );
+        }
+
         setState(() {
           polylineCoordinates = result.points
               .map(
@@ -104,7 +116,6 @@ class _RunScreenState extends State<RunScreen> {
     });
   }
 
-                 
   String formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     String minutes = twoDigits(duration.inMinutes.remainder(60));
@@ -263,7 +274,12 @@ class _RunScreenState extends State<RunScreen> {
             itemCount: 2,
             itemBuilder: (context, index) {
               List<String> titles = ["Distance", "Time"];
-              List<String> values = ["N/A", formatDuration(_elapsedTime)];
+              String distanceDisplay =
+                  (totalDistance / 1000).toStringAsFixed(2) + " km";
+              List<String> values = [
+                distanceDisplay,
+                formatDuration(_elapsedTime)
+              ];
               return MetricslistItemWidget(
                 upperText: titles[index],
                 lowerText: values[index],
