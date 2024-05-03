@@ -7,7 +7,6 @@ import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
-import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_title.dart';
 import 'package:studentloppet/widgets/app_bar/custom_app_bar.dart';
 import 'package:studentloppet/widgets/custom_icon_button.dart';
@@ -126,45 +125,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   PreferredSizeWidget _buildAppBar(BuildContext context, User user) {
     return CustomAppBar(
-      leadingWidth: 32.h,
-      leading: AppbarLeadingImage(
-        imagePath: ImageConstant.imgArrowLeft,
-        margin: EdgeInsets.only(
-          left: 8.h,
-          top: 12.v,
-          bottom: 12.v,
-        ),
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("Warning"),
-                content: Text("Are you sure you want to log out?"),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text("Cancel"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  TextButton(
-                    child: Text("Proceed"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      user.reset();
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        },
-      ),
       title: AppbarTitle(
         text: "Welcome " + user.firstName,
-        margin: EdgeInsets.only(left: 8.h, top: 4.h),
+        margin: EdgeInsets.only(left: 10.h, top: 20.h),
       ),
       styleType: Style.bgShadow,
     );

@@ -30,6 +30,9 @@ class _RunScreenState extends State<RunScreen> {
   bool activeRun = false;
   String buttonText = "Start Run";
   Marker start = Marker(markerId: MarkerId("Start Location"));
+  Timer? _timer;
+  DateTime? _startTime;
+  Duration _elapsedTime = Duration.zero;
 
   @override
   void initState() {
@@ -41,7 +44,7 @@ class _RunScreenState extends State<RunScreen> {
 
   @override
   void dispose() {
-    // Cancel the location subscription in dispose
+    _timer?.cancel(); // Cancel any running timer when disposing
     _locationSubscription?.cancel();
     _controller = null; // Avoid completing the controller after disposal
     super.dispose();
@@ -101,8 +104,26 @@ class _RunScreenState extends State<RunScreen> {
     });
   }
 
+                 
+  String formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String minutes = twoDigits(duration.inMinutes.remainder(60));
+    String seconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$minutes:$seconds';
+  }
+
   void startRun() {
     startLocation = currentLocation;
+
+    _startTime = DateTime.now(); // Record the start time
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        setState(() {
+          _elapsedTime = DateTime.now().difference(_startTime!);
+        });
+      }
+    });
+
     setState(() {
       buttonText = "Stop Run";
       activeRun = true;
@@ -110,6 +131,8 @@ class _RunScreenState extends State<RunScreen> {
   }
 
   void stopRun() {
+    _timer?.cancel(); // Stop the timer
+
     setState(() {
       buttonText = "Start Run";
       activeRun = false;
@@ -201,6 +224,7 @@ class _RunScreenState extends State<RunScreen> {
                 ],
               ))
             : GoogleMap(
+                mapType: MapType.terrain,
                 initialCameraPosition: CameraPosition(
                     target: LatLng(currentLocation!.latitude!,
                         currentLocation!.longitude!),
@@ -229,19 +253,24 @@ class _RunScreenState extends State<RunScreen> {
 
   Widget _buildMetricsList(BuildContext context) {
     return SizedBox(
-      height: 76.v,
-      child: Padding(
-        padding: EdgeInsets.only(right: 12.h),
-        child: ListView.separated(
-          padding: EdgeInsets.only(left: 12.h),
-          scrollDirection: Axis.horizontal,
-          separatorBuilder: (context, index) => SizedBox(width: 8.h),
-          itemCount: 3,
-          itemBuilder: (context, index) =>
-              MetricslistItemWidget(upperText: 'Test', lowerText: "TestTwo"),
-        ),
-      ),
-    );
+        height: 76.v,
+        child: Padding(
+          padding: EdgeInsets.only(right: 12.h),
+          child: ListView.separated(
+            padding: EdgeInsets.only(left: 12.h),
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (context, index) => SizedBox(width: 8.h),
+            itemCount: 2,
+            itemBuilder: (context, index) {
+              List<String> titles = ["Distance", "Time"];
+              List<String> values = ["N/A", formatDuration(_elapsedTime)];
+              return MetricslistItemWidget(
+                upperText: titles[index],
+                lowerText: values[index],
+              );
+            },
+          ),
+        ));
   }
 
   Widget _buildStartRun(BuildContext context) {
