@@ -2,11 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 
-/// A collection of pre-defined text styles for customizing text appearance,
-/// categorized by different font families and weights.
-/// Additionally, this class includes extensions on [TextStyle] to easily apply specific font families to text.
+extension on TextStyle {
+  TextStyle get sansationLight {
+    return copyWith(
+      fontFamily: 'Sansation Light',
+    );
+  }
+
+  TextStyle get inter {
+    return copyWith(
+      fontFamily: 'Inter',
+    );
+  }
+
+  TextStyle get robotoFlex {
+    return copyWith(
+      fontFamily: 'Roboto Flex',
+    );
+  }
+
+  TextStyle get passionOne {
+    return copyWith(
+      fontFamily: 'Passion One',
+    );
+  }
+
+  TextStyle get openSans {
+    return copyWith(
+      fontFamily: 'Open Sans',
+    );
+  }
+}
+
 class CustomTextStyles {
-  // Body text style
   static get bodyMediumPrimary => theme.textTheme.bodyMedium!.copyWith(
         color: theme.colorScheme.primary,
       );
@@ -16,7 +44,6 @@ class CustomTextStyles {
   static get bodySmallPrimary => theme.textTheme.bodySmall!.copyWith(
         color: theme.colorScheme.primary.withOpacity(0.5),
       );
-// Title text style
   static get titleLargeGray600 => theme.textTheme.titleLarge!.copyWith(
         color: appTheme.gray600,
       );
@@ -26,5 +53,16 @@ class CustomTextStyles {
   static get titleMediumWhiteA700 => theme.textTheme.titleMedium!.copyWith(
         color: appTheme.whiteA700,
         fontSize: 16.fSize,
+      );
+  static get titleLargeSansationLight =>
+      theme.textTheme.titleLarge!.sansationLight
+          .copyWith(fontWeight: FontWeight.w300, color: Colors.white);
+
+  static get bodySmallBlack900 => theme.textTheme.bodySmall!.copyWith(
+        color: appTheme.black900.withOpacity(0.5),
+        fontSize: 11.fSize,
+      );
+  static get bodySmallBlack900_1 => theme.textTheme.bodySmall!.copyWith(
+        color: appTheme.black900.withOpacity(0.63),
       );
 }

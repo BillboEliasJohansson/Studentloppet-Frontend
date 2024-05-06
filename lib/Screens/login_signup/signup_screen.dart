@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/networking/network.dart';
 import 'package:studentloppet/routes/app_routes.dart';
+import 'package:studentloppet/theme/app_decoration.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/image_constant.dart';
@@ -14,10 +15,8 @@ import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/validation_functions.dart';
 import 'package:studentloppet/utils/snackbars_util.dart';
 import 'package:studentloppet/widgets/custom_dropdownmenu.dart';
-import '../../../widgets/app_bar/appbar_leading_image.dart';
-import '../../../widgets/app_bar/appbar_title.dart';
-import '../../../widgets/app_bar/custom_app_bar.dart';
-import '../../../widgets/custom_elevated_button.dart';
+import 'package:studentloppet/widgets/custom_image_view.dart';
+import 'package:studentloppet/widgets/custom_outlined_button.dart';
 import '../../../widgets/custom_text_form_field.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -58,40 +57,121 @@ class _SignupScreenState extends State<SignupScreen> {
     final user = Provider.of<User>(context);
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: _buildAppBar(context),
-        body: SizedBox(
+        body: Container(
           width: SizeUtils.width,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
+          height: SizeUtils.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                ImageConstant.imgLoginBckg,
+              ),
+              fit: BoxFit.cover,
             ),
-            child: Form(
-              key: _formKey,
-              child: Container(
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12.h,
-                  vertical: 13.v,
-                ),
-                child: Column(
-                  children: [
-                    _buildInputUniversityDropDown(),
-                    SizedBox(height: 14.v),
-                    _buildInputEmail(context),
-                    SizedBox(height: 14.v),
-                    _buildInputPassword(context),
-                    SizedBox(height: 14.v),
-                    CustomElevatedButton(
-                      text: "Submit",
-                      buttonTextStyle: CustomTextStyles.titleMediumWhiteA700,
-                      onPressed: () async {
-                        await Signup(context, user);
-                      },
+          ),
+          child: SizedBox(
+            width: SizeUtils.width,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Form(
+                key: _formKey,
+                child: Container(
+                    width: double.maxFinite,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.h,
+                      vertical: 13.v,
                     ),
-                    SizedBox(height: 5.v)
-                  ],
-                ),
+                    child: Column(children: [
+                      _buildTopBar(),
+                      Container(
+                          margin: EdgeInsets.all(10),
+                          decoration: AppDecoration.outlineWhite.copyWith(
+                            borderRadius: BorderRadiusStyle.roundedBorder11,
+                          ),
+                          child: Card(
+                            clipBehavior: Clip.antiAlias,
+                            elevation: 0,
+                            margin: EdgeInsets.all(10),
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: theme.colorScheme.onPrimaryContainer,
+                                width: 1.h,
+                              ),
+                              borderRadius: BorderRadiusStyle.roundedBorder10,
+                            ),
+                            child: Container(
+                              height: 400.v,
+                              width: 313.h,
+                              padding: EdgeInsets.all(5.h),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      height: 546.v,
+                                      width: 298.h,
+                                      decoration: BoxDecoration(
+                                        color: theme
+                                            .colorScheme.onPrimaryContainer,
+                                        borderRadius: BorderRadius.circular(
+                                          5.h,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        left: 16.h,
+                                        right: 25.h,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 10.v),
+                                          Text(
+                                            "Skapa konto",
+                                            style:
+                                                theme.textTheme.headlineSmall,
+                                          ),
+                                          SizedBox(height: 20.v),
+                                          _buildInputUniversityDropDown(),
+                                          SizedBox(height: 14.v),
+                                          _buildInputEmail(context),
+                                          SizedBox(height: 14.v),
+                                          _buildInputPassword(context),
+                                          SizedBox(height: 14.v),
+                                          SizedBox(height: 30.v),
+                                          _buildButton(user),
+                                          SizedBox(height: 8.v),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                onTapArrowleftone(context);
+                                              },
+                                              child: Text(
+                                                "Tillbaka till inloggningssidan",
+                                                style: CustomTextStyles
+                                                    .bodySmallBlack900
+                                                    .copyWith(
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )),
+                    ])),
               ),
             ),
           ),
@@ -135,26 +215,62 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return CustomAppBar(
-      leadingWidth: 32.h,
-      leading: AppbarLeadingImage(
-        imagePath: ImageConstant.imgArrowLeft,
-        margin: EdgeInsets.only(
-          left: 8.h,
-          top: 12.v,
-          bottom: 12.v,
+  Widget _buildTopBar() {
+    return Column(
+      children: [
+        Container(
+          width: 300.h,
+          margin: EdgeInsets.symmetric(horizontal: 23.h),
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "Studentloppet\n",
+                  style: theme.textTheme.displayMedium,
+                ),
+                TextSpan(
+                  text: "en del av",
+                  style: CustomTextStyles.titleLargeSansationLight,
+                )
+              ],
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
-        onTap: () {
-          onTapArrowleftone(context);
+        SizedBox(height: 5.v),
+        CustomImageView(
+          imagePath: ImageConstant.imgLogo,
+          height: 56.v,
+          width: 400.h,
+          fit: BoxFit.contain,
+        ),
+        SizedBox(height: 20.v),
+      ],
+    );
+  }
+
+  Widget _buildButton(User user) {
+    return Container(
+      decoration: AppDecoration.outlineOrange.copyWith(
+        borderRadius: BorderRadiusStyle.roundedBorder10,
+      ),
+      child: CustomOutlinedButton(
+        margin: EdgeInsets.all(5),
+        buttonStyle: ButtonStyle(
+            side: MaterialStateBorderSide.resolveWith(
+                (states) => BorderSide(style: BorderStyle.none)),
+            shape: MaterialStateProperty.resolveWith<OutlinedBorder?>(
+              (states) => RoundedRectangleBorder(
+                  borderRadius: BorderRadiusDirectional.circular(10)),
+            ),
+            backgroundColor:
+                MaterialStateColor.resolveWith((states) => appTheme.orange)),
+        text: "Registrera",
+        buttonTextStyle: theme.textTheme.labelSmall,
+        onPressed: () async {
+          await Signup(context, user);
         },
       ),
-      title: AppbarTitle(
-        text: "University Runner Sign Up",
-        margin: EdgeInsets.only(left: 8.h),
-      ),
-      styleType: Style.bgShadow,
     );
   }
 
@@ -172,7 +288,9 @@ class _SignupScreenState extends State<SignupScreen> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("University", style: Theme.of(context).textTheme.titleSmall),
+              Text("University",
+                  style: CustomTextStyles.bodySmallBlack900_1
+                      .copyWith(color: appTheme.black900.withOpacity(0.63))),
               SizedBox(height: 5),
               CustomDropDownMenu(
                 controller: universitySelectorController,
@@ -196,13 +314,15 @@ class _SignupScreenState extends State<SignupScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Password",
-          style: theme.textTheme.titleSmall,
+          "Lösenord",
+          style: CustomTextStyles.bodySmallBlack900_1.copyWith(
+            color: appTheme.black900.withOpacity(0.63),
+          ),
         ),
         SizedBox(height: 5.v),
         CustomTextFormField(
           controller: passwordController,
-          hintText: "Enter your password",
+          hintText: "Skriv in ditt lösenord",
           obscureText: true,
         )
       ],
@@ -215,13 +335,15 @@ class _SignupScreenState extends State<SignupScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "University Email",
-          style: theme.textTheme.titleSmall,
+          "Email",
+          style: CustomTextStyles.bodySmallBlack900_1.copyWith(
+            color: appTheme.black900.withOpacity(0.63),
+          ),
         ),
         SizedBox(height: 4.v),
         CustomTextFormField(
           controller: emailController,
-          hintText: "Enter your university email",
+          hintText: "Skriv in ditt universitets email",
           textInputType: TextInputType.emailAddress,
         )
       ],

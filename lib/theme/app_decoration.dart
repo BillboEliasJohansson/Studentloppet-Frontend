@@ -31,11 +31,42 @@ class AppDecoration {
           )
         ],
       );
+  static BoxDecoration get outlineOnPrimaryContainer => BoxDecoration(
+        border: Border.all(
+            color: Colors.black,
+            width: 1.h,
+            style: BorderStyle.solid,
+            strokeAlign: BorderSide.strokeAlignCenter),
+      );
+
+  static BoxDecoration get outlineWhite => BoxDecoration(
+        border: Border.all(
+            color: Colors.white,
+            width: 2.h,
+            style: BorderStyle.solid,
+            strokeAlign: BorderSide.strokeAlignOutside),
+      );
+
+  static BoxDecoration get outlineOrange => BoxDecoration(
+        border: Border.all(
+            color: appTheme.orange,
+            width: 2.h,
+            style: BorderStyle.solid,
+            strokeAlign: BorderSide.strokeAlignOutside),
+      );
 }
 
 class BorderRadiusStyle {
   // Rounded borders
   static BorderRadius get roundedBorder6 => BorderRadius.circular(
         6.h,
+      );
+
+  static BorderRadius get roundedBorder10 => BorderRadius.circular(
+        10.h,
+      );
+
+  static BorderRadius get roundedBorder11 => BorderRadius.circular(
+        10.h,
       );
 }

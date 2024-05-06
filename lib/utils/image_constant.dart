@@ -1,12 +1,8 @@
-// ignore_for_file: must_be_immutable
 class ImageConstant {
-  // Image folder path
   static String imagePath = 'assets/images';
 
-// Wireframe 1: home images
   static String imgGraph = '$imagePath/img_graph.svg';
 
-// Common images
   static String imgFrame = '$imagePath/img_frame.svg';
 
   static String imgArrowLeft = '$imagePath/img_arrow_left.svg';
@@ -24,4 +20,10 @@ class ImageConstant {
   static String imgTen = '$imagePath/img_ten.png';
 
   static String imgFrog = '$imagePath/frog.jpg';
+
+  static String imgLoginBckg = '$imagePath/Backgrund.png';
+
+  static String imgLogo = '$imagePath/img_midnattsloppet.png';
+
+  static String imgRunner = '$imagePath/img_shiny_happy_morning.png';
 }

@@ -33,6 +33,21 @@ class ThemeHelper {
     var colorScheme =
         _supportedColorScheme[_appTheme] ?? ColorSchemes.primaryColorScheme;
     return ThemeData(
+      inputDecorationTheme: InputDecorationTheme(
+        // Set a custom underline style
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.grey.withOpacity(0.5),
+            width: 1.0,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.grey.withOpacity(0.5),
+            width: 2.0,
+          ),
+        ),
+      ),
       visualDensity: VisualDensity.standard,
       colorScheme: colorScheme,
       textTheme: TextThemes.textTheme(colorScheme),
@@ -95,9 +110,9 @@ class TextThemes {
           fontWeight: FontWeight.w400,
         ),
         bodySmall: TextStyle(
-          color: colorScheme.primary,
+          color: appTheme.black900,
           fontSize: 12.fSize,
-          fontFamily: 'Roboto',
+          fontFamily: 'Open Sans',
           fontWeight: FontWeight.w400,
         ),
         labelLarge: TextStyle(
@@ -124,6 +139,25 @@ class TextThemes {
           fontFamily: 'Roboto',
           fontWeight: FontWeight.w500,
         ),
+        displayMedium: TextStyle(
+          color: colorScheme.onPrimaryContainer,
+          fontSize: 50.fSize,
+          fontFamily: 'Passion One',
+          fontWeight: FontWeight.w400,
+        ),
+        headlineSmall: TextStyle(
+          color: appTheme.deepPurple500,
+          fontSize: 25.fSize,
+          fontFamily: 'Roboto Flex Black Italic',
+          fontWeight: FontWeight.w900,
+          fontStyle: FontStyle.italic,
+        ),
+        labelSmall: TextStyle(
+            color: Colors.white,
+            fontSize: 24.fSize,
+            fontFamily: 'Roboto Flex Black Italic',
+            fontWeight: FontWeight.w900,
+            fontStyle: FontStyle.italic),
       );
 }
 
@@ -132,7 +166,7 @@ class ColorSchemes {
   static const primaryColorScheme = ColorScheme.light(
     primary: Color(0XFF000000),
     onPrimary: Color(0X19000000),
-    onPrimaryContainer: Color(0X0C000000),
+    onPrimaryContainer: Color.fromARGB(255, 252, 252, 252),
   );
 }
 
@@ -146,4 +180,12 @@ class PrimaryColors {
   Color get whiteA700 => const Color(0XFFFFFFFF);
 
   Color get black900 => Color(0XFF000000);
+
+  Color get deepPurple500 => Color(0XFF74539B);
+// Purple
+  Color get purple200 => Color(0XFFCAA4E2);
+
+  Color get purple300 => Color(0XFFC27CC4);
+
+  Color get orange => Color(0XFFE9896B);
 }

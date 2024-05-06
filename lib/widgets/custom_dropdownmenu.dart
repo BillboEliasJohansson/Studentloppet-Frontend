@@ -61,7 +61,7 @@ class CustomDropDownMenu extends StatelessWidget {
         width: width ?? double.maxFinite,
         height: 43,
         child: DropdownMenu(
-          textStyle: theme.textTheme.bodyMedium,
+          textStyle: Theme.of(context).textTheme.titleSmall,
           hintText: hintText,
           menuHeight: 300, //Fixade hur stor dropdown baren är
           enableSearch: true,
@@ -72,7 +72,6 @@ class CustomDropDownMenu extends StatelessWidget {
           requestFocusOnTap: true,
           expandedInsets:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-
           onSelected: onSelected, // Pass the function here
         ),
       );
@@ -82,29 +81,5 @@ class CustomDropDownMenu extends StatelessWidget {
         isDense: true,
         contentPadding: contentPadding ?? EdgeInsets.all(9.h),
         fillColor: fillColor,
-        border: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6.h),
-              borderSide: BorderSide(
-                color: theme.colorScheme.onPrimary,
-                width: 1,
-              ),
-            ),
-        enabledBorder: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6.h),
-              borderSide: BorderSide(
-                color: theme.colorScheme.onPrimary,
-                width: 1,
-              ),
-            ),
-        focusedBorder: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6.h),
-              borderSide: BorderSide(
-                color: theme.colorScheme.onPrimary,
-                width: 1,
-              ),
-            ),
       );
 }

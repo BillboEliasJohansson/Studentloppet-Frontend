@@ -38,3 +38,23 @@ flutter:
           weight: 500
         - asset: assets/fonts/RobotoRegular.ttf
           weight: 400
+    - family: Inter
+      fonts: 
+        - asset: assets/fonts/InterRegular.ttf
+          weight: 400
+    - family: Passion One
+      fonts: 
+        - asset: assets/fonts/PassionOneRegular.ttf
+          weight: 400
+    - family: Open Sans
+      fonts: 
+        - asset: assets/fonts/OpenSansRomanRegular.ttf
+          weight: 400
+    - family: Sansation Light
+      fonts: 
+        - asset: assets/fonts/SansationLightItalic.ttf
+          weight: 300
+    - family: Roboto Flex
+      fonts: 
+        - asset: assets/fonts/RobotoFlexBlackItalic.ttf
+          weight: 900

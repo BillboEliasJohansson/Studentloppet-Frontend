@@ -96,7 +96,7 @@ class CustomTextFormField extends StatelessWidget {
             }
           },
           autofocus: autofocus!,
-          style: textStyle ?? theme.textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.titleSmall,
           obscureText: obscureText!,
           textInputAction: textInputAction,
           keyboardType: textInputType,
@@ -116,29 +116,5 @@ class CustomTextFormField extends StatelessWidget {
         contentPadding: contentPadding ?? EdgeInsets.all(9.h),
         fillColor: fillColor,
         filled: filled,
-        border: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6.h),
-              borderSide: BorderSide(
-                color: theme.colorScheme.onPrimary,
-                width: 1,
-              ),
-            ),
-        enabledBorder: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6.h),
-              borderSide: BorderSide(
-                color: theme.colorScheme.onPrimary,
-                width: 1,
-              ),
-            ),
-        focusedBorder: borderDecoration ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6.h),
-              borderSide: BorderSide(
-                color: theme.colorScheme.onPrimary,
-                width: 1,
-              ),
-            ),
       );
 }
