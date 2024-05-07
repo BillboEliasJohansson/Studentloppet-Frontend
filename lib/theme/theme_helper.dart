@@ -115,6 +115,12 @@ class TextThemes {
           fontFamily: 'Open Sans',
           fontWeight: FontWeight.w400,
         ),
+        bodyLarge: TextStyle(
+          color: appTheme.black900,
+          fontSize: 12.fSize,
+          fontFamily: 'Open Sans',
+          fontWeight: FontWeight.w900,
+        ),
         labelLarge: TextStyle(
           color: appTheme.gray600,
           fontSize: 12.fSize,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:studentloppet/Screens/app_screens/profile_screen.dart';
 import 'package:studentloppet/Screens/app_screens/run_screen.dart';
 import 'package:studentloppet/Screens/login_signup/signup_details_screen.dart';
+import 'package:studentloppet/Screens/login_signup/signup_successful.dart';
 import 'package:studentloppet/Screens/reset_screens/forgot_password_screen.dart';
 import 'package:studentloppet/Screens/login_signup/login_screen.dart';
 import 'package:studentloppet/Screens/login_signup/signup_screen.dart';
@@ -31,6 +32,9 @@ class AppRoutes {
 
   static const String runScreen = '/Screens/app_screens/run_screen.dart';
 
+  static const String signUpSuccess =
+      '/Screens/app_screens/signup_successful.dart';
+
   static Map<String, WidgetBuilder> routes = {
     initialRoute: (context) => LoginScreen(),
     signupScreen: (context) => SignupScreen(),
@@ -41,5 +45,6 @@ class AppRoutes {
     signUpDetailsScreen: (context) => SignupDetailsScreen(),
     profileScreen: (context) => ProfileScreen(),
     runScreen: (context) => RunScreen(),
+    signUpSuccess: (context) => SignUpSuccess()
   };
 }

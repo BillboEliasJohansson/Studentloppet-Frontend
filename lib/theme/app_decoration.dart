@@ -10,6 +10,15 @@ class AppDecoration {
   static BoxDecoration get fillWhiteA => BoxDecoration(
         color: appTheme.whiteA700,
       );
+
+  static BoxDecoration get fillPurple => BoxDecoration(
+        color: appTheme.purple200,
+      );
+
+  static BoxDecoration get fillPurple300 => BoxDecoration(
+        color: appTheme.purple300,
+      );
+
 // Outline decorations
   static BoxDecoration get outlineOnPrimary => BoxDecoration(
         border: Border.all(
@@ -54,6 +63,13 @@ class AppDecoration {
             style: BorderStyle.solid,
             strokeAlign: BorderSide.strokeAlignOutside),
       );
+   static BoxDecoration get outlinePurple => BoxDecoration(
+        border: Border.all(
+            color: appTheme.purple300,
+            width: 2.h,
+            style: BorderStyle.solid,
+            strokeAlign: BorderSide.strokeAlignOutside),
+      );
 }
 
 class BorderRadiusStyle {
@@ -68,5 +84,9 @@ class BorderRadiusStyle {
 
   static BorderRadius get roundedBorder11 => BorderRadius.circular(
         10.h,
+      );
+
+  static BorderRadius get circleBorder => BorderRadius.circular(
+        175.h,
       );
 }

@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:studentloppet/Constants/constants.dart';
 import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/networking/network.dart';
 import 'package:studentloppet/routes/app_routes.dart';
@@ -30,21 +31,17 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  TextEditingController fullNameController = TextEditingController();
-
   TextEditingController emailController = TextEditingController();
-
-  TextEditingController graduationyearpController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
 
-  TextEditingController universitySelectorController = TextEditingController();
+  TextEditingController passwordRepeatController = TextEditingController();
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController universitySelectorController = TextEditingController();
 
   Future<List<DropdownMenuEntry<String>>>? universityListFuture;
 
-  late String uni;
+  String? uni;
 
   @override
   void initState() {
@@ -56,124 +53,121 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
     return SafeArea(
+      top: false,
+      bottom: false,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(
-                ImageConstant.imgLoginBckg,
-              ),
-              fit: BoxFit.cover,
-            ),
+                image: AssetImage(
+                  ImageConstant.imgLoginBckg,
+                ),
+                fit: BoxFit.fill),
           ),
           child: SizedBox(
             width: SizeUtils.width,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              child: Form(
-                key: _formKey,
-                child: Container(
-                    width: double.maxFinite,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.h,
-                      vertical: 13.v,
-                    ),
-                    child: Column(children: [
-                      _buildTopBar(),
-                      Container(
-                          margin: EdgeInsets.all(10),
-                          decoration: AppDecoration.outlineWhite.copyWith(
-                            borderRadius: BorderRadiusStyle.roundedBorder11,
+            child: Container(
+                width: double.maxFinite,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12.h,
+                  vertical: 13.v,
+                ),
+                child: Column(children: [
+                  SizedBox(
+                    height: 25.h,
+                  ),
+                  _buildTopBar(),
+                  Container(
+                      margin: EdgeInsets.all(10),
+                      decoration: AppDecoration.outlineWhite.copyWith(
+                        borderRadius: BorderRadiusStyle.roundedBorder11,
+                      ),
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 0,
+                        margin: EdgeInsets.all(10),
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: theme.colorScheme.onPrimaryContainer,
+                            width: 1.h,
                           ),
-                          child: Card(
-                            clipBehavior: Clip.antiAlias,
-                            elevation: 0,
-                            margin: EdgeInsets.all(10),
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: theme.colorScheme.onPrimaryContainer,
-                                width: 1.h,
-                              ),
-                              borderRadius: BorderRadiusStyle.roundedBorder10,
-                            ),
-                            child: Container(
-                              height: 400.v,
-                              width: 313.h,
-                              padding: EdgeInsets.all(5.h),
-                              child: Stack(
+                          borderRadius: BorderRadiusStyle.roundedBorder10,
+                        ),
+                        child: Container(
+                          height: 400.v,
+                          width: 313.h,
+                          padding: EdgeInsets.all(5.h),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Align(
                                 alignment: Alignment.center,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      height: 546.v,
-                                      width: 298.h,
-                                      decoration: BoxDecoration(
-                                        color: theme
-                                            .colorScheme.onPrimaryContainer,
-                                        borderRadius: BorderRadius.circular(
-                                          5.h,
-                                        ),
-                                      ),
+                                child: Container(
+                                  height: 546.v,
+                                  width: 298.h,
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.onPrimaryContainer,
+                                    borderRadius: BorderRadius.circular(
+                                      5.h,
                                     ),
                                   ),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                        left: 16.h,
-                                        right: 25.h,
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(height: 10.v),
-                                          Text(
-                                            "Skapa konto",
-                                            style:
-                                                theme.textTheme.headlineSmall,
-                                          ),
-                                          SizedBox(height: 20.v),
-                                          _buildInputUniversityDropDown(),
-                                          SizedBox(height: 14.v),
-                                          _buildInputEmail(context),
-                                          SizedBox(height: 14.v),
-                                          _buildInputPassword(context),
-                                          SizedBox(height: 14.v),
-                                          SizedBox(height: 30.v),
-                                          _buildButton(user),
-                                          SizedBox(height: 8.v),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                onTapArrowleftone(context);
-                                              },
-                                              child: Text(
-                                                "Tillbaka till inloggningssidan",
-                                                style: CustomTextStyles
-                                                    .bodySmallBlack900
-                                                    .copyWith(
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
+                                ),
                               ),
-                            ),
-                          )),
-                    ])),
-              ),
-            ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 16.h,
+                                    right: 25.h,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height: 10.v),
+                                      Text(
+                                        "Skapa konto",
+                                        style: theme.textTheme.headlineSmall,
+                                      ),
+                                      SizedBox(height: 20.v),
+                                      _buildInputUniversityDropDown(),
+                                      SizedBox(height: 14.v),
+                                      _buildInputEmail(context),
+                                      SizedBox(height: 14.v),
+                                      _buildInputPassword(context),
+                                      SizedBox(height: 14.v),
+                                      _buildInputRepeatPassword(context),
+                                      SizedBox(height: 20.v),
+                                      _buildButton(user),
+                                      SizedBox(height: 8.v),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pushNamed(context,
+                                                AppRoutes.initialRoute);
+                                          },
+                                          child: Text(
+                                            "Tillbaka till inloggningssidan",
+                                            style: CustomTextStyles
+                                                .bodySmallBlack900
+                                                .copyWith(
+                                              decoration:
+                                                  TextDecoration.underline,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )),
+                ])),
           ),
         ),
       ),
@@ -183,20 +177,49 @@ class _SignupScreenState extends State<SignupScreen> {
   Future<void> Signup(BuildContext context, User user) async {
     user.email = emailController.text;
 
+    //TODO REMOVE
+    if (emailController.text.contains("hej")) {
+      Navigator.pushNamed(context, AppRoutes.signUpDetailsScreen);
+      return;
+    }
+
+    if (uni == null) {
+      showErrorSnackbar(context, emptyUniversity);
+      return;
+    }
+
+    if (uni!.isEmpty) {
+      showErrorSnackbar(context, emptyUniversity);
+      return;
+    }
+
+    if (emailController.text.isEmpty) {
+      showErrorSnackbar(context, emptyEmail);
+      return;
+    }
+    
     if (!isValidEmail(emailController.text)) {
-      showErrorSnackbar(context, "Invalid Email");
+      showErrorSnackbar(context, invalidEmail);
       return;
     }
+
+    if (passwordController.text.isEmpty) {
+      showErrorSnackbar(context, emptyPassword);
+      return;
+    }
+
     if (!isValidPassword(passwordController.text)) {
-      showErrorSnackbar(context, "Invalid Password");
+      showErrorSnackbar(context, invalidPassword);
+      return;
+    }
+    if (passwordController.text != passwordRepeatController.text) {
+      showErrorSnackbar(context, passwordNotSame);
       return;
     }
 
-    // Fetch data asynchronously and wait for the result
     final response = await network.callSignUp(
-        uni, emailController.text, passwordController.text);
+        uni!, emailController.text, passwordController.text);
 
-    // Check if the request was successful
     if (response.statusCode == 200) {
       print("Response: " + response.body);
       if (response.body.contains("User registered successfully")) {
@@ -323,6 +346,27 @@ class _SignupScreenState extends State<SignupScreen> {
         CustomTextFormField(
           controller: passwordController,
           hintText: "Skriv in ditt lösenord",
+          obscureText: true,
+        )
+      ],
+    );
+  }
+
+  /// Section Widget
+  Widget _buildInputRepeatPassword(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Upprepa Lösenord",
+          style: CustomTextStyles.bodySmallBlack900_1.copyWith(
+            color: appTheme.black900.withOpacity(0.63),
+          ),
+        ),
+        SizedBox(height: 5.v),
+        CustomTextFormField(
+          controller: passwordRepeatController,
+          hintText: "Skriv in samma lösenord",
           obscureText: true,
         )
       ],

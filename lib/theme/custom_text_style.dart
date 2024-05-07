@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:flutter/material.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/size_utils.dart';
@@ -65,4 +67,12 @@ class CustomTextStyles {
   static get bodySmallBlack900_1 => theme.textTheme.bodySmall!.copyWith(
         color: appTheme.black900.withOpacity(0.63),
       );
+  static get smallTextWhite => theme.textTheme.bodyLarge!.copyWith(
+        color: appTheme.whiteA700,
+        fontSize: 13.fSize,
+      );
+  static get smallTextWhiteUnderlined => theme.textTheme.bodyLarge!.copyWith(
+      color: appTheme.whiteA700,
+      fontSize: 13.fSize,
+      decoration: TextDecoration.underline);
 }
