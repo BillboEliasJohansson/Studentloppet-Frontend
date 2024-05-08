@@ -26,4 +26,8 @@ class ImageConstant {
   static String imgLogo = '$imagePath/img_midnattsloppet.png';
 
   static String imgRunner = '$imagePath/img_shiny_happy_morning.png';
+
+  static String imgArrowLeftWhite = '$imagePath/img_arrow_left_white.svg';
+
+  static String imgEdit = '$imagePath/Edit.png';
 }

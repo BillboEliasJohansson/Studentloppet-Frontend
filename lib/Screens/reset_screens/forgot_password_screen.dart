@@ -13,9 +13,9 @@ import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/snackbars_util.dart';
 import 'package:studentloppet/utils/validation_functions.dart';
-import 'package:studentloppet/widgets/custom_image_view.dart';
-import 'package:studentloppet/widgets/custom_outlined_button.dart';
-import 'package:studentloppet/widgets/custom_text_form_field.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_text_form_field.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
@@ -128,7 +128,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                                         alignment: Alignment.centerLeft,
                                         child: GestureDetector(
                                           onTap: () {
-                                            Navigator.pushNamed(context, AppRoutes.initialRoute);
+                                            Navigator.pushNamed(context,
+                                                AppRoutes.initialRoute);
                                           },
                                           child: Text(
                                             "Tillbaka till inloggningssidan",
@@ -243,7 +244,6 @@ class ForgotPasswordScreen extends StatelessWidget {
   }
 
   Future<void> sendOtp(BuildContext context, User user) async {
-
     //TODO REMOVE
     if (emailController.text.contains("hej")) {
       user.email = emailController.text;
@@ -274,7 +274,7 @@ class ForgotPasswordScreen extends StatelessWidget {
         showErrorSnackbar(context, "User not found");
       }
     } else {
-      if (response.body.contains("Duplicate entry")){
+      if (response.body.contains("Duplicate entry")) {
         showSuccesfulSnackbar(context, "Success");
         user.email = emailController.text;
         Navigator.pushNamed(context, AppRoutes.verifyOtpScreen);
@@ -284,4 +284,3 @@ class ForgotPasswordScreen extends StatelessWidget {
     }
   }
 }
-

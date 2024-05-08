@@ -9,10 +9,10 @@ import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_title.dart';
 import 'package:studentloppet/widgets/app_bar/custom_app_bar.dart';
-import 'package:studentloppet/widgets/custom_icon_button.dart';
-import 'package:studentloppet/widgets/custom_image_view.dart';
-import 'package:studentloppet/widgets/custom_outlined_button.dart';
-import 'package:studentloppet/widgets/metricslist_item_widget.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_icon_button.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
+import 'package:studentloppet/widgets/custom_helpers/metricslist_item_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -157,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
           width: 92.h,
           text: "View Profile",
           onPressed: () {
-            Navigator.pushNamed(context, AppRoutes.profileScreen);
+            Navigator.pushNamed(context, AppRoutes.profileScreenTest);
           },
           margin: EdgeInsets.only(
             top: 8.v,

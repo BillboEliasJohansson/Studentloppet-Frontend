@@ -13,8 +13,8 @@ import 'package:studentloppet/utils/timer.utils.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_title.dart';
 import 'package:studentloppet/widgets/app_bar/custom_app_bar.dart';
-import 'package:studentloppet/widgets/custom_elevated_button.dart';
-import 'package:studentloppet/widgets/metricslist_item_widget.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_elevated_button.dart';
+import 'package:studentloppet/widgets/custom_helpers/metricslist_item_widget.dart';
 import 'package:geolocator/geolocator.dart';
 
 class RunScreen extends StatefulWidget {

@@ -15,10 +15,10 @@ import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/validation_functions.dart';
 import 'package:studentloppet/utils/snackbars_util.dart';
-import 'package:studentloppet/widgets/custom_dropdownmenu.dart';
-import 'package:studentloppet/widgets/custom_image_view.dart';
-import 'package:studentloppet/widgets/custom_outlined_button.dart';
-import '../../../widgets/custom_text_form_field.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_dropdownmenu.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
+import '../../widgets/custom_helpers/custom_text_form_field.dart';
 
 class SignupScreen extends StatefulWidget {
   SignupScreen({Key? key})
@@ -197,7 +197,7 @@ class _SignupScreenState extends State<SignupScreen> {
       showErrorSnackbar(context, emptyEmail);
       return;
     }
-    
+
     if (!isValidEmail(emailController.text)) {
       showErrorSnackbar(context, invalidEmail);
       return;

@@ -18,9 +18,9 @@ import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/snackbars_util.dart';
 import 'package:studentloppet/utils/validation_functions.dart';
-import 'package:studentloppet/widgets/custom_image_view.dart';
-import 'package:studentloppet/widgets/custom_outlined_button.dart';
-import '../../../widgets/custom_text_form_field.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
+import '../../widgets/custom_helpers/custom_text_form_field.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key})
@@ -304,29 +304,28 @@ class _SignupScreenState extends State<LoginScreen> {
   }
 
   Future<void> Signin(BuildContext context, User user) async {
-    
     //TODO REMOVE
     if (passwordController.text.contains("hej")) {
       Navigator.pushNamed(context, AppRoutes.homeScreen);
       return;
     }
 
-     if (userNameController.text.isEmpty) {
+    if (userNameController.text.isEmpty) {
       showErrorSnackbar(context, emptyEmail);
       return;
     }
 
-     if (passwordController.text.isEmpty) {
+    if (passwordController.text.isEmpty) {
       showErrorSnackbar(context, emptyPassword);
       return;
     }
 
-    if (!isValidEmail(userNameController.text)){
+    if (!isValidEmail(userNameController.text)) {
       showErrorSnackbar(context, invalidEmail);
       return;
     }
 
-    if (!isValidPassword(passwordController.text)){
+    if (!isValidPassword(passwordController.text)) {
       showErrorSnackbar(context, invalidPassword);
       return;
     }

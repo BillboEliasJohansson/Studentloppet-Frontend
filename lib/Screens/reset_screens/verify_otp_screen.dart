@@ -12,9 +12,9 @@ import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/snackbars_util.dart';
-import 'package:studentloppet/widgets/custom_image_view.dart';
-import 'package:studentloppet/widgets/custom_outlined_button.dart';
-import 'package:studentloppet/widgets/custom_text_form_field.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_text_form_field.dart';
 
 class VerifyOtpScreen extends StatelessWidget {
   TextEditingController otpController = TextEditingController();
@@ -127,7 +127,8 @@ class VerifyOtpScreen extends StatelessWidget {
                                         alignment: Alignment.centerLeft,
                                         child: GestureDetector(
                                           onTap: () {
-                                            Navigator.pushNamed(context, AppRoutes.initialRoute);
+                                            Navigator.pushNamed(context,
+                                                AppRoutes.initialRoute);
                                           },
                                           child: Text(
                                             "Tillbaka till inloggningssidan",
@@ -190,7 +191,7 @@ class VerifyOtpScreen extends StatelessWidget {
       ],
     );
   }
-  
+
   Widget _buildButton(BuildContext context, User user) {
     return Container(
       decoration: AppDecoration.outlineOrange.copyWith(
@@ -215,7 +216,7 @@ class VerifyOtpScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildInputOTP(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,21 +238,18 @@ class VerifyOtpScreen extends StatelessWidget {
   }
 
   Future<void> verifyOtp(BuildContext context, User user) async {
-    
     //TODO REMOVE
-    if (otpController.text.contains("hej")){
+    if (otpController.text.contains("hej")) {
       Navigator.pushNamed(context, AppRoutes.updatePasswordScreen);
       return;
     }
 
-    if (otpController.text.isEmpty){
+    if (otpController.text.isEmpty) {
       showErrorSnackbar(context, emptyCode);
       return;
     }
 
-    final response = await network.sendOtp(
-      otpController.text, user.email
-    );
+    final response = await network.sendOtp(otpController.text, user.email);
 
     if (response.statusCode == 200) {
       print("Response: " + response.body);

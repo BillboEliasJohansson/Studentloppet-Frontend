@@ -12,9 +12,9 @@ import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/snackbars_util.dart';
-import 'package:studentloppet/widgets/custom_image_view.dart';
-import 'package:studentloppet/widgets/custom_outlined_button.dart';
-import 'package:studentloppet/widgets/custom_text_form_field.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_text_form_field.dart';
 
 class SignupDetailsScreen extends StatelessWidget {
   TextEditingController firstName = TextEditingController();

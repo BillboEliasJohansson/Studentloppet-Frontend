@@ -13,9 +13,9 @@ import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/snackbars_util.dart';
 import 'package:studentloppet/utils/validation_functions.dart';
-import 'package:studentloppet/widgets/custom_image_view.dart';
-import 'package:studentloppet/widgets/custom_outlined_button.dart';
-import 'package:studentloppet/widgets/custom_text_form_field.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_text_form_field.dart';
 
 class UpdatePasswordScreen extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
@@ -226,7 +226,7 @@ class UpdatePasswordScreen extends StatelessWidget {
   }
 
   Future<void> changePassword(BuildContext context, user) async {
-    if(passwordController.text.isEmpty || passwordControllerTwo.text.isEmpty){
+    if (passwordController.text.isEmpty || passwordControllerTwo.text.isEmpty) {
       showErrorSnackbar(context, emptyPassword);
       return;
     }
@@ -235,7 +235,7 @@ class UpdatePasswordScreen extends StatelessWidget {
       showErrorSnackbar(context, invalidPassword);
       return;
     }
-    
+
     if (passwordController.text != passwordControllerTwo.text) {
       showErrorSnackbar(context, passwordNotSame);
       return;

@@ -151,6 +151,13 @@ class TextThemes {
           fontFamily: 'Passion One',
           fontWeight: FontWeight.w400,
         ),
+        displaySmall: TextStyle(
+          color: Colors.white,
+          fontSize: 30.fSize,
+          fontFamily: 'Passion One',
+          fontWeight: FontWeight.w200,
+          letterSpacing: 1,
+        ),
         headlineSmall: TextStyle(
           color: appTheme.deepPurple500,
           fontSize: 25.fSize,
@@ -188,6 +195,8 @@ class PrimaryColors {
   Color get black900 => Color(0XFF000000);
 
   Color get deepPurple500 => Color(0XFF74539B);
+
+  Color get deepPurple800 => Color.fromARGB(255, 72, 18, 133);
 // Purple
   Color get purple200 => Color(0XFFCAA4E2);
 

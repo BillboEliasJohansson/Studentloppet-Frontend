@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:studentloppet/Screens/app_screens/profile_screen.dart';
+import 'package:studentloppet/Screens/app_screens/profile_screen_test.dart';
 import 'package:studentloppet/Screens/app_screens/run_screen.dart';
 import 'package:studentloppet/Screens/login_signup/signup_details_screen.dart';
 import 'package:studentloppet/Screens/login_signup/signup_successful.dart';
@@ -35,6 +36,8 @@ class AppRoutes {
   static const String signUpSuccess =
       '/Screens/app_screens/signup_successful.dart';
 
+  static const String profileScreenTest = '/Screens/profile_screen_test.dart';
+
   static Map<String, WidgetBuilder> routes = {
     initialRoute: (context) => LoginScreen(),
     signupScreen: (context) => SignupScreen(),
@@ -43,8 +46,9 @@ class AppRoutes {
     verifyOtpScreen: (context) => VerifyOtpScreen(),
     updatePasswordScreen: (context) => UpdatePasswordScreen(),
     signUpDetailsScreen: (context) => SignupDetailsScreen(),
+    profileScreenTest: (context) => ProfileScreenTest(),
     profileScreen: (context) => ProfileScreen(),
     runScreen: (context) => RunScreen(),
-    signUpSuccess: (context) => SignUpSuccess()
+    signUpSuccess: (context) => SignUpSuccess(),
   };
 }

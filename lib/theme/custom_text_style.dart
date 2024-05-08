@@ -75,4 +75,9 @@ class CustomTextStyles {
       color: appTheme.whiteA700,
       fontSize: 13.fSize,
       decoration: TextDecoration.underline);
+
+  static get titleLargePassionOne =>
+      theme.textTheme.titleLarge!.passionOne.copyWith(
+        fontWeight: FontWeight.w300,
+      );
 }

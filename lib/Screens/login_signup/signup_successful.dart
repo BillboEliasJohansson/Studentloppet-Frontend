@@ -5,8 +5,8 @@ import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
-import 'package:studentloppet/widgets/custom_image_view.dart';
-import 'package:studentloppet/widgets/custom_outlined_button.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
 
 class SignUpSuccess extends StatelessWidget {
   const SignUpSuccess({Key? key})
@@ -30,9 +30,7 @@ class SignUpSuccess extends StatelessWidget {
                   height: 15.h,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: _buildTopBar()
-                ),
+                    padding: const EdgeInsets.all(10.0), child: _buildTopBar()),
                 SizedBox(
                   height: 30.h,
                 ),

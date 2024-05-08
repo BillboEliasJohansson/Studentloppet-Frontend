@@ -9,7 +9,7 @@ import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/timer.utils.dart';
-import 'package:studentloppet/widgets/custom_elevated_button.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_elevated_button.dart';
 import 'package:studentloppet/networking/network.dart';
 
 class SaveScreen extends StatelessWidget {
