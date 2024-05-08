@@ -5,10 +5,10 @@ import 'package:studentloppet/networking/network.dart';
 import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
-import 'package:studentloppet/utils/image_constant.dart';
+import 'package:studentloppet/Constants/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_title.dart';
-import 'package:studentloppet/widgets/app_bar/custom_app_bar.dart';
+import 'package:studentloppet/widgets/app_bar/custom_app_bar_old.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_icon_button.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context, User user) {
-    return CustomAppBar(
+    return CustomAppBarOld(
       title: AppbarTitle(
         text: "Welcome " + user.firstName,
         margin: EdgeInsets.only(left: 10.h, top: 20.h),

@@ -6,8 +6,8 @@ import '../../theme/theme_helper.dart';
 enum Style { bgShadow }
 
 // ignore: must_be_immutable
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar(
+class CustomAppBarOld extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBarOld(
       {super.key,
       this.height,
       this.styleType,

@@ -5,15 +5,18 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:studentloppet/Constants/constants.dart';
 import 'package:studentloppet/Screens/app_screens/save_screen.dart';
+import 'package:studentloppet/routes/app_routes.dart';
+import 'package:studentloppet/theme/app_decoration.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
-import 'package:studentloppet/utils/image_constant.dart';
+import 'package:studentloppet/Constants/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/timer.utils.dart';
+import 'package:studentloppet/widgets/ProfileHelpers/appbar_title_profile.dart';
+import 'package:studentloppet/widgets/ProfileHelpers/custom_app_bar.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
-import 'package:studentloppet/widgets/app_bar/appbar_title.dart';
-import 'package:studentloppet/widgets/app_bar/custom_app_bar.dart';
-import 'package:studentloppet/widgets/custom_helpers/custom_elevated_button.dart';
+
+import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
 import 'package:studentloppet/widgets/custom_helpers/metricslist_item_widget.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -31,17 +34,20 @@ class _RunScreenState extends State<RunScreen> {
   LocationData? currentLocation;
   LocationData? startLocation;
   bool activeRun = false;
-  String buttonText = "Start Run";
+  String buttonText = "Starta löprunda";
   Timer? _timer;
   DateTime? _startTime;
   Duration _elapsedTime = Duration.zero;
   double totalDistance = 0.0;
+
+  BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
 
   @override
   void initState() {
     super.initState();
     _controller = Completer();
     getCurrentLocation();
+    setCustomMarkers();
     getPolyPoints();
   }
 
@@ -51,6 +57,12 @@ class _RunScreenState extends State<RunScreen> {
     _locationSubscription?.cancel();
     _controller = null; // Avoid completing the controller after disposal
     super.dispose();
+  }
+
+  void setCustomMarkers() {
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration.empty, ImageConstant.imgBigMarker)
+        .then((icon) => currentLocationIcon = icon);
   }
 
   void getCurrentLocation() async {
@@ -130,7 +142,7 @@ class _RunScreenState extends State<RunScreen> {
     });
 
     setState(() {
-      buttonText = "Stop Run";
+      buttonText = "Stoppa löprunda";
       activeRun = true;
     });
   }
@@ -139,7 +151,7 @@ class _RunScreenState extends State<RunScreen> {
     _timer?.cancel(); // Stop the timer
 
     setState(() {
-      buttonText = "Start Run";
+      buttonText = "Starta löprunda";
       activeRun = false;
     });
 
@@ -169,7 +181,7 @@ class _RunScreenState extends State<RunScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildMap(context),
-              SizedBox(height: 28.v),
+              SizedBox(height: 20.v),
               Padding(
                 padding: EdgeInsets.only(left: 12.h),
                 child: Text(
@@ -177,7 +189,7 @@ class _RunScreenState extends State<RunScreen> {
                   style: theme.textTheme.titleMedium,
                 ),
               ),
-              SizedBox(height: 2.v),
+              SizedBox(height: 1.v),
               Padding(
                 padding: EdgeInsets.only(left: 12.h),
                 child: Text(
@@ -185,46 +197,29 @@ class _RunScreenState extends State<RunScreen> {
                   style: CustomTextStyles.bodySmallPrimary,
                 ),
               ),
-              SizedBox(height: 11.v),
-              _buildMetricsList(context)
+              SizedBox(height: 6.v),
+              _buildMetricsList(context),
+              SizedBox(height: 6.v),
+              Padding(
+                padding: EdgeInsets.only(left: 17, right: 17),
+                child: _buildButton(),
+              ),
             ],
           ),
         ),
-        bottomNavigationBar: _buildStartRun(context),
       ),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return CustomAppBar(
-      leadingWidth: 32.h,
-      leading: AppbarLeadingImage(
-        imagePath: ImageConstant.imgArrowLeft,
-        margin: EdgeInsets.only(
-          left: 8.h,
-          top: 12.v,
-          bottom: 12.v,
-        ),
-        onTap: () {
-          Navigator.pop(context);
-        },
-      ),
-      title: AppbarTitle(
-        text: "Running Route",
-        margin: EdgeInsets.only(left: 8.h),
-      ),
-      styleType: Style.bgShadow,
     );
   }
 
   Widget _buildMap(BuildContext context) {
     return Center(
       child: Container(
-        height: 386.adaptSize,
-        width: 336.adaptSize,
+        height: 290.adaptSize,
+        width: SizeUtils.width,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey, width: 2),
-          borderRadius: BorderRadius.circular(10),
+          border: Border.symmetric(
+              vertical: BorderSide.none,
+              horizontal: BorderSide(color: appTheme.deepPurple500, width: 3)),
         ),
         child: currentLocation == null
             ? Center(
@@ -251,12 +246,13 @@ class _RunScreenState extends State<RunScreen> {
                   Polyline(
                       polylineId: PolylineId("route"),
                       points: polylineCoordinates,
-                      color: Colors.purple,
+                      color: appTheme.purple200,
                       width: 6),
                 },
                 markers: {
                   Marker(
                     markerId: MarkerId("currentLocation"),
+                    icon: currentLocationIcon,
                     position: LatLng(currentLocation!.latitude!,
                         currentLocation!.longitude!),
                   )
@@ -271,13 +267,13 @@ class _RunScreenState extends State<RunScreen> {
 
   Widget _buildMetricsList(BuildContext context) {
     return SizedBox(
-        height: 76.v,
+        height: 70.v,
         child: Padding(
-          padding: EdgeInsets.only(right: 12.h),
+          padding: EdgeInsets.only(right: 0.h),
           child: ListView.separated(
-            padding: EdgeInsets.only(left: 12.h),
+            padding: EdgeInsets.only(left: 10.h),
             scrollDirection: Axis.horizontal,
-            separatorBuilder: (context, index) => SizedBox(width: 8.h),
+            separatorBuilder: (context, index) => SizedBox(width: 3.h),
             itemCount: 2,
             itemBuilder: (context, index) {
               List<String> titles = ["Distance", "Time"];
@@ -285,7 +281,7 @@ class _RunScreenState extends State<RunScreen> {
                   (totalDistance / 1000).toStringAsFixed(2) + " km";
               List<String> values = [
                 distanceDisplay,
-                formatDuration(_elapsedTime)
+                formatDuration(_elapsedTime),
               ];
               return MetricslistItemWidget(
                 upperText: titles[index],
@@ -296,40 +292,71 @@ class _RunScreenState extends State<RunScreen> {
         ));
   }
 
-  Widget _buildStartRun(BuildContext context) {
-    return CustomElevatedButton(
-      text: buttonText,
-      margin: EdgeInsets.only(
-        left: 12.h,
-        right: 12.h,
-        bottom: 12.v,
+  Widget _buildButton() {
+    return Container(
+      decoration: AppDecoration.outlineOrange.copyWith(
+        borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
-      buttonTextStyle: CustomTextStyles.titleMediumWhiteA700,
-      onPressed: () {
-        if (currentLocation == null) {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Please Wait"),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text("Dissmiss"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              });
-          return;
-        }
-        if (activeRun) {
-          stopRun();
-        } else {
-          startRun();
-        }
-      },
+      child: CustomOutlinedButton(
+        margin: EdgeInsets.all(5),
+        buttonStyle: ButtonStyle(
+            side: MaterialStateBorderSide.resolveWith(
+                (states) => BorderSide(style: BorderStyle.none)),
+            shape: MaterialStateProperty.resolveWith<OutlinedBorder?>(
+              (states) => RoundedRectangleBorder(
+                  borderRadius: BorderRadiusDirectional.circular(10)),
+            ),
+            backgroundColor:
+                MaterialStateColor.resolveWith((states) => appTheme.orange)),
+        text: buttonText,
+        buttonTextStyle: theme.textTheme.displayMedium!.copyWith(fontSize: 30),
+        onPressed: () {
+          if (currentLocation == null) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text("Please Wait"),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text("Dissmiss"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                });
+            return;
+          }
+          if (activeRun) {
+            stopRun();
+          } else {
+            startRun();
+          }
+        },
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    return CustomAppBar(
+      leadingWidth: 30.h,
+      leading: AppbarLeadingImage(
+          onTap: () {
+            Navigator.pushNamed(context, AppRoutes.homeScreen);
+          },
+          imagePath: ImageConstant.imgArrowLeftWhite,
+          margin: EdgeInsets.only(
+            left: 5.h,
+            top: 16.v,
+            bottom: 17.v,
+          )),
+      centerTitle: true,
+      title: AppbarTitle(
+        text: "Ny löprunda",
+      ),
+      styleType: Style.bgFill,
     );
   }
 }

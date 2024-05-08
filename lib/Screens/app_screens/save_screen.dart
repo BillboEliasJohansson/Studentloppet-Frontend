@@ -6,7 +6,7 @@ import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
-import 'package:studentloppet/utils/image_constant.dart';
+import 'package:studentloppet/Constants/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/timer.utils.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_elevated_button.dart';

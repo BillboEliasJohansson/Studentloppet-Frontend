@@ -30,4 +30,8 @@ class ImageConstant {
   static String imgArrowLeftWhite = '$imagePath/img_arrow_left_white.svg';
 
   static String imgEdit = '$imagePath/Edit.png';
+
+  static String imgMarker = '$imagePath/marker.png';
+
+  static String imgBigMarker = '$imagePath/marker_big.png';
 }
