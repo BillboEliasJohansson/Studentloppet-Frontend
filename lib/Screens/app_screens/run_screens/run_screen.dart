@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
 import 'package:weather/weather.dart';
@@ -46,7 +48,8 @@ class _RunScreenState extends State<RunScreen> {
   double totalDistance = 0.0;
 
   Weather? w;
-  WeatherFactory wf = new WeatherFactory(weather_api_key);
+  WeatherFactory wf =
+      new WeatherFactory(weather_api_key, language: Language.SWEDISH);
 
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
 
@@ -228,7 +231,7 @@ class _RunScreenState extends State<RunScreen> {
           padding: EdgeInsets.only(left: 12.h),
           child: Text(
             //TODO TODAYS DATE
-            "Måndag 8:e april",
+            DateTime.now().toIso8601String(),
             style: theme.textTheme.headlineSmall!
                 .copyWith(fontSize: 15, fontWeight: FontWeight.w400),
           ),
@@ -270,7 +273,16 @@ class _RunScreenState extends State<RunScreen> {
                     ),
                   ),
                 ),
-                _buildColumns(context),
+                if (w == null) // Kontrollerar om datan laddas
+                  Container(
+                    height: 295.v,
+                    width: 340.h,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                else
+                  _buildColumns(context),
               ],
             ),
           ),
@@ -391,14 +403,12 @@ class _RunScreenState extends State<RunScreen> {
     return minutesPerKilometer.toStringAsFixed(2) + " min/km";
   }
 
-  void non(){}
+  void non() {}
 
   Widget buildContentBasedOnState(User user) {
     switch (currentState) {
       case RunState.before:
-        currentLocation == null ?
-        CircularProgressIndicator()
-        : getWeather();
+        currentLocation == null ? CircularProgressIndicator() : getWeather();
         return buildBeforeRunContent(user);
 
       case RunState.during:
@@ -589,81 +599,75 @@ class _RunScreenState extends State<RunScreen> {
           Padding(
             padding: EdgeInsets.only(
               left: 3.h,
-              right: 51.h,
+              right: 10.h,
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomImageView(
-                  imagePath: ImageConstant.imgCloud,
-                  height: 51.v,
-                  width: 69.h,
-                  margin: EdgeInsets.only(bottom: 9.v),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 11.h),
-                  child: w == null
-                      ? Center(
-                          child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            SizedBox(
-                              child: Center(child: CircularProgressIndicator()),
-                              height: 50.0,
-                              width: 50.0,
-                            ),
-                          ],
-                        ))
-                      : Text(
-                          "6",
-                          style: theme.textTheme.displayMedium,
-                        ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: 6.v,
-                    bottom: 17.v,
-                  ),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "°",
-                          style: CustomTextStyles.titleMediumWhiteA700,
-                        ),
-                        TextSpan(
-                          text: "C",
-                          style: CustomTextStyles.titleMediumWhiteA700,
-                        )
-                      ],
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 26.h,
-                    top: 8.v,
-                    bottom: 8.v,
-                  ),
-                  child: Column(
+            child: w == null
+                ? Center(child: CircularProgressIndicator())
+                : Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Molnigt",
-                          style: CustomTextStyles.titleLargePassionOne
-                              .copyWith(color: appTheme.whiteA700)),
-                      Text(
-                        "Känns som 4°",
-                        style: CustomTextStyles.titleSmallWhiteA70014,
+                      CustomImageView(
+                        imagePath: ImageConstant.imgCloud,
+                        height: 51.v,
+                        width: 69.h,
+                        margin: EdgeInsets.only(bottom: 9.v),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(left: 11.h),
+                          child: buildWeatherInfoOrLoading(
+                            (weather) => Text(
+                              "${weather.temperature!.celsius!.toStringAsFixed(0)}",
+                              style: theme.textTheme.displayMedium,
+                            ),
+                          )),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: 6.v,
+                          bottom: 17.v,
+                        ),
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "°",
+                                style: CustomTextStyles.titleMediumWhiteA700,
+                              ),
+                              TextSpan(
+                                text: "C",
+                                style: CustomTextStyles.titleMediumWhiteA700,
+                              )
+                            ],
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 26.h,
+                          top: 8.v,
+                          bottom: 8.v,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildWeatherInfoOrLoading(
+                              (weather) => Text(
+                                "${weather.weatherDescription}",
+                                style: CustomTextStyles.titleLargePassionOne
+                                    .copyWith(color: appTheme.whiteA700),
+                              ),
+                            ),
+                            buildWeatherInfoOrLoading(
+                              (weather) => Text(
+                                "Känns som ${weather.tempFeelsLike!.celsius!.toStringAsFixed(0)}°",
+                                style: CustomTextStyles.titleSmallWhiteA70014,
+                              ),
+                            )
+                          ],
+                        ),
                       )
                     ],
                   ),
-                )
-              ],
-            ),
           ),
           SizedBox(height: 18.v),
           Divider(
@@ -674,16 +678,21 @@ class _RunScreenState extends State<RunScreen> {
           Padding(
               padding: EdgeInsets.only(
                 left: 1.h,
-                right: 72.h,
+                right: 55.h,
               ),
-              child: _buildColumn(
-                context,
-                upperText: "upperText",
-                lowerText: "lowerText",
-                upperText2: "upperText2",
-                lowerText2: "lowerText2",
-                imagePath: ImageConstant.imgUmbrella,
-              )),
+              child: w == null
+                  ? Visibility(
+                      child: Text("Gone"),
+                      visible: false,
+                    )
+                  : _buildColumn(
+                      context,
+                      upperText: "Nederbörd",
+                      lowerText: calculateRainfall(),
+                      upperText2: "Luftfuktighet",
+                      lowerText2: w!.humidity.toString(),
+                      imagePath: ImageConstant.imgUmbrella,
+                    )),
           SizedBox(height: 9.v),
           Divider(
             indent: 1.h,
@@ -693,16 +702,21 @@ class _RunScreenState extends State<RunScreen> {
           Padding(
             padding: EdgeInsets.only(
               left: 1.h,
-              right: 72.h,
+              right: 60.h,
             ),
-            child: _buildColumn(
-              context,
-              upperText: "upperText",
-              lowerText: "lowerText",
-              upperText2: "upperText2",
-              lowerText2: "lowerText2",
-              imagePath: ImageConstant.imgSun,
-            ),
+            child: w == null
+                ? Visibility(
+                    child: Text("Gone"),
+                    visible: false,
+                  )
+                : _buildColumn(
+                    context,
+                    upperText: "Soluppgång",
+                    lowerText: w!.sunrise!.hour.toString(),
+                    upperText2: "Solnedgång",
+                    lowerText2: w!.sunset!.hour.toString(),
+                    imagePath: ImageConstant.imgSun,
+                  ),
           ),
           SizedBox(height: 11.v),
           Divider(
@@ -715,14 +729,19 @@ class _RunScreenState extends State<RunScreen> {
                 left: 1.h,
                 right: 72.h,
               ),
-              child: _buildColumn(
-                context,
-                upperText: "upperText",
-                lowerText: "lowerText",
-                upperText2: "upperText2",
-                lowerText2: "lowerText2",
-                imagePath: ImageConstant.imgWind,
-              )),
+              child: w == null
+                  ? Visibility(
+                      child: Text("Gone"),
+                      visible: false,
+                    )
+                  : _buildColumn(
+                      context,
+                      upperText: "Vind",
+                      lowerText: w!.windGust.toString(),
+                      upperText2: "Lufttryck",
+                      lowerText2: w!.pressure.toString(),
+                      imagePath: ImageConstant.imgWind,
+                    )),
           SizedBox(height: 10.v),
           Divider(
             indent: 1.h,
@@ -731,6 +750,33 @@ class _RunScreenState extends State<RunScreen> {
         ],
       ),
     );
+  }
+
+  String calculateRainfall(){
+    if(w!.rainLast3Hours.toString() != "null")
+    return w!.rainLast3Hours.toString().toString();
+    else
+    return "Inget regn";
+  }
+
+  Widget buildWeatherInfoOrLoading(Widget Function(Weather) buildContent) {
+    if (w == null) {
+      return Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 20.h),
+            SizedBox(
+              child: Center(child: CircularProgressIndicator()),
+              height: 5.0,
+              width: 5.0,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return buildContent(w!);
+    }
   }
 
   Widget _buildColumn(BuildContext context,
@@ -769,7 +815,7 @@ class _RunScreenState extends State<RunScreen> {
               upperText2,
               style: CustomTextStyles.titleSmallWhiteA700,
             ),
-            SizedBox(height: 1.v),
+            SizedBox(height: 3.v),
             Text(
               lowerText2,
               style: CustomTextStyles.titleMediumWhiteA700,
