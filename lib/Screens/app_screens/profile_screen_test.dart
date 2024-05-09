@@ -35,14 +35,14 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
     return SafeArea(
         child: Scaffold(
       appBar: _buildAppBar(context),
-      body: SingleChildScrollView(
-        child: Container(
-            width: SizeUtils.width,
-            height: SizeUtils.height,
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.h,
-              vertical: 13.v,
-            ),
+      body: Container(
+          width: SizeUtils.width,
+          height: SizeUtils.height,
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.h,
+            vertical: 13.v,
+          ),
+          child: SingleChildScrollView(
             child: Column(children: [
               SizedBox(
                 height: 5.h,
@@ -51,21 +51,24 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
               SizedBox(
                 height: 5.h,
               ),
-              _buildCard(context, user),
+              _buildCard2(context, user, "Mitt Midnattslopp"),
               SizedBox(
                 height: 5.h,
               ),
-              _buildCard(context, user),
+              _buildCard3(context, user, "Min Löpstatistik"),
               SizedBox(
                 height: 5.h,
               ),
-              _buildCard(context, user),
-            ])),
-      ),
+              _buildCard4(context, user, "Min statistik på universitet"),
+              SizedBox(
+                height: 20,
+              )
+            ]),
+          )),
     ));
   }
 
-  Widget _buildCard(BuildContext context, User user) {
+  Widget _buildCard2(BuildContext context, User user, String header) {
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 0,
@@ -78,7 +81,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
       child: Container(
-        height: 130.v,
+        height: 160.v,
         width: 340.h,
         padding: EdgeInsets.all(7.h),
         decoration: AppDecoration.outlinePurple.copyWith(
@@ -90,7 +93,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
             Align(
               alignment: Alignment.center,
               child: Container(
-                height: 135.v,
+                height: 200.v,
                 width: 330.h,
                 decoration: BoxDecoration(
                   color: appTheme.deepPurple500,
@@ -100,51 +103,224 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
                 ),
               ),
             ),
-            _buildCardHeader(context),
-            _buildInfoCard(context, user),
+            _buildCardHeader(context, header),
+            _buildInfoCard2(context, user),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoCard(context, user) {
-    return Column(children: [
-      _buildTestRow(context, user),
-    ]);
-  }
-
-  Widget _buildTestRow(BuildContext context, User user) {
-    return _buildRowView(context, "Test", user.firstName + " " + user.lastName,
-        ImageConstant.imgHat);
-  }
-
-  Widget _buildCardHeader(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 10.h,
-        top: 3.v,
+  Widget _buildCard3(BuildContext context, User user, String header) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      elevation: 0,
+      margin: EdgeInsets.all(1),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: appTheme.purple200,
+          width: 2.h,
+        ),
+        borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: Text(
-          "Mitt Midnattslopp",
-          style: Theme.of(context).textTheme.displaySmall,
+      child: Container(
+        height: 160.v,
+        width: 340.h,
+        padding: EdgeInsets.all(7.h),
+        decoration: AppDecoration.outlinePurple.copyWith(
+          borderRadius: BorderRadiusStyle.roundedBorder10,
+        ),
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                height: 200.v,
+                width: 330.h,
+                decoration: BoxDecoration(
+                  color: appTheme.deepPurple500,
+                  borderRadius: BorderRadius.circular(
+                    5.h,
+                  ),
+                ),
+              ),
+            ),
+            _buildCardHeader(context, header),
+            _buildInfoCard3(context, user),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildRowView(
-      BuildContext context, String title, String detail, String imagePath) {
+  Widget _buildCard4(BuildContext context, User user, String header) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      elevation: 0,
+      margin: EdgeInsets.all(1),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: appTheme.purple200,
+          width: 2.h,
+        ),
+        borderRadius: BorderRadiusStyle.roundedBorder10,
+      ),
+      child: Container(
+        height: 160.v,
+        width: 340.h,
+        padding: EdgeInsets.all(7.h),
+        decoration: AppDecoration.outlinePurple.copyWith(
+          borderRadius: BorderRadiusStyle.roundedBorder10,
+        ),
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                height: 300.v,
+                width: 330.h,
+                decoration: BoxDecoration(
+                  color: appTheme.deepPurple500,
+                  borderRadius: BorderRadius.circular(
+                    5.h,
+                  ),
+                ),
+              ),
+            ),
+            Image.asset(
+                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXJ2eXE0aW5za2V1ZTg4dWoxamJ6NWdtOTF4dWd6NW5nb211emRwYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/etOX3h7ApZuDe7Fc5w/giphy-downsized-large.gif")
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoCard2(
+    context,
+    user,
+  ) {
+    return Column(children: [
+      SizedBox(height: 30),
+      _buildRowView(
+        context,
+        user,
+        "Namn",
+        user.firstName.toString() + " " + user.lastName.toString(),
+        ImageConstant.imgRunner,
+      ),
+      SizedBox(height: 0.v),
+      Divider(
+        indent: 20.h,
+        color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.80),
+        endIndent: 20,
+      ),
+      _buildRowView(
+        context,
+        user,
+        "cow",
+        "cat",
+        ImageConstant.imgCloud,
+      ),
+      SizedBox(height: 0.v),
+      Divider(
+        indent: 20.h,
+        color: Colors.white.withOpacity(0.80),
+        endIndent: 20,
+      ),
+      _buildRowView(
+        context,
+        user,
+        "Universitet",
+        user.university,
+        ImageConstant.imgHatNew,
+      ),
+      SizedBox(height: 0.v),
+      Divider(
+        indent: 20.h,
+        color: Colors.white.withOpacity(0.80),
+        endIndent: 20,
+      )
+    ]);
+  }
+
+  Widget _buildInfoCard3(
+    context,
+    user,
+  ) {
+    return Column(children: [
+      SizedBox(height: 30),
+      _buildRowView(
+        context,
+        user,
+        "Snabb?",
+        "Som Fan",
+        ImageConstant.imgUmbrella,
+      ),
+      SizedBox(height: 0.v),
+      Divider(
+        indent: 20.h,
+        color: Colors.white.withOpacity(0.80),
+        endIndent: 20,
+      ),
+      _buildRowView(
+        context,
+        user,
+        "Stark?",
+        "Såklart",
+        ImageConstant.imgWind,
+      ),
+      SizedBox(height: 0.v),
+      Divider(
+        indent: 20.h,
+        color: Colors.white.withOpacity(0.80),
+        endIndent: 20,
+      ),
+      _buildRowView(
+        context,
+        user,
+        "Hotell?",
+        "Trivago",
+        ImageConstant.imgBigMarker,
+      ),
+      SizedBox(height: 0.v),
+      Divider(
+        indent: 20.h,
+        color: Colors.white.withOpacity(0.80),
+        endIndent: 20,
+      )
+    ]);
+  }
+
+  Widget _buildCardHeader(BuildContext context, String header) {
     return Padding(
-      padding: const EdgeInsets.only(top: 50),
+      padding: EdgeInsets.only(
+        left: 10.h,
+        top: 8.v,
+      ),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Text(
+          header,
+          style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                fontSize: 26,
+              ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRowView(BuildContext context, User user, String title,
+      String detail, String imagePath) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, left: 20, bottom: 3, right: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: 36.adaptSize,
-            width: 32.adaptSize,
+            height: 30.adaptSize,
+            width: 30.adaptSize,
             decoration: BoxDecoration(
                 color: appTheme.black900.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(16.h),
@@ -161,7 +337,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
             ),
             child: Text(
               title,
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: Colors.white,
+                  ),
             ),
           ),
           Spacer(),
@@ -169,7 +347,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
             padding: EdgeInsets.symmetric(vertical: 7.v, horizontal: 10),
             child: Text(
               detail,
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: Colors.white,
+                  ),
             ),
           )
         ],

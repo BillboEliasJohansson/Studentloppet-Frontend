@@ -752,11 +752,11 @@ class _RunScreenState extends State<RunScreen> {
     );
   }
 
-  String calculateRainfall(){
-    if(w!.rainLast3Hours.toString() != "null")
-    return w!.rainLast3Hours.toString().toString();
+  String calculateRainfall() {
+    if (w!.rainLast3Hours.toString() != "null")
+      return w!.rainLast3Hours.toString().toString();
     else
-    return "Inget regn";
+      return "Inget regn";
   }
 
   Widget buildWeatherInfoOrLoading(Widget Function(Weather) buildContent) {
