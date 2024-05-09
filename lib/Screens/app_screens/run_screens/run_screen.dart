@@ -396,10 +396,9 @@ class _RunScreenState extends State<RunScreen> {
   Widget buildContentBasedOnState(User user) {
     switch (currentState) {
       case RunState.before:
-        getWeather();
-        w == null ?
+        currentLocation == null ?
         CircularProgressIndicator()
-        : non();
+        : getWeather();
         return buildBeforeRunContent(user);
 
       case RunState.during:
