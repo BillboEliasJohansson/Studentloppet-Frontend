@@ -721,7 +721,7 @@ class _RunScreenState extends State<RunScreen> {
                 lowerText: "lowerText",
                 upperText2: "upperText2",
                 lowerText2: "lowerText2",
-                imagePath: ImageConstant.imgUmbrella,
+                imagePath: ImageConstant.imgWind,
               )),
           SizedBox(height: 10.v),
           Divider(
