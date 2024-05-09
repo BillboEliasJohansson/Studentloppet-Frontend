@@ -4,7 +4,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:studentloppet/Constants/constants.dart';
-import 'package:studentloppet/Screens/app_screens/save_screen.dart';
+import 'package:studentloppet/Screens/app_screens/run_screens/save_screen.dart';
 import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/app_decoration.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
@@ -20,14 +20,14 @@ import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart
 import 'package:studentloppet/widgets/custom_helpers/metricslist_item_widget.dart';
 import 'package:geolocator/geolocator.dart';
 
-class RunScreen extends StatefulWidget {
-  const RunScreen({super.key});
+class ActiveRunScreen extends StatefulWidget {
+  const ActiveRunScreen({super.key});
 
   @override
-  State<RunScreen> createState() => _RunScreenState();
+  State<ActiveRunScreen> createState() => _ActiveRunScreenState();
 }
 
-class _RunScreenState extends State<RunScreen> {
+class _ActiveRunScreenState extends State<ActiveRunScreen> {
   Completer<GoogleMapController>? _controller;
   List<LatLng> polylineCoordinates = [];
   StreamSubscription<LocationData>? _locationSubscription;

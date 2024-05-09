@@ -34,4 +34,12 @@ class ImageConstant {
   static String imgMarker = '$imagePath/marker.png';
 
   static String imgBigMarker = '$imagePath/marker_big.png';
+
+  static String imgUmbrella = '$imagePath/umbrella.png';
+
+  static String imgWind = '$imagePath/windy.png';
+
+  static String imgSun = '$imagePath/sun.png';
+
+  static String imgCloud = '$imagePath/cloud.png';  
 }

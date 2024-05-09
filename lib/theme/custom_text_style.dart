@@ -56,6 +56,16 @@ class CustomTextStyles {
         color: appTheme.whiteA700,
         fontSize: 16.fSize,
       );
+  static get titleSmallWhiteA700 => theme.textTheme.titleMedium!.copyWith(
+        color: appTheme.whiteA700,
+        fontWeight: FontWeight.w300,
+        fontSize: 12.fSize,
+      );
+  static get titleSmallWhiteA70014 => theme.textTheme.titleMedium!.copyWith(
+        color: appTheme.whiteA700,
+        fontWeight: FontWeight.w300,
+        fontSize: 14.fSize,
+      );
   static get titleLargeSansationLight =>
       theme.textTheme.titleLarge!.sansationLight
           .copyWith(fontWeight: FontWeight.w300, color: Colors.white);
