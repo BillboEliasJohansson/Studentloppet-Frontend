@@ -210,7 +210,6 @@ class _RunScreenState extends State<RunScreen> {
   }
 
   Widget buildBeforeRunContent(User user) {
-    getWeather();
     return Column(
       children: [
         SizedBox(height: 20.v),
@@ -390,9 +389,15 @@ class _RunScreenState extends State<RunScreen> {
     return minutesPerKilometer.toStringAsFixed(2) + " min/km";
   }
 
+  void non(){}
+
   Widget buildContentBasedOnState(User user) {
     switch (currentState) {
       case RunState.before:
+        getWeather();
+        w == null ?
+        CircularProgressIndicator()
+        : non();
         return buildBeforeRunContent(user);
 
       case RunState.during:
