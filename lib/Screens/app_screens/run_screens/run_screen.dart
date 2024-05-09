@@ -256,27 +256,29 @@ class _RunScreenState extends State<RunScreen> {
               borderRadius: BorderRadiusStyle.roundedBorder10,
             ),
             child: Stack(
-                    alignment: Alignment.topCenter,
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          height: 295.v,
-                          width: 330.h,
-                          decoration: BoxDecoration(
-                            color: appTheme.deepPurple500,
-                            borderRadius: BorderRadius.circular(
-                              5.h,
-                            ),
-                          ),
-                        ),
+              alignment: Alignment.topCenter,
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    height: 295.v,
+                    width: 330.h,
+                    decoration: BoxDecoration(
+                      color: appTheme.deepPurple500,
+                      borderRadius: BorderRadius.circular(
+                        5.h,
                       ),
-                      _buildColumns(context),
-                    ],
+                    ),
                   ),
+                ),
+                _buildColumns(context),
+              ],
+            ),
           ),
         ),
-        SizedBox(height: 20.h,)
+        SizedBox(
+          height: 20.h,
+        )
       ],
     );
   }
@@ -597,24 +599,24 @@ class _RunScreenState extends State<RunScreen> {
                 Padding(
                   padding: EdgeInsets.only(left: 11.h),
                   child: w == null
-                ? Center(
-                    child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      SizedBox(
-                        child: Center(child: CircularProgressIndicator()),
-                        height: 50.0,
-                        width: 50.0,
-                      ),
-                    ],
-                  ))
-                : Text(
-                    "6",
-                    style: theme.textTheme.displayMedium,
-                  ),
+                      ? Center(
+                          child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            SizedBox(
+                              child: Center(child: CircularProgressIndicator()),
+                              height: 50.0,
+                              width: 50.0,
+                            ),
+                          ],
+                        ))
+                      : Text(
+                          "6",
+                          style: theme.textTheme.displayMedium,
+                        ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(
@@ -646,12 +648,9 @@ class _RunScreenState extends State<RunScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Molnigt",
-                        style: CustomTextStyles.titleLargePassionOne.copyWith(
-                          color: appTheme.whiteA700
-                          )
-                      ),
+                      Text("Molnigt",
+                          style: CustomTextStyles.titleLargePassionOne
+                              .copyWith(color: appTheme.whiteA700)),
                       Text(
                         "Känns som 4°",
                         style: CustomTextStyles.titleSmallWhiteA70014,
@@ -669,18 +668,18 @@ class _RunScreenState extends State<RunScreen> {
           ),
           SizedBox(height: 10.v),
           Padding(
-            padding: EdgeInsets.only(
-              left: 1.h,
-              right: 72.h,
-            ),
-            child: _buildColumn(context, 
-            upperText: "upperText", 
-            lowerText: "lowerText", 
-            upperText2: "upperText2", 
-            lowerText2: "lowerText2",
-            imagePath: ImageConstant.imgFrog,
-            )
-          ),
+              padding: EdgeInsets.only(
+                left: 1.h,
+                right: 72.h,
+              ),
+              child: _buildColumn(
+                context,
+                upperText: "upperText",
+                lowerText: "lowerText",
+                upperText2: "upperText2",
+                lowerText2: "lowerText2",
+                imagePath: ImageConstant.imgUmbrella,
+              )),
           SizedBox(height: 9.v),
           Divider(
             indent: 1.h,
@@ -692,12 +691,13 @@ class _RunScreenState extends State<RunScreen> {
               left: 1.h,
               right: 72.h,
             ),
-            child:  _buildColumn(context, 
-            upperText: "upperText", 
-            lowerText: "lowerText", 
-            upperText2: "upperText2", 
-            lowerText2: "lowerText2",
-            imagePath: ImageConstant.imgSun,
+            child: _buildColumn(
+              context,
+              upperText: "upperText",
+              lowerText: "lowerText",
+              upperText2: "upperText2",
+              lowerText2: "lowerText2",
+              imagePath: ImageConstant.imgSun,
             ),
           ),
           SizedBox(height: 11.v),
@@ -707,18 +707,18 @@ class _RunScreenState extends State<RunScreen> {
           ),
           SizedBox(height: 10.v),
           Padding(
-            padding: EdgeInsets.only(
-              left: 1.h,
-              right: 72.h,
-            ),
-            child: _buildColumn(context, 
-            upperText: "upperText", 
-            lowerText: "lowerText", 
-            upperText2: "upperText2", 
-            lowerText2: "lowerText2",
-            imagePath: ImageConstant.imgWind,
-            )
-          ),
+              padding: EdgeInsets.only(
+                left: 1.h,
+                right: 72.h,
+              ),
+              child: _buildColumn(
+                context,
+                upperText: "upperText",
+                lowerText: "lowerText",
+                upperText2: "upperText2",
+                lowerText2: "lowerText2",
+                imagePath: ImageConstant.imgUmbrella,
+              )),
           SizedBox(height: 10.v),
           Divider(
             indent: 1.h,
@@ -729,14 +729,12 @@ class _RunScreenState extends State<RunScreen> {
     );
   }
 
-  Widget _buildColumn(
-    BuildContext context, {
-    required String upperText,
-    required String lowerText,
-    required String upperText2,
-    required String lowerText2,
-    required String imagePath
-  }) {
+  Widget _buildColumn(BuildContext context,
+      {required String upperText,
+      required String lowerText,
+      required String upperText2,
+      required String lowerText2,
+      required String imagePath}) {
     return Row(
       children: [
         CustomImageView(
@@ -750,15 +748,11 @@ class _RunScreenState extends State<RunScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                upperText,
-                style: CustomTextStyles.titleSmallWhiteA700
-              ),
+              Text(upperText, style: CustomTextStyles.titleSmallWhiteA700),
               SizedBox(height: 3.v),
               Text(
                 lowerText,
                 style: CustomTextStyles.titleMediumWhiteA700,
-                
               )
             ],
           ),

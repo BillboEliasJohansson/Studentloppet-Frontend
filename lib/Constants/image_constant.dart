@@ -37,9 +37,9 @@ class ImageConstant {
 
   static String imgUmbrella = '$imagePath/umbrella.png';
 
-  static String imgWind = '$imagePath/windy.png';
+  static String imgWind = '$imagePath/wind.png';
 
   static String imgSun = '$imagePath/sun.png';
 
-  static String imgCloud = '$imagePath/cloud.png';  
+  static String imgCloud = '$imagePath/cloud.png';
 }
