@@ -130,4 +130,22 @@ class network {
       throw Exception("Failed to load leaderboard"); // Handle failure cases
     }
   }
+
+  static Future<Map<String, dynamic>> getTotalActivity(String email) async {
+  final response = await http.get(
+    Uri.parse('https://group-15-2.pvt.dsv.su.se/api/activities/total/' + email),
+  );
+
+  if (response.statusCode == 200) {
+    // Dekodera JSON
+    Map<String, dynamic> data = jsonDecode(response.body);
+    print(data.toString());
+    // Returnera kartan
+    return data;
+  } else {
+    // Hantera fel
+    throw Exception("Failed to load activity data");
+  }
+}
+
 }

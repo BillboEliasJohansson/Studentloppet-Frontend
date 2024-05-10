@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studentloppet/User/user.dart';
+import 'package:studentloppet/networking/network.dart';
 import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/app_decoration.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
@@ -19,8 +20,10 @@ class ProfileScreenTest extends StatefulWidget {
 }
 
 class _ProfileScreenTestState extends State<ProfileScreenTest> {
-  late TextEditingController textController;
 
+  late TextEditingController textController;
+  Map<String, dynamic> activityData = {};
+  
   @override
   void initState() {
     super.initState();
@@ -29,9 +32,21 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
     );
   }
 
+  void fetchLeaderboardData(user) async {
+    try {
+      Map<String, dynamic> data = await network.getTotalActivity(user.email);
+      setState(() {
+        activityData = data;
+      });
+    } catch (e) {
+      print("Error fetching leaderboard: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+    fetchLeaderboardData(user);
     return SafeArea(
         child: Scaffold(
       appBar: _buildAppBar(context),
@@ -128,7 +143,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
       child: Container(
-        height: 160.v,
+        height: 210.v,
         width: 340.h,
         padding: EdgeInsets.all(7.h),
         decoration: AppDecoration.outlinePurple.copyWith(
@@ -140,7 +155,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
             Align(
               alignment: Alignment.center,
               child: Container(
-                height: 200.v,
+                height: 220.v,
                 width: 330.h,
                 decoration: BoxDecoration(
                   color: appTheme.deepPurple500,
@@ -297,13 +312,13 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
     user,
   ) {
     return Column(children: [
-      SizedBox(height: 30),
+      SizedBox(height: 40),
       _buildRowView(
         context,
         user,
-        "Snabb?",
-        "Som Fan",
-        ImageConstant.imgUmbrella,
+        "Tid",
+        activityData['totalDuration'].toString(),
+        ImageConstant.imgTimer,
       ),
       SizedBox(height: 0.v),
       Divider(
@@ -314,9 +329,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       _buildRowView(
         context,
         user,
-        "Stark?",
-        "Såklart",
-        ImageConstant.imgWind,
+        "Avstånd",
+        activityData['totalDistance'].toString(),
+        ImageConstant.imgFeet,
       ),
       SizedBox(height: 0.v),
       Divider(
@@ -327,16 +342,29 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       _buildRowView(
         context,
         user,
-        "Hotell?",
+        "Genomsnittlig Hastighet",
         "Trivago",
-        ImageConstant.imgBigMarker,
+        ImageConstant.imgRun,
       ),
       SizedBox(height: 0.v),
       Divider(
         indent: 20.h,
         color: Colors.white.withOpacity(0.80),
         endIndent: 20,
-      )
+      ),
+      _buildRowView(
+        context,
+        user,
+        "Kalorier brända",
+        "Trivago",
+        ImageConstant.imgFire,
+      ),
+      SizedBox(height: 0.v),
+      Divider(
+        indent: 20.h,
+        color: Colors.white.withOpacity(0.80),
+        endIndent: 20,
+      ),
     ]);
   }
 
@@ -351,7 +379,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         user,
         "Test",
         "ing",
-        ImageConstant.imgUmbrella,
+        ImageConstant.imgTrophy,
       ),
       SizedBox(height: 0.v),
       Divider(
@@ -364,7 +392,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         user,
         "banan",
         "choklad",
-        ImageConstant.imgWind,
+        ImageConstant.imgFeet,
       ),
       SizedBox(height: 0.v),
       Divider(
@@ -377,14 +405,21 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         user,
         "gurka",
         "tomat",
-        ImageConstant.imgBigMarker,
+        ImageConstant.imgRun,
       ),
       SizedBox(height: 0.v),
       Divider(
         indent: 20.h,
         color: Colors.white.withOpacity(0.80),
         endIndent: 20,
-      )
+      ),
+      _buildRowView(
+        context,
+        user,
+        "gurka",
+        "tomat",
+        ImageConstant.imgFire,
+      ),      
     ]);
   }
 
@@ -628,4 +663,6 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       styleType: Style.bgFill,
     );
   }
+
+
 }

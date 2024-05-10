@@ -44,4 +44,15 @@ class ImageConstant {
   static String imgCloud = '$imagePath/cloud.png';
 
   static String imgHatNew = '$imagePath/hat_new.png';
+
+  static String imgTimer = '$imagePath/Timer.png';
+
+  static String imgFeet = '$imagePath/Footprint.png';
+
+  static String imgRun = '$imagePath/Sprint.png';
+
+  static String imgFire = '$imagePath/local_fire_department.png';
+
+  static String imgTrophy = '$imagePath/trophy.png';
+
 }
