@@ -59,11 +59,6 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
               SizedBox(
                 height: 5.h,
               ),
-              _buildCard5(context, user, "Min statistik på universitet"),
-
-
-
-
               _buildCard4(context, user, "Min statistik på universitet"),
               SizedBox(
                 height: 5.h,
@@ -248,49 +243,6 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       ),
     );
   }
-
-  Widget _buildCard5(BuildContext context, User user, String header) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      elevation: 0,
-      margin: EdgeInsets.all(1),
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: appTheme.purple200,
-          width: 2.h,
-        ),
-        borderRadius: BorderRadiusStyle.roundedBorder10,
-      ),
-      child: Container(
-        height: 160.v,
-        width: 340.h,
-        padding: EdgeInsets.all(7.h),
-        decoration: AppDecoration.outlinePurple.copyWith(
-          borderRadius: BorderRadiusStyle.roundedBorder10,
-        ),
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: 200.v,
-                width: 330.h,
-                decoration: BoxDecoration(
-                  color: appTheme.deepPurple500,
-                  borderRadius: BorderRadius.circular(
-                    5.h,
-                  ),
-                ),
-              ),
-            ),
-            _buildCardHeader(context, header),
-            _buildInfoCard2(context, user),
-          ],
-        ),
-      ),
-    );
-  }  
 
   Widget _buildInfoCard2(
     context,
