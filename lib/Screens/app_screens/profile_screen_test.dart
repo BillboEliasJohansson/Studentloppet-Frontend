@@ -189,8 +189,8 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
                 ),
               ),
             ),
-            Image.asset(
-                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXJ2eXE0aW5za2V1ZTg4dWoxamJ6NWdtOTF4dWd6NW5nb211emRwYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/etOX3h7ApZuDe7Fc5w/giphy-downsized-large.gif")
+            Image.network(
+                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXJ2eXE0aW5za2V1ZTg4dWoxamJ6NWdtOTF4dWd6NW5nb211emRwYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/etOX3h7ApZuDe7Fc5w/giphy-downsized-large.gif"),
           ],
         ),
       ),
