@@ -20,10 +20,10 @@ class ProfileScreenTest extends StatefulWidget {
 }
 
 class _ProfileScreenTestState extends State<ProfileScreenTest> {
-
   late TextEditingController textController;
   Map<String, dynamic> activityData = {};
-  
+  Map<String, dynamic> userRankData = {};
+
   @override
   void initState() {
     super.initState();
@@ -43,10 +43,22 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
     }
   }
 
+  void fetchRank(user) async {
+    try {
+      Map<String, dynamic> data = await network.getUniRank(user.email);
+      setState(() {
+        userRankData = data;
+      });
+    } catch (e) {
+      print("Error fetching leaderboard: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
     fetchLeaderboardData(user);
+    fetchRank(user);
     return SafeArea(
         child: Scaffold(
       appBar: _buildAppBar(context),
@@ -186,7 +198,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
       child: Container(
-        height: 160.v,
+        height: 210.v,
         width: 340.h,
         padding: EdgeInsets.all(7.h),
         decoration: AppDecoration.outlinePurple.copyWith(
@@ -330,7 +342,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         context,
         user,
         "Avstånd",
-        activityData['totalDistance'].toString(),
+        activityData['totalDistance'].toStringAsFixed(2),
         ImageConstant.imgFeet,
       ),
       SizedBox(height: 0.v),
@@ -343,7 +355,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         context,
         user,
         "Genomsnittlig Hastighet",
-        "Trivago",
+        activityData['averageSpeed'].toStringAsFixed(2),
         ImageConstant.imgRun,
       ),
       SizedBox(height: 0.v),
@@ -356,7 +368,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         context,
         user,
         "Kalorier brända",
-        "Trivago",
+        activityData['caloriesBurned'].toString(),
         ImageConstant.imgFire,
       ),
       SizedBox(height: 0.v),
@@ -373,12 +385,12 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
     user,
   ) {
     return Column(children: [
-      SizedBox(height: 30),
+      SizedBox(height: 40),
       _buildRowView(
         context,
         user,
-        "Test",
-        "ing",
+        "Totalt med poäng",
+        userRankData["scoreRank"].toString() + ":a plats",
         ImageConstant.imgTrophy,
       ),
       SizedBox(height: 0.v),
@@ -390,8 +402,8 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       _buildRowView(
         context,
         user,
-        "banan",
-        "choklad",
+        "Totalt sprunga kilometer",
+        userRankData["distanceRank"].toString() + ":a plats",
         ImageConstant.imgFeet,
       ),
       SizedBox(height: 0.v),
@@ -403,8 +415,8 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       _buildRowView(
         context,
         user,
-        "gurka",
-        "tomat",
+        "Hastighet",
+        userRankData["speedRank"].toString() + ":a plats",
         ImageConstant.imgRun,
       ),
       SizedBox(height: 0.v),
@@ -416,10 +428,16 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       _buildRowView(
         context,
         user,
-        "gurka",
-        "tomat",
+        "Totala kalorier brända",
+        userRankData["caloriesRank"].toString() + ":a plats",
         ImageConstant.imgFire,
-      ),      
+      ),
+      SizedBox(height: 0.v),
+      Divider(
+        indent: 20.h,
+        color: Colors.white.withOpacity(0.80),
+        endIndent: 20,
+      ),
     ]);
   }
 
@@ -663,6 +681,4 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       styleType: Style.bgFill,
     );
   }
-
-
 }
