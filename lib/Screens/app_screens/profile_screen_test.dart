@@ -60,6 +60,10 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
                 height: 5.h,
               ),
               _buildCard4(context, user, "Min statistik på universitet"),
+
+
+
+              _buildCard4(context, user, "Min statistik på universitet"),
               SizedBox(
                 height: 20,
               )
@@ -461,7 +465,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
               textController.text,
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
-              style: CustomTextStyles.bodySmall10,
+              style: CustomTextStyles.bodySmall10.copyWith(
+                color: Colors.white,
+              ),
             ),
           )
         ],
