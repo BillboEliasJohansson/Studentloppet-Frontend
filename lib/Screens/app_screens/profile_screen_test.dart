@@ -264,7 +264,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
               ),
             ),
             Image.network(
-                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXJ2eXE0aW5za2V1ZTg4dWoxamJ6NWdtOTF4dWd6NW5nb211emRwYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/etOX3h7ApZuDe7Fc5w/giphy-downsized-large.gif"),
+                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWM0OG51eG56aGNpbGo3anp5bmluNjF1bHB5YXhpcjU2d2llaHZvbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mEUmeOiT9MCMo/giphy.gif"),
           ],
         ),
       ),
@@ -466,17 +466,13 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            height: 30.adaptSize,
-            width: 30.adaptSize,
-            decoration: BoxDecoration(
-                color: appTheme.black900.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(16.h),
-                image: DecorationImage(
-                  image: AssetImage(imagePath),
-                  fit: BoxFit.cover,
-                )),
-          ),
+        CustomImageView(
+          imagePath: imagePath,
+          height: 24.adaptSize,
+          width: 24.adaptSize,
+          margin: EdgeInsets.only(bottom: 3.v),
+          fit: BoxFit.contain,
+        ),
           Padding(
             padding: EdgeInsets.only(
               left: 8.h,
