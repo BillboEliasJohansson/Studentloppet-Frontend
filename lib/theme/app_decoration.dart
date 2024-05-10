@@ -63,12 +63,29 @@ class AppDecoration {
             style: BorderStyle.solid,
             strokeAlign: BorderSide.strokeAlignOutside),
       );
-   static BoxDecoration get outlinePurple => BoxDecoration(
+  static BoxDecoration get outlinePurple => BoxDecoration(
         border: Border.all(
             color: appTheme.purple300,
             width: 2.h,
             style: BorderStyle.solid,
             strokeAlign: BorderSide.strokeAlignOutside),
+      );
+
+  static BoxDecoration get outlineDeepPurple => BoxDecoration(
+        border: Border.all(
+            color: appTheme.deepPurple500,
+            width: 2.h,
+            style: BorderStyle.solid,
+            strokeAlign: BorderSide.strokeAlignOutside),
+      );
+
+  static BoxDecoration get roundedBoxNoOutline => BoxDecoration(
+        border: Border(
+          top: BorderSide(
+              color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.1),
+              width: 4.h,
+              strokeAlign: BorderSide.strokeAlignCenter),
+        ),
       );
 }
 
