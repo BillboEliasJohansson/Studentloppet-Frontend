@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:studentloppet/theme/custom_text_style.dart';
+import 'package:studentloppet/utils/string_utils.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
 import 'package:weather/weather.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -182,7 +181,10 @@ class _RunScreenState extends State<RunScreen> {
                 decelerationRate: ScrollDecelerationRate.fast),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [_buildMap(context), buildContentBasedOnState(user)],
+              children: [
+                _buildMap(context),                 
+                buildContentBasedOnState(user),         
+                ],
             ),
           ),
         ),
@@ -191,106 +193,115 @@ class _RunScreenState extends State<RunScreen> {
   }
 
   Widget buildDuringRunContent() {
-    return Column(
-      children: [
-        SizedBox(height: 20.v),
-        Padding(
-          padding: EdgeInsets.only(left: 12.h),
-          child: Text(
-            "Pågående löprunda",
-            style: theme.textTheme.headlineSmall,
+    return Container(
+      decoration: AppDecoration.roundedBoxNoOutline.copyWith(
+        borderRadius: BorderRadiusStyle.roundedBorder10,
+      ),
+      child: Column(
+        children: [
+          SizedBox(height: 20.v),
+          Padding(
+            padding: EdgeInsets.only(left: 12.h),
+            child: Text(
+              "Pågående löprunda",
+              style: theme.textTheme.headlineSmall,
+            ),
           ),
-        ),
-        SizedBox(height: 7.v),
-        _buildMetricsList(context),
-        SizedBox(height: 6.v),
-        Padding(
-          padding: EdgeInsets.only(left: 17, right: 17),
-          child: _buildButton(User()),
-        )
-      ],
+          SizedBox(height: 7.v),
+          _buildMetricsList(context),
+          SizedBox(height: 6.v),
+          Padding(
+            padding: EdgeInsets.only(left: 17, right: 17),
+            child: _buildButton(User()),
+          )
+        ],
+      ),
     );
   }
 
   Widget buildBeforeRunContent(User user) {
-    return Column(
-      children: [
-        SizedBox(height: 20.v),
-        Padding(
-          padding: EdgeInsets.only(left: 17, right: 17),
-          child: _buildButton(user),
-        ),
-        SizedBox(height: 10.v),
-        Padding(
-          padding: EdgeInsets.only(left: 12.h),
-          child: Text("Idag",
+    return Container(
+      decoration: AppDecoration.roundedBoxNoOutline.copyWith(
+        borderRadius: BorderRadiusStyle.roundedBorder10,
+      ),
+      child: Column(
+        children: [
+          SizedBox(height: 20.v),
+          Padding(
+            padding: EdgeInsets.only(left: 17, right: 17),
+            child: _buildButton(user),
+          ),
+          SizedBox(height: 10.v),
+          Padding(
+            padding: EdgeInsets.only(left: 12.h),
+            child: Text("Idag",
+                style: theme.textTheme.headlineSmall!
+                    .copyWith(fontStyle: FontStyle.normal)),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 12.h),
+            child: Text(
+              DateTime.now().toString().substring(0, 10),
               style: theme.textTheme.headlineSmall!
-                  .copyWith(fontStyle: FontStyle.normal)),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 12.h),
-          child: Text(
-            //TODO TODAYS DATE
-            DateTime.now().toIso8601String(),
-            style: theme.textTheme.headlineSmall!
-                .copyWith(fontSize: 15, fontWeight: FontWeight.w400),
-          ),
-        ),
-        SizedBox(
-          height: 10.h,
-        ),
-        Card(
-          clipBehavior: Clip.antiAlias,
-          elevation: 0,
-          margin: EdgeInsets.all(1),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: appTheme.purple200,
-              width: 2.h,
+                  .copyWith(fontSize: 15, fontWeight: FontWeight.w400),
             ),
-            borderRadius: BorderRadiusStyle.roundedBorder10,
           ),
-          child: Container(
-            height: 295.v,
-            width: 340.h,
-            padding: EdgeInsets.all(7.h),
-            decoration: AppDecoration.outlinePurple.copyWith(
+          SizedBox(
+            height: 10.h,
+          ),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            elevation: 0,
+            margin: EdgeInsets.all(1),
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: appTheme.purple200,
+                width: 2.h,
+              ),
               borderRadius: BorderRadiusStyle.roundedBorder10,
             ),
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    height: 295.v,
-                    width: 330.h,
-                    decoration: BoxDecoration(
-                      color: appTheme.deepPurple500,
-                      borderRadius: BorderRadius.circular(
-                        5.h,
+            child: Container(
+              height: 295.v,
+              width: 340.h,
+              padding: EdgeInsets.all(7.h),
+              decoration: AppDecoration.outlinePurple.copyWith(
+                borderRadius: BorderRadiusStyle.roundedBorder10,
+              ),
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: 295.v,
+                      width: 330.h,
+                      decoration: BoxDecoration(
+                        color: appTheme.deepPurple500,
+                        borderRadius: BorderRadius.circular(
+                          5.h,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                if (w == null) // Kontrollerar om datan laddas
-                  Container(
-                    height: 295.v,
-                    width: 340.h,
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                else
-                  _buildColumns(context),
-              ],
+                  if (w == null) // Kontrollerar om datan laddas
+                    Container(
+                      height: 295.v,
+                      width: 340.h,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  else
+                    _buildColumns(context),
+                ],
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 20.h,
-        )
-      ],
+          SizedBox(
+            height: 20.h,
+          )
+        ],
+      ),
     );
   }
 
@@ -300,10 +311,13 @@ class _RunScreenState extends State<RunScreen> {
   }
 
   Widget buildAfterRunContent(User user) {
-    return SingleChildScrollView(
+    return Container(
+      decoration: AppDecoration.roundedBoxNoOutline.copyWith(
+        borderRadius: BorderRadiusStyle.roundedBorder10,
+      ),
       child: Column(
         children: [
-          SizedBox(height: 20.v),
+          SizedBox(height: 10.v),
           Padding(
             padding: EdgeInsets.only(left: 12.h),
             child: Text(
@@ -311,21 +325,30 @@ class _RunScreenState extends State<RunScreen> {
               style: theme.textTheme.headlineSmall,
             ),
           ),
-          SizedBox(height: 7.v),
+          SizedBox(height: 10.v),
           _buildMetricsList(context),
-          _buildInformationCard(
-              "Tempo",
-              calculatePace(_elapsedTime, totalDistance),
-              ImageConstant.imgFrog),
-          SizedBox(height: 1.v),
-          _buildInformationCard(
-              "Genomsnitlig Hastighet",
-              calculateSpeed(_elapsedTime, totalDistance),
-              ImageConstant.imgFrog),
+          SizedBox(height: 10.v),
+          Padding(
+            padding: const EdgeInsets.only(left: 17, right: 17),
+            child: _buildInformationCard(
+                "Tempo",
+                calculatePace(_elapsedTime, totalDistance),
+                ImageConstant.imgRunner),
+          ),
+          SizedBox(height: 10.v),
+          Padding(
+            padding: const EdgeInsets.only(left: 17, right: 17),
+            child: _buildInformationCard(
+                "Genomsnitlig Hastighet",
+                calculateSpeed(_elapsedTime, totalDistance),
+                ImageConstant.imgHatNew),
+          ),
+          SizedBox(height: 10.v),
           Padding(
             padding: EdgeInsets.only(left: 17, right: 17),
             child: _buildButton(user),
-          )
+          ),
+          SizedBox(height: 10.v),
         ],
       ),
     );
@@ -333,53 +356,62 @@ class _RunScreenState extends State<RunScreen> {
 
   Widget _buildInformationCard(String label, String value, String imagePath) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.h),
-      padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 12.v),
-      decoration: BoxDecoration(
-        color: Colors.deepPurple[300],
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            spreadRadius: 0,
-            blurRadius: 6,
-            offset: Offset(0, 3),
-          ),
-        ],
+      padding: EdgeInsets.all(3.h),
+      decoration: AppDecoration.outlineDeepPurple.copyWith(
+        borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start, // Align text to the left
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(
-                    height: 4.v), // Adjustable spacing between label and value
-                Text(
-                  value,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  textAlign: TextAlign.left,
-                ),
-              ],
+      child: Container(
+        height: 70,
+        decoration: BoxDecoration(
+          color: appTheme.deepPurple500,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 0,
+              blurRadius: 6,
+              offset: Offset(0, 3),
             ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0) + EdgeInsets.only(left: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start, // Align text to the left
+                  children: [
+                    Text(
+                      label,
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      textAlign: TextAlign.left,
+                    ),
+                    SizedBox(
+                        height:
+                            3.v), // Adjustable spacing between label and value
+                    Text(
+                      value,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
+                ),
+              ),
+              Image.asset(
+                imagePath,
+                width: 32.h, // Adjust the size based on your layout needs
+                height: 32.v,
+                fit: BoxFit.cover,
+              ),
+            ],
           ),
-          Image.asset(
-            imagePath,
-            width: 32.h, // Adjust the size based on your layout needs
-            height: 32.v,
-            fit: BoxFit.cover,
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -403,8 +435,6 @@ class _RunScreenState extends State<RunScreen> {
     return minutesPerKilometer.toStringAsFixed(2) + " min/km";
   }
 
-  void non() {}
-
   Widget buildContentBasedOnState(User user) {
     switch (currentState) {
       case RunState.before:
@@ -424,13 +454,8 @@ class _RunScreenState extends State<RunScreen> {
   Widget _buildMap(BuildContext context) {
     return Center(
       child: Container(
-        height: 290.adaptSize,
+        height: 400.h,
         width: SizeUtils.width,
-        decoration: BoxDecoration(
-          border: Border.symmetric(
-              vertical: BorderSide.none,
-              horizontal: BorderSide(color: appTheme.deepPurple500, width: 3)),
-        ),
         child: currentLocation == null
             ? Center(
                 child: Column(
@@ -652,7 +677,7 @@ class _RunScreenState extends State<RunScreen> {
                           children: [
                             buildWeatherInfoOrLoading(
                               (weather) => Text(
-                                "${weather.weatherDescription}",
+                                "${weather.weatherDescription!.capitalize()}",
                                 style: CustomTextStyles.titleLargePassionOne
                                     .copyWith(color: appTheme.whiteA700),
                               ),
@@ -712,9 +737,9 @@ class _RunScreenState extends State<RunScreen> {
                 : _buildColumn(
                     context,
                     upperText: "Soluppgång",
-                    lowerText: w!.sunrise!.hour.toString(),
+                    lowerText: w!.sunrise!.toString().substring(10, 16),
                     upperText2: "Solnedgång",
-                    lowerText2: w!.sunset!.hour.toString(),
+                    lowerText2: w!.sunset!.toString().substring(10, 16),
                     imagePath: ImageConstant.imgSun,
                   ),
           ),
@@ -737,7 +762,7 @@ class _RunScreenState extends State<RunScreen> {
                   : _buildColumn(
                       context,
                       upperText: "Vind",
-                      lowerText: w!.windGust.toString(),
+                      lowerText: calculateWind() + " m/s",
                       upperText2: "Lufttryck",
                       lowerText2: w!.pressure.toString(),
                       imagePath: ImageConstant.imgWind,
@@ -754,9 +779,16 @@ class _RunScreenState extends State<RunScreen> {
 
   String calculateRainfall() {
     if (w!.rainLast3Hours.toString() != "null")
-      return w!.rainLast3Hours.toString().toString();
+      return w!.rainLast3Hours.toString();
     else
       return "Inget regn";
+  }
+
+  String calculateWind() {
+    if (w!.windSpeed.toString() != "null")
+      return w!.windSpeed.toString();
+    else
+      return "Ingen vind";
   }
 
   Widget buildWeatherInfoOrLoading(Widget Function(Weather) buildContent) {
