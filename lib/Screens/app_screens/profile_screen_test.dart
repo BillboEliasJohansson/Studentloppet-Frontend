@@ -535,11 +535,11 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
             height: 30.adaptSize,
             width: 30.adaptSize,
             decoration: BoxDecoration(
-                color: appTheme.black900.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(10.h),
+                color: appTheme.black900.withOpacity(0.00),
+                borderRadius: BorderRadius.circular(0.h),
                 image: DecorationImage(
                   image: AssetImage(imagePath),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 )),
           ),
           Padding(
