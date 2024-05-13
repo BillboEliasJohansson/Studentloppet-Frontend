@@ -21,6 +21,7 @@ import 'package:studentloppet/widgets/ProfileHelpers/custom_app_bar.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
 import 'package:studentloppet/networking/network.dart';
 import 'package:gif/gif.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
 import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
 import 'package:studentloppet/widgets/custom_helpers/metricslist_item_widget.dart';
@@ -35,7 +36,6 @@ class RunScreen extends StatefulWidget {
 
 class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
   late final GifController controller1;
-  int _fps = 30;
   Completer<GoogleMapController>? _controller;
   List<LatLng> polylineCoordinates = [];
   StreamSubscription<LocationData>? _locationSubscription;
@@ -349,6 +349,22 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
           ),
           SizedBox(height: 10.v),
           Padding(
+            padding: const EdgeInsets.only(left: 17, right: 17),
+            child: _buildInformationCard(
+                "Kalorier Brända",
+                calculateCaloriesBurned(totalDistance, _elapsedTime.inMinutes, user.weight).toString(),
+                ImageConstant.imgHatNew),
+          ),
+          SizedBox(height: 10.v),
+          Padding(
+            padding: const EdgeInsets.only(left: 17, right: 17),
+            child: _buildInformationCard(
+                "Poäng",
+                calculateScore(_elapsedTime, totalDistance),
+                ImageConstant.imgHatNew),
+          ),
+          SizedBox(height: 10.v),
+          Padding(
             padding: EdgeInsets.only(left: 17, right: 17),
             child: _buildButton(user),
           ),
@@ -439,6 +455,32 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
     return minutesPerKilometer.toStringAsFixed(2) + " min/km";
   }
 
+  //TODO serverside calculations
+  String calculateScore(Duration time, double distance){
+    int durationInHours = time.inHours;
+    double speed = distance / durationInHours;
+    return (distance * 10 * speed).toString();
+  }
+
+  //TODO serverside calculations
+  double calculateCaloriesBurned(double distanceInKm, int durationInMinutes, double weightInKg) {
+        double distanceInMeters = distanceInKm * 1000; // Convert km to meters
+        double durationInHours = durationInMinutes / 60.0; // Convert minutes to hours
+        double speedInMetersPerSecond = distanceInMeters / (durationInHours * 3600); // Calculate speed in m/s
+        double speedInKph = speedInMetersPerSecond * 3.6;
+
+        // Determine MET value based on speed
+        double met;
+        if (speedInKph < 8) {
+            met = 8.3; // Light running
+        } else if (speedInKph < 12) {
+            met = 9.8; // Moderate running
+        } else {
+            met = 11.0; // Fast running
+        }
+        return met * weightInKg * durationInHours;
+    }
+  
   Widget buildContentBasedOnState(User user) {
     switch (currentState) {
       case RunState.before:
