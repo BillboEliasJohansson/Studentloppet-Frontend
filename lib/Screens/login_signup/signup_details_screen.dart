@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:studentloppet/Constants/constants.dart';
 import 'package:studentloppet/User/user.dart';
@@ -19,6 +20,7 @@ import 'package:studentloppet/widgets/custom_helpers/custom_text_form_field.dart
 class SignupDetailsScreen extends StatelessWidget {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
+  TextEditingController weight = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +70,7 @@ class SignupDetailsScreen extends StatelessWidget {
                           borderRadius: BorderRadiusStyle.roundedBorder10,
                         ),
                         child: Container(
-                          height: 300.v,
+                          height: 350.v,
                           width: 313.h,
                           padding: EdgeInsets.all(5.h),
                           child: Stack(
@@ -105,6 +107,8 @@ class SignupDetailsScreen extends StatelessWidget {
                                       _buildInputFirstName(context),
                                       SizedBox(height: 14.v),
                                       _buildInputLastName(context),
+                                      SizedBox(height: 14.v),
+                                      _buildInputWeight(context),
                                       SizedBox(height: 14.v),
                                       _buildButton(context, user),
                                       SizedBox(height: 14.v),
@@ -194,6 +198,7 @@ class SignupDetailsScreen extends StatelessWidget {
         text: "Registrera",
         buttonTextStyle: theme.textTheme.labelSmall,
         onPressed: () async {
+          await setWeight(context, user);
           await setName(context, user);
         },
       ),
@@ -234,6 +239,46 @@ class SignupDetailsScreen extends StatelessWidget {
         )
       ],
     );
+  }
+
+  Widget _buildInputWeight(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Vikt (frivilligt)",
+          style: theme.textTheme.titleSmall,
+        ),
+        Text(
+          "Krävs för kalloriberäkning*",
+          style: theme.textTheme.bodySmall!
+              .copyWith(color: Colors.black.withOpacity(0.5)),
+        ),
+        SizedBox(height: 4.v),
+        CustomTextFormField(
+          controller: weight,
+          hintText: "Skriv din vikt här",
+          textInputType: TextInputType.numberWithOptions(decimal: true),
+        )
+      ],
+    );
+  }
+
+  Future<void> setWeight(BuildContext context, user) async {
+    // Kontrollera om vikten är tom eller inte en siffra
+    if (user.weight != null && user.weight != 0) {
+      // Försök att konvertera vikten till en double
+      try {
+        double.parse(user.weight);
+      } catch (e) {
+        // Visa ett felmeddelande om vikten inte är en siffra
+        showErrorSnackbar(context, "Vikten måste vara en siffra");
+        return;
+      }
+    }
+
+    // Fortsätt bara om vikten är tom eller en siffra
+    final response = await network.setWeight(user.email, user.weight);
   }
 
   Future<void> setName(BuildContext context, user) async {
