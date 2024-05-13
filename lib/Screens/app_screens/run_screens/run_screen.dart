@@ -602,12 +602,6 @@ class _RunScreenState extends State<RunScreen> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          GifImage(
-            controller: controller1,
-            image:
-                AssetImage(ImageConstant.imgRunningGuy), // Sökväg till din GIF
-          );
-
           return AlertDialog(
             backgroundColor: Color.fromARGB(255, 217, 238, 248),
             title: Row(
@@ -631,6 +625,7 @@ class _RunScreenState extends State<RunScreen> {
                   style: TextStyle(color: Colors.white),
                 ),
                 SizedBox(height: 10),
+                Image.asset(ImageConstant.imgRunningGuy),
               ],
             ),
             actions: <Widget>[
