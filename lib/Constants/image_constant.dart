@@ -55,4 +55,5 @@ class ImageConstant {
 
   static String imgTrophy = '$imagePath/trophy.png';
 
+  static String imgRunningGuy = '$imagePath/giphy.gif';
 }

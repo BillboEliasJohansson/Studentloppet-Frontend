@@ -182,9 +182,9 @@ class _RunScreenState extends State<RunScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildMap(context),                 
-                buildContentBasedOnState(user),         
-                ],
+                _buildMap(context),
+                buildContentBasedOnState(user),
+              ],
             ),
           ),
         ),
@@ -598,6 +598,55 @@ class _RunScreenState extends State<RunScreen> {
   }
 
   Future<void> sendActivity(BuildContext context, User user) async {
+    if (totalDistance == 0) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          GifImage(
+            controller: controller1,
+            image:
+                AssetImage(ImageConstant.imgRunningGuy), // Sökväg till din GIF
+          );
+
+          return AlertDialog(
+            backgroundColor: Color.fromARGB(255, 217, 238, 248),
+            title: Row(
+              children: [
+                Icon(
+                  Icons.warning,
+                  color: Color.fromARGB(255, 158, 14, 4),
+                ),
+                SizedBox(width: 10),
+                Text(
+                  "Distance är noll",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Prova att röra på dig för att registrera en löprunda.",
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text("Ok"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     final response =
         await network.postActivity(user.email, totalDistance, _elapsedTime);
 

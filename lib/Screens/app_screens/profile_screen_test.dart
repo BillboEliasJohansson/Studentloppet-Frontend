@@ -23,6 +23,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
   late TextEditingController textController;
   Map<String, dynamic> activityData = {};
   Map<String, dynamic> userRankData = {};
+  bool dataFetched = false;
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       setState(() {
         activityData = data;
       });
+      return;
     } catch (e) {
       print("Error fetching leaderboard: $e");
     }
@@ -49,6 +51,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       setState(() {
         userRankData = data;
       });
+      return;
     } catch (e) {
       print("Error fetching leaderboard: $e");
     }
@@ -56,13 +59,18 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-    fetchLeaderboardData(user);
-    fetchRank(user);
+    if (!dataFetched) {
+      // Anropa funktionerna bara om data inte redan har hämtats
+      User user = Provider.of<User>(context);
+      fetchLeaderboardData(user);
+      fetchRank(user);
+      dataFetched =
+          true; // Uppdatera flaggan när data hämtats för första gången
+    }
     return SafeArea(
-        child: Scaffold(
-      appBar: _buildAppBar(context),
-      body: Container(
+      child: Scaffold(
+        appBar: _buildAppBar(context),
+        body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
           padding: EdgeInsets.symmetric(
@@ -70,33 +78,31 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
             vertical: 13.v,
           ),
           child: SingleChildScrollView(
-            child: Column(children: [
-              SizedBox(
-                height: 5.h,
-              ),
-              _buildTopCard(context, user),
-              SizedBox(
-                height: 5.h,
-              ),
-              _buildCard2(context, user, "Mitt Midnattslopp"),
-              SizedBox(
-                height: 5.h,
-              ),
-              _buildCard3(context, user, "Min Löpstatistik"),
-              SizedBox(
-                height: 5.h,
-              ),
-              _buildCard4(context, user, "Min statistik på universitet"),
-              SizedBox(
-                height: 5.h,
-              ),
-              _buildCard5(context, user, "Min statistik på universitet"),
-              SizedBox(
-                height: 20,
-              )
-            ]),
-          )),
-    ));
+            child: Consumer<User>(
+              builder: (context, user, _) {
+                return Column(
+                  children: [
+                    SizedBox(height: 5.h),
+                    _buildTopCard(context, user),
+                    SizedBox(height: 5.h),
+                    _buildCard2(context, user, "Mitt Midnattslopp"),
+                    SizedBox(height: 5.h),
+                    _buildCard3(context, user, "Min Löpstatistik"),
+                    SizedBox(height: 5.h),
+                    _buildCard4(context, user, "Min statistik på universitet"),
+                    SizedBox(height: 5.h),
+                    _buildCard5(context, user, "Min statistik på universitet"),
+                    SizedBox(height: 5),
+                    _buildCard6(context, user, "Min statistik på universitet"),
+                    SizedBox(height: 5),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildCard2(BuildContext context, User user, String header) {
@@ -264,7 +270,50 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
               ),
             ),
             Image.network(
-                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXJ2eXE0aW5za2V1ZTg4dWoxamJ6NWdtOTF4dWd6NW5nb211emRwYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/etOX3h7ApZuDe7Fc5w/giphy-downsized-large.gif"),
+                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzh6cmFla2gycml4cnY5dGdpcjJyc3B0d3JwbnkwbjByZGsxdnJuMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2bUpP71bbVnZ3x7lgQ/giphy.gif"),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCard6(BuildContext context, User user, String header) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      elevation: 0,
+      margin: EdgeInsets.all(1),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: appTheme.purple200,
+          width: 2.h,
+        ),
+        borderRadius: BorderRadiusStyle.roundedBorder10,
+      ),
+      child: Container(
+        height: 160.v,
+        width: 340.h,
+        padding: EdgeInsets.all(7.h),
+        decoration: AppDecoration.outlinePurple.copyWith(
+          borderRadius: BorderRadiusStyle.roundedBorder10,
+        ),
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                height: 300.v,
+                width: 330.h,
+                decoration: BoxDecoration(
+                  color: appTheme.deepPurple500,
+                  borderRadius: BorderRadius.circular(
+                    5.h,
+                  ),
+                ),
+              ),
+            ),
+            Image.network(
+                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYm4wc3I3ZWpocWJ0amlzMnB3a3J1MmdscWp5enNleXRsZjFwNHltMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Sux3kje9eOx1e/giphy.gif"),
           ],
         ),
       ),
@@ -329,7 +378,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         context,
         user,
         "Tid",
-        activityData['totalDuration'].toString(),
+        activityData['totalDuration'] == null
+            ? "..."
+            : activityData['totalDuration'].toString(),
         ImageConstant.imgTimer,
       ),
       SizedBox(height: 0.v),
@@ -342,7 +393,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         context,
         user,
         "Avstånd",
-        activityData['totalDistance'].toStringAsFixed(2),
+        activityData['totalDistance'] == null
+            ? "..."
+            : activityData['totalDistance'].toStringAsFixed(2),
         ImageConstant.imgFeet,
       ),
       SizedBox(height: 0.v),
@@ -355,7 +408,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         context,
         user,
         "Genomsnittlig Hastighet",
-        activityData['averageSpeed'].toStringAsFixed(2),
+        activityData['averageSpeed'] == null
+            ? "..."
+            : activityData['averageSpeed'].toStringAsFixed(2),
         ImageConstant.imgRun,
       ),
       SizedBox(height: 0.v),
@@ -368,7 +423,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         context,
         user,
         "Kalorier brända",
-        activityData['caloriesBurned'].toString(),
+        activityData['caloriesBurned'] == null
+            ? "..."
+            : activityData['caloriesBurned'].toString(),
         ImageConstant.imgFire,
       ),
       SizedBox(height: 0.v),
@@ -390,7 +447,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         context,
         user,
         "Totalt med poäng",
-        userRankData["scoreRank"].toString() + ":a plats",
+        userRankData['scoreRank'] == null
+            ? "..."
+            : userRankData["scoreRank"].toString() + ":a plats",
         ImageConstant.imgTrophy,
       ),
       SizedBox(height: 0.v),
@@ -403,7 +462,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         context,
         user,
         "Totalt sprunga kilometer",
-        userRankData["distanceRank"].toString() + ":a plats",
+        userRankData['distanceRank'] == null
+            ? "..."
+            : userRankData["distanceRank"].toString() + ":a plats",
         ImageConstant.imgFeet,
       ),
       SizedBox(height: 0.v),
@@ -416,7 +477,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         context,
         user,
         "Hastighet",
-        userRankData["speedRank"].toString() + ":a plats",
+        userRankData['speedRank'] == null
+            ? "..."
+            : userRankData["speedRank"].toString() + ":a plats",
         ImageConstant.imgRun,
       ),
       SizedBox(height: 0.v),
@@ -429,7 +492,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         context,
         user,
         "Totala kalorier brända",
-        userRankData["caloriesRank"].toString() + ":a plats",
+        userRankData['caloriesRank'] == null
+            ? "..."
+            : userRankData["caloriesRank"].toString() + ":a plats",
         ImageConstant.imgFire,
       ),
       SizedBox(height: 0.v),
@@ -471,7 +536,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
             width: 30.adaptSize,
             decoration: BoxDecoration(
                 color: appTheme.black900.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(16.h),
+                borderRadius: BorderRadius.circular(10.h),
                 image: DecorationImage(
                   image: AssetImage(imagePath),
                   fit: BoxFit.cover,
