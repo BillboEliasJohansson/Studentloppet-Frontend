@@ -20,6 +20,7 @@ import 'package:studentloppet/widgets/ProfileHelpers/appbar_title_profile.dart';
 import 'package:studentloppet/widgets/ProfileHelpers/custom_app_bar.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
 import 'package:studentloppet/networking/network.dart';
+import 'package:gif/gif.dart';
 
 import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
 import 'package:studentloppet/widgets/custom_helpers/metricslist_item_widget.dart';
@@ -32,7 +33,9 @@ class RunScreen extends StatefulWidget {
   State<RunScreen> createState() => _RunScreenState();
 }
 
-class _RunScreenState extends State<RunScreen> {
+class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
+  late final GifController controller1;
+  int _fps = 30;
   Completer<GoogleMapController>? _controller;
   List<LatLng> polylineCoordinates = [];
   StreamSubscription<LocationData>? _locationSubscription;
@@ -54,6 +57,7 @@ class _RunScreenState extends State<RunScreen> {
 
   @override
   void initState() {
+    controller1 = GifController(vsync: this);
     super.initState();
     _controller = Completer();
     getCurrentLocation();
@@ -625,7 +629,13 @@ class _RunScreenState extends State<RunScreen> {
                   style: TextStyle(color: Colors.white),
                 ),
                 SizedBox(height: 10),
-                Image.asset(ImageConstant.imgRunningGuy),
+                Gif(
+                  duration: const Duration(milliseconds: 600),
+                  autostart: Autostart.loop,
+                  placeholder: (context) =>
+                      const Center(child: CircularProgressIndicator()),
+                  image: const AssetImage('assets/images/giphy.gif'),
+                ),
               ],
             ),
             actions: <Widget>[
