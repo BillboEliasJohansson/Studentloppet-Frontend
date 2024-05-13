@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:studentloppet/Constants/constants.dart';
 import 'package:studentloppet/User/user.dart';
@@ -265,20 +266,16 @@ class SignupDetailsScreen extends StatelessWidget {
   }
 
   Future<void> setWeight(BuildContext context, user) async {
-    // Kontrollera om vikten är tom eller inte en siffra
-    if (user.weight != null && user.weight != 0) {
-      // Försök att konvertera vikten till en double
-      try {
-        double.parse(user.weight);
-      } catch (e) {
-        // Visa ett felmeddelande om vikten inte är en siffra
-        showErrorSnackbar(context, "Vikten måste vara en siffra");
-        return;
-      }
-    }
-
-    // Fortsätt bara om vikten är tom eller en siffra
     final response = await network.setWeight(user.email, user.weight);
+    if (response.statusCode == 200) {
+      // Visa en framgångsrik snackbar om vikten uppdaterades korrekt
+      print(user.weight);
+      showSuccesfulSnackbar(context, "Weight updated successfully");
+    } else {
+      print(response.body);
+      // Visa ett felmeddelande om det uppstod problem med att uppdatera vikten
+      showErrorSnackbar(context, "Failed to update weight");
+    }
   }
 
   Future<void> setName(BuildContext context, user) async {

@@ -6,14 +6,14 @@ class User with ChangeNotifier {
   String _firstName = '';
   String _lastName = '';
   String _university = '';
-  int _weight = 0;
+  double _weight = 0;
 
   String get email => _email;
   int get score => _score;
   String get firstName => _firstName;
   String get lastName => _lastName;
   String get university => _university;
-  int get weight => _weight;
+  double get weight => _weight;
 
   void setUser({
     String? newEmail,
@@ -21,7 +21,7 @@ class User with ChangeNotifier {
     String? newFirstName,
     String? newLastName,
     String? newUniversity,
-    int? newWeight,
+    double? newWeight,
   }) {
     bool shouldNotify = false;
 

@@ -88,8 +88,8 @@ class network {
     return response;
   }
 
-  static Future<http.Response> setWeight(String email, int weight) async {
-    final response = await http.post(Uri.parse(
+  static Future<http.Response> setWeight(String email, double weight) async {
+    final response = await http.get(Uri.parse(
         "https://group-15-2.pvt.dsv.su.se/studentloppet/setWeight/" +
             email +
             "/" +
