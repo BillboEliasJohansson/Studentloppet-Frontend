@@ -13,6 +13,7 @@ import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
 
 import 'package:studentloppet/widgets/ProfileHelpers/custom_app_bar.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
+import 'package:studentloppet/widgets/custom_nav_bar.dart';
 
 class ProfileScreenTest extends StatefulWidget {
   @override
@@ -73,9 +74,11 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
-          padding: EdgeInsets.symmetric(
-            horizontal: 12.h,
-            vertical: 13.v,
+          padding: EdgeInsets.only(
+            top: 13.v,
+            left: 10,
+            right: 10,
+            bottom: 1,
           ),
           child: SingleChildScrollView(
             child: Consumer<User>(
@@ -100,6 +103,9 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
               },
             ),
           ),
+        ),
+        bottomNavigationBar: CustomNavBar(
+          PageIndex: 3,
         ),
       ),
     );

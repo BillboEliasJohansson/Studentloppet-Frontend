@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studentloppet/Screens/app_screens/leaderboard.dart';
 import 'package:studentloppet/Screens/app_screens/profile_screen_test.dart';
 import 'package:studentloppet/Screens/app_screens/run_screens/run_screen.dart';
 import 'package:studentloppet/Screens/login_signup/signup_details_screen.dart';
@@ -37,6 +38,8 @@ class AppRoutes {
 
   static const String profileScreenTest = '/Screens/profile_screen_test.dart';
 
+  static const String leaderboard = '/Screens/app_screens/leaderboard.dart';
+
   static Map<String, WidgetBuilder> routes = {
     initialRoute: (context) => LoginScreen(),
     signupScreen: (context) => SignupScreen(),
@@ -48,5 +51,6 @@ class AppRoutes {
     profileScreenTest: (context) => ProfileScreenTest(),
     runScreen: (context) => RunScreen(),
     signUpSuccess: (context) => SignUpSuccess(),
+    leaderboard: (context) => Leaderboard()
   };
 }

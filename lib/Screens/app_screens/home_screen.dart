@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gif/gif.dart';
 import 'package:provider/provider.dart';
 import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/networking/network.dart';
@@ -9,8 +8,8 @@ import 'package:studentloppet/Constants/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/widgets/ProfileHelpers/appbar_title_profile.dart';
 import 'package:studentloppet/widgets/ProfileHelpers/custom_app_bar.dart';
-import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
+import 'package:studentloppet/widgets/custom_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -64,9 +63,11 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
-          padding: EdgeInsets.symmetric(
-            horizontal: 12.h,
-            vertical: 13.v,
+          padding: EdgeInsets.only(
+            top: 5.v,
+            left: 10,
+            right: 10,
+            bottom: 1,
           ),
           child: SingleChildScrollView(
             child: Consumer<User>(
@@ -96,14 +97,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(height: 5.h),
                     _buildCardLeaderboard(
                         context, user, "Universitetstävlingen"),
-                    SizedBox(height: 5.h),
-                    _buildPageHeaderGif(),
-                    SizedBox(height: 5.h),
                   ],
                 );
               },
             ),
           ),
+        ),
+        bottomNavigationBar: CustomNavBar(
+          PageIndex: 1,
         ),
       ),
     );
@@ -268,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildCardHeader(BuildContext context, String header) {
     return Padding(
       padding: EdgeInsets.only(
-        left: 5.h,
+        left: 17.h,
         top: 8.v,
       ),
       child: Align(
@@ -361,32 +362,20 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(3.0),
       child: Container(
         width: 360.h,
+        height: 70.v,
         decoration: BoxDecoration(
-            borderRadius: BorderRadiusStyle.roundedBorder10,
+            borderRadius: BorderRadiusStyle.roundedBorder6,
             image: DecorationImage(
-                image: Image.asset(ImageConstant.imgHomeScreenHeader).image,
+                image: Image.asset(ImageConstant.imgHomeScreenHeaderGif).image,
                 fit: BoxFit.fill)),
-        child: Text(
-          "hejhej"),
+        child: Center(
+          child: Text("73 dagar kvar",
+            style: theme.textTheme.displayMedium!.copyWith(fontSize: 45),         
+          )
+        ),
       ),
     );
   }
-}
-
-Widget _buildPageHeaderGif() {
-  return Padding(
-    padding: const EdgeInsets.all(3.0),
-    child: Container(
-      width: 360.h,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadiusStyle.roundedBorder10,
-          image: DecorationImage(
-              image: Image.asset(ImageConstant.imgHomeScreenHeaderGif).image)),
-      child: CustomImageView(
-        imagePath: ImageConstant.imgHomeScreenHeaderGif,
-      ),
-    ),
-  );
 }
 
 class University {

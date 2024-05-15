@@ -32,6 +32,14 @@ class ThemeHelper {
     var colorScheme =
         _supportedColorScheme[_appTheme] ?? ColorSchemes.primaryColorScheme;
     return ThemeData(
+      navigationBarTheme: NavigationBarThemeData(
+        labelTextStyle: MaterialStateProperty.resolveWith((states) => TextStyle(
+          color: appTheme.whiteA700,
+          fontSize: 12.fSize,
+          fontFamily: 'Open Sans',
+          fontWeight: FontWeight.w800,
+        )),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         // Set a custom underline style
         enabledBorder: UnderlineInputBorder(
@@ -195,7 +203,7 @@ class PrimaryColors {
 
   Color get deepPurple500 => Color(0XFF74539B);
 
-  Color get deepPurple800 => Color.fromARGB(255, 72, 18, 133);
+  Color get deepPurple800 => Color(0X4F3C85);
 // Purple
   Color get purple200 => Color(0XFFCAA4E2);
 
