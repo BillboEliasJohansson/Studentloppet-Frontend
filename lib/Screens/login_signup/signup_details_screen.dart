@@ -1,8 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:studentloppet/Constants/constants.dart';
 import 'package:studentloppet/User/user.dart';
@@ -17,6 +15,9 @@ import 'package:studentloppet/utils/snackbars_util.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_text_form_field.dart';
+
+
+//TODO updatera user klassen
 
 class SignupDetailsScreen extends StatelessWidget {
   TextEditingController firstName = TextEditingController();
@@ -266,9 +267,9 @@ class SignupDetailsScreen extends StatelessWidget {
   }
 
   Future<void> setWeight(BuildContext context, user) async {
-    final response = await network.setWeight(user.email, user.weight);
+    final response = await network.setWeight(user.email, weight.text);
     if (response.statusCode == 200) {
-      // Visa en framgångsrik snackbar om vikten uppdaterades korrekt
+      // Visa en framgångsrik snackbar om vikten uppdaterades korrekta
       print(user.weight);
       showSuccesfulSnackbar(context, "Weight updated successfully");
     } else {

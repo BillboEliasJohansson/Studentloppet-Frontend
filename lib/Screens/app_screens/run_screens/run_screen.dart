@@ -35,7 +35,6 @@ class RunScreen extends StatefulWidget {
 
 class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
   late final GifController controller1;
-  int _fps = 30;
   Completer<GoogleMapController>? _controller;
   List<LatLng> polylineCoordinates = [];
   StreamSubscription<LocationData>? _locationSubscription;
@@ -48,6 +47,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
   DateTime? _startTime;
   Duration _elapsedTime = Duration.zero;
   double totalDistance = 0.0;
+  Map<String, dynamic> response = {};
 
   Weather? w;
   WeatherFactory wf =
@@ -162,14 +162,73 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
     });
   }
 
-  void stopRun() {
-    _timer?.cancel(); // Stop the timer
+  void stopRun(User user) async {
+    if (totalDistance == 0) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Color.fromARGB(255, 217, 238, 248),
+            title: Row(
+              children: [
+                Icon(
+                  Icons.warning,
+                  color: Color.fromARGB(255, 158, 14, 4),
+                ),
+                SizedBox(width: 10),
+                Text(
+                  "Distance är noll",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Prova att röra på dig för att registrera en löprunda.",
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 10),
+                Gif(
+                  duration: const Duration(milliseconds: 600),
+                  autostart: Autostart.loop,
+                  placeholder: (context) =>
+                      const Center(child: CircularProgressIndicator()),
+                  image: const AssetImage('assets/images/giphy.gif'),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text("Ok"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
 
+    if (totalDistance == 0) {
+      return;
+    }
+
+    _timer?.cancel(); // Stop the timer
     setState(() {
       currentState = RunState.after;
       buttonText = "Klar!";
       activeRun = false;
     });
+
+    print(user.email);
+
+    response =
+        await network.postActivity(user.email, totalDistance, _elapsedTime);
+
+    print(response.toString());
   }
 
   @override
@@ -196,7 +255,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget buildDuringRunContent() {
+  Widget buildDuringRunContent(User user) {
     return Container(
       decoration: AppDecoration.roundedBoxNoOutline.copyWith(
         borderRadius: BorderRadiusStyle.roundedBorder10,
@@ -216,7 +275,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
           SizedBox(height: 6.v),
           Padding(
             padding: EdgeInsets.only(left: 17, right: 17),
-            child: _buildButton(User()),
+            child: _buildButton(user),
           )
         ],
       ),
@@ -349,6 +408,26 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
           ),
           SizedBox(height: 10.v),
           Padding(
+            padding: const EdgeInsets.only(left: 17, right: 17),
+            child: _buildInformationCard(
+                "Kalorier Brända",
+                response["scoreGained"] == null
+                    ? "..."
+                    : response["caloriesBurned"].toStringAsFixed(2),
+                ImageConstant.imgHatNew),
+          ),
+          SizedBox(height: 10.v),
+          Padding(
+            padding: const EdgeInsets.only(left: 17, right: 17),
+            child: _buildInformationCard(
+                "Poäng",
+                response["scoreGained"] == null
+                    ? "..."
+                    : response["scoreGained"].toString(),
+                ImageConstant.imgHatNew),
+          ),
+          SizedBox(height: 10.v),
+          Padding(
             padding: EdgeInsets.only(left: 17, right: 17),
             child: _buildButton(user),
           ),
@@ -446,7 +525,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
         return buildBeforeRunContent(user);
 
       case RunState.during:
-        return buildDuringRunContent();
+        return buildDuringRunContent(user);
 
       case RunState.after:
         return buildAfterRunContent(user);
@@ -569,7 +648,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
             return;
           }
           if (currentState == RunState.during) {
-            stopRun();
+            stopRun(user);
           } else if (currentState == RunState.after) {
             sendActivity(context, user);
           } else {
@@ -602,65 +681,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
   }
 
   Future<void> sendActivity(BuildContext context, User user) async {
-    if (totalDistance == 0) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Color.fromARGB(255, 217, 238, 248),
-            title: Row(
-              children: [
-                Icon(
-                  Icons.warning,
-                  color: Color.fromARGB(255, 158, 14, 4),
-                ),
-                SizedBox(width: 10),
-                Text(
-                  "Distance är noll",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "Prova att röra på dig för att registrera en löprunda.",
-                  style: TextStyle(color: Colors.white),
-                ),
-                SizedBox(height: 10),
-                Gif(
-                  duration: const Duration(milliseconds: 600),
-                  autostart: Autostart.loop,
-                  placeholder: (context) =>
-                      const Center(child: CircularProgressIndicator()),
-                  image: const AssetImage('assets/images/giphy.gif'),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text("Ok"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-      return;
-    }
-
-    final response =
-        await network.postActivity(user.email, totalDistance, _elapsedTime);
-
-    if (response.statusCode == 200) {
-      print("Response: " + response.body);
-      if (response.body.contains("id")) {
-        Navigator.pushNamed(context, AppRoutes.homeScreen);
-      } else {}
-    } else {}
+    Navigator.pushNamed(context, AppRoutes.homeScreen);
   }
 
   Widget _buildColumns(BuildContext context) {

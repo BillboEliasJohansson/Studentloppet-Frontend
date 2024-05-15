@@ -59,7 +59,7 @@ class network {
     return response;
   }
 
-  static Future<http.Response> postActivity(
+  static Future<Map<String, dynamic>> postActivity(
       String email, double distance, Duration duration) async {
     String url =
         "https://group-15-2.pvt.dsv.su.se/api/activities/addActivity/" +
@@ -70,10 +70,10 @@ class network {
             duration.inMinutes.toString();
 
     final response = await http.post(Uri.parse(url));
+    
+    Map<String, dynamic> data = jsonDecode(response.body);
 
-    print(response.body);
-
-    return response;
+    return data;
   }
 
   static Future<http.Response> updateName(
@@ -88,12 +88,12 @@ class network {
     return response;
   }
 
-  static Future<http.Response> setWeight(String email, double weight) async {
+  static Future<http.Response> setWeight(String email, String weight) async {
     final response = await http.get(Uri.parse(
         "https://group-15-2.pvt.dsv.su.se/studentloppet/setWeight/" +
             email +
             "/" +
-            weight.toString()));
+            weight));
     return response;
   }
 
