@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:studentloppet/Screens/app_screens/profile_screen.dart';
 import 'package:studentloppet/Screens/app_screens/profile_screen_test.dart';
 import 'package:studentloppet/Screens/app_screens/run_screens/run_screen.dart';
 import 'package:studentloppet/Screens/login_signup/signup_details_screen.dart';
@@ -47,7 +46,6 @@ class AppRoutes {
     updatePasswordScreen: (context) => UpdatePasswordScreen(),
     signUpDetailsScreen: (context) => SignupDetailsScreen(),
     profileScreenTest: (context) => ProfileScreenTest(),
-    profileScreen: (context) => ProfileScreen(),
     runScreen: (context) => RunScreen(),
     signUpSuccess: (context) => SignUpSuccess(),
   };

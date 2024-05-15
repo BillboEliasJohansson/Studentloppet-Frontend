@@ -344,6 +344,7 @@ class _SignupScreenState extends State<LoginScreen> {
           newLastName: responseBody['lastName'] as String?,
           newUniversity: responseBody['university'] as String?,
         );
+        print(user.email);
         Navigator.pushNamed(context, AppRoutes.homeScreen);
       } else {
         showErrorSnackbar(context, "Invalid email or password");
