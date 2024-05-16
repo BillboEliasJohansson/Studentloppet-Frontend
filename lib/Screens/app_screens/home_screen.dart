@@ -369,25 +369,41 @@ class _HomeScreenState extends State<HomeScreen> {
                 image: Image.asset(ImageConstant.imgHomeScreenHeaderGif).image,
                 fit: BoxFit.fill)),
         child: Center(
-          child: Text("73 dagar kvar",
-            style: theme.textTheme.displayMedium!.copyWith(fontSize: 45),         
-          )
-        ),
+            child: Text(
+          "73 dagar kvar",
+          style: theme.textTheme.displayMedium!.copyWith(fontSize: 45),
+        )),
       ),
     );
   }
 }
 
 class University {
-  final String university;
-  final int score;
+  String? university;
+  int? score;
+  int? distance;
+  int? users;
 
-  University({required this.university, required this.score});
+  University({this.university, this.score, this.distance, this.users});
 
-  factory University.fromJson(Map<String, dynamic> json) {
+  factory University.scoreFromJson(Map<String, dynamic> json) {
     return University(
       university: json['universityDisplayName'] ?? '',
       score: json['score'] ?? 0,
+    );
+  }
+
+  factory University.distanceFromJson(Map<String, dynamic> json) {
+    return University(
+      university: json['universityDisplayName'] ?? '',
+      distance: json['score'] ?? 0,
+    );
+  }
+
+  factory University.usercountFromJson(Map<String, dynamic> json) {
+    return University(
+      university: json['universityDisplayName'] ?? '',
+      users: json['score'] ?? 0,
     );
   }
 }

@@ -70,7 +70,7 @@ class network {
             duration.inMinutes.toString();
 
     final response = await http.post(Uri.parse(url));
-    
+
     Map<String, dynamic> data = jsonDecode(response.body);
 
     return data;
@@ -131,7 +131,43 @@ class network {
       List<dynamic> data = jsonDecode(response.body); // Decode JSON
 
       List<University> universities = data.map((item) {
-        return University.fromJson(item);
+        return University.scoreFromJson(item);
+      }).toList(); // Convert each item to a University object
+
+      return universities; // Return the list of universities
+    } else {
+      throw Exception("Failed to load leaderboard"); // Handle failure cases
+    }
+  }
+
+  static Future<List<University>> getLeaderboardDistance() async {
+    final response = await http.get(Uri.parse(
+        'https://group-15-2.pvt.dsv.su.se/api/universities/universitiesByDistance'));
+
+    if (response.statusCode == 200) {
+      // Check if the request was successful
+      List<dynamic> data = jsonDecode(response.body); // Decode JSON
+
+      List<University> universities = data.map((item) {
+        return University.distanceFromJson(item);
+      }).toList(); // Convert each item to a University object
+
+      return universities; // Return the list of universities
+    } else {
+      throw Exception("Failed to load leaderboard"); // Handle failure cases
+    }
+  }
+
+  static Future<List<University>> getLeaderboardUsercount() async {
+    final response = await http.get(Uri.parse(
+        'https://group-15-2.pvt.dsv.su.se/api/universities/universitiesByUserCount'));
+
+    if (response.statusCode == 200) {
+      // Check if the request was successful
+      List<dynamic> data = jsonDecode(response.body); // Decode JSON
+
+      List<University> universities = data.map((item) {
+        return University.usercountFromJson(item);
       }).toList(); // Convert each item to a University object
 
       return universities; // Return the list of universities

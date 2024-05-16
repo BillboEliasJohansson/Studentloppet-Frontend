@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:studentloppet/theme/app_decoration.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
@@ -31,11 +30,9 @@ class MetricslistItemWidget extends StatelessWidget {
         decoration: AppDecoration.outlinePurple.copyWith(
           borderRadius: BorderRadiusStyle.roundedBorder10,
         ),
-        width: 330,
-        height: 200,
+        width: 160.h,
         child: Container(
-          width: 330,
-          height: 330,
+          width: 160.h,
           decoration: BoxDecoration(
             color: appTheme.deepPurple500,
             borderRadius: BorderRadius.circular(
@@ -48,6 +45,18 @@ class MetricslistItemWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  upperText,
+                  style: theme.textTheme.labelSmall!.copyWith(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal),
+                ),
+                SizedBox(height: 2.v),
+                Text(
+                  lowerText,
+                  style: theme.textTheme.displayMedium!.copyWith(fontSize: 25),
+                )
               ],
             ),
           ),
