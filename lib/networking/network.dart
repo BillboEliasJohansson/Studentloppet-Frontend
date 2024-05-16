@@ -176,6 +176,31 @@ class network {
     }
   }
 
+  static Future<Map<String, int>> getUniLeaderboardScore(String uni) async {
+    final response = await http.get(Uri.parse(
+        'https://group-15-2.pvt.dsv.su.se/api/leaderboard/sortedByScore/' +
+            uni));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+
+      // Initialize a map to store the names and scores of the top 5 users
+      Map<String, int> topFiveUsers = {};
+
+      // Iterate over the first 5 users and add their names and scores to the map
+      for (int i = 0; i < data.length; i++) {
+        var user = data[i];
+        String userName = user['userName'];
+        int score = user['score'];
+        topFiveUsers[userName] = score;
+      }
+      print(topFiveUsers.entries.toList().toString());
+      return topFiveUsers;
+    } else {
+      throw Exception("Failed to load leaderboard");
+    }
+  }
+
   static Future<Map<String, dynamic>> getTotalActivity(String email) async {
     final response = await http.get(
       Uri.parse(

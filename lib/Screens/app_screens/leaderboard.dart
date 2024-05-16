@@ -1,7 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:studentloppet/Constants/image_constant.dart';
+import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/networking/network.dart';
 
 import 'package:studentloppet/Screens/app_screens/home_screen.dart';
@@ -11,6 +13,7 @@ import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/widgets/ProfileHelpers/custom_app_bar.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
 import 'package:studentloppet/widgets/custom_helpers/leaderboard_item_widget.dart';
+import 'package:studentloppet/widgets/custom_helpers/leaderboard_uni_list.dart';
 import 'package:studentloppet/widgets/custom_nav_bar.dart';
 
 import '../../widgets/ProfileHelpers/appbar_title_profile.dart';
@@ -24,6 +27,8 @@ class LeaderboardState extends State<Leaderboard> {
   List<University>? universityData;
   List<University>? universityDataDistance;
   List<University>? universityDataUsers;
+  Map<String, int>? userData;
+  String? uni;
 
   Map<String, dynamic> activityData = {};
   bool dataFetched = false;
@@ -36,8 +41,11 @@ class LeaderboardState extends State<Leaderboard> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+    fetchUniLeaderboardScore(user);
     return SafeArea(
-        child: universityData == null
+        child: universityData == null ||
+                userData == null
             ? Text("")
             : Scaffold(
                 appBar: _buildAppBar(context),
@@ -60,9 +68,7 @@ class LeaderboardState extends State<Leaderboard> {
                         Text("Mitt universitet",
                             style: theme.textTheme.headlineSmall!
                                 .copyWith(fontSize: 20)),
-                        _buildLeaderboardList(
-                          context,
-                        ),
+                        _buildUniLeaderboard()
                       ],
                     ),
                   ),
@@ -245,6 +251,35 @@ class LeaderboardState extends State<Leaderboard> {
         ));
   }
 
+  Widget _buildUniLeaderboard() {
+    List<String> names = userData!.keys.toList();
+    List<int> points = userData!.values.toList();
+    
+    return SizedBox(
+        height: 300.v,
+        child: ListView.separated(
+          dragStartBehavior: DragStartBehavior.start,
+          padding: EdgeInsets.only(left: 12.h, right: 12.h),
+          scrollDirection: Axis.horizontal,
+          separatorBuilder: (context, index) => SizedBox(width: 8.h),
+          itemCount: 3,
+          controller: ScrollController(initialScrollOffset: 325),
+          itemBuilder: (context, index) {
+            List<String> category = [
+              "Totala mängd poäng",
+              "Kilometer sprunga",
+              "Kalorier brända",
+            ];
+            return UniLeaderboardItemWidget(
+              uni: uni!,
+              category: category[index],
+              names: names,
+              points: points.map((score) => score.toString()).toList()
+            );
+          },
+        ));
+  }
+
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 30.h,
@@ -293,6 +328,19 @@ class LeaderboardState extends State<Leaderboard> {
       List<University> data = await network.getLeaderboardUsercount();
       setState(() {
         universityDataUsers = data;
+      });
+    } catch (e) {
+      print("Error fetching leaderboard: $e");
+    }
+  }
+
+  void fetchUniLeaderboardScore(User user) async {
+    try {
+      Map<String, int> data =
+          await network.getUniLeaderboardScore(user.university);
+      setState(() {
+        uni = user.university;
+        userData = data;
       });
     } catch (e) {
       print("Error fetching leaderboard: $e");
