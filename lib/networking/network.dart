@@ -176,6 +176,111 @@ class network {
     }
   }
 
+  static Future<Map<String, int>> getUniLeaderboardScore(String uni) async {
+    final response = await http.get(Uri.parse(
+        'https://group-15-2.pvt.dsv.su.se/api/leaderboard/sortedByScore/' +
+            uni));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      Map<String, int> topFiveUsers = {};
+
+      for (int i = 0; i < data.length; i++) {
+        var user = data[i];
+        String userName = user['userName'];
+        int score = user['score'];
+
+        // Check if the user name already exists in the map
+        if (topFiveUsers.containsKey(userName)) {
+          // Append a unique identifier to the user name
+          int counter = 1;
+          String uniqueUserName = userName + '_$counter';
+          while (topFiveUsers.containsKey(uniqueUserName)) {
+            counter++;
+            uniqueUserName = userName + '_$counter';
+          }
+          userName = uniqueUserName;
+        }
+
+        // Add the user name and score to the map
+        topFiveUsers[userName] = score;
+      }
+      return topFiveUsers;
+    } else {
+      throw Exception("Failed to load leaderboard");
+    }
+  }
+
+  static Future<Map<String, double>> getUniLeaderboardDistance(String uni) async {
+    final response = await http.get(Uri.parse(
+        'https://group-15-2.pvt.dsv.su.se/api/leaderboard/sortedByDistance/' +
+            uni));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      Map<String, double> topFiveUsers = {};
+
+      for (int i = 0; i < data.length; i++) {
+        var user = data[i];
+        String userName = user['fullName'];
+        double score = user['value'];
+
+        // Check if the user name already exists in the map
+        if (topFiveUsers.containsKey(userName)) {
+          // Append a unique identifier to the user name
+          int counter = 1;
+          String uniqueUserName = userName + '_$counter';
+          while (topFiveUsers.containsKey(uniqueUserName)) {
+            counter++;
+            uniqueUserName = userName + '_$counter';
+          }
+          userName = uniqueUserName;
+        }
+
+        // Add the user name and score to the map
+        topFiveUsers[userName] = score;
+      }
+      return topFiveUsers;
+    } else {
+      throw Exception("Failed to load leaderboard");
+    }
+  }
+
+   static Future<Map<String, double>> getUniLeaderboardSpeed(String uni) async {
+    final response = await http.get(Uri.parse(
+        'https://group-15-2.pvt.dsv.su.se/api/leaderboard/sortedBySpeed/' +
+            uni));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      Map<String, double> topFiveUsers = {};
+
+      for (int i = 0; i < data.length; i++) {
+        var user = data[i];
+        String userName = user['fullName'];
+        double score = user['value'];
+
+        // Check if the user name already exists in the map
+        if (topFiveUsers.containsKey(userName)) {
+          // Append a unique identifier to the user name
+          int counter = 1;
+          String uniqueUserName = userName + '_$counter';
+          while (topFiveUsers.containsKey(uniqueUserName)) {
+            counter++;
+            uniqueUserName = userName + '_$counter';
+          }
+          userName = uniqueUserName;
+        }
+
+        // Add the user name and score to the map
+        topFiveUsers[userName] = score;
+      }
+      return topFiveUsers;
+    } else {
+      throw Exception("Failed to load leaderboard");
+    }
+  }
+
   static Future<Map<String, dynamic>> getTotalActivity(String email) async {
     final response = await http.get(
       Uri.parse(
