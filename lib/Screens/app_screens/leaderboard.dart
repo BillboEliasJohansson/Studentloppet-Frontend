@@ -2,9 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/provider.dart';
 import 'package:studentloppet/Constants/image_constant.dart';
-import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/networking/network.dart';
 
@@ -15,7 +13,6 @@ import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/widgets/ProfileHelpers/custom_app_bar.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
 import 'package:studentloppet/widgets/custom_helpers/leaderboard_item_widget.dart';
-import 'package:studentloppet/widgets/custom_helpers/leaderboard_uni_list.dart';
 import 'package:studentloppet/widgets/custom_helpers/leaderboard_uni_list.dart';
 import 'package:studentloppet/widgets/custom_nav_bar.dart';
 
@@ -78,7 +75,6 @@ class LeaderboardState extends State<Leaderboard> {
                         Text("Mitt universitet",
                             style: theme.textTheme.headlineSmall!
                                 .copyWith(fontSize: 20)),
-                        _buildUniLeaderboard()
                         _buildUniLeaderboard()
                       ],
                     ),
