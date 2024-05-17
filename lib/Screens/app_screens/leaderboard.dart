@@ -334,6 +334,7 @@ class LeaderboardState extends State<Leaderboard> {
   void fetchLeaderboardData() async {
     try {
       List<University> data = await network.getLeaderboard();
+      print("DATA FETCHED LEADERBOARD DATA");
       setState(() {
         universityData = data;
       });
@@ -345,6 +346,7 @@ class LeaderboardState extends State<Leaderboard> {
   void fetchLeaderboardDataDistance() async {
     try {
       List<University> data = await network.getLeaderboardDistance();
+      print("DATA FETCHED LEADERBOARD DISTANCE");
       setState(() {
         universityDataDistance = data;
       });
@@ -356,6 +358,7 @@ class LeaderboardState extends State<Leaderboard> {
   void fetchLeaderboardDataUsercount() async {
     try {
       List<University> data = await network.getLeaderboardUsercount();
+      print("DATA FETCHED USER COUNT");
       setState(() {
         universityDataUsers = data;
       });
