@@ -368,6 +368,7 @@ class LeaderboardState extends State<Leaderboard> {
     try {
       Map<String, int> data =
           await network.getUniLeaderboardScore(user.university);
+      print("DATA FETCHED SCORE");
       setState(() {
         uni = user.university;
         userData = data;
@@ -381,6 +382,7 @@ class LeaderboardState extends State<Leaderboard> {
     try {
       Map<String, double> data =
           await network.getUniLeaderboardDistance(user.university);
+      print("DATA FETCHED DISTANCE");
       setState(() {
         userDataDistance = data;
       });
@@ -393,7 +395,7 @@ class LeaderboardState extends State<Leaderboard> {
     try {
       Map<String, double> data =
           await network.getUniLeaderboardSpeed(user.university);
-      print("DATA FETCHED");
+      print("DATA FETCHED SPEED");
       setState(() {
         userDataSpeed = data;
       });
