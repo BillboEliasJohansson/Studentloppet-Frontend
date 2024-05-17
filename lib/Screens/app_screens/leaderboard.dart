@@ -299,8 +299,9 @@ class LeaderboardState extends State<Leaderboard> {
             List<String> category = [
               "Kilometer sprunga",
               "Totala mängd poäng",
-              "Kalorier brända",
+              "Hastighet",
             ];
+            print(allNames[0].length);
             return UniLeaderboardItemWidget(
                 uni: uni!,
                 category: category[index],
