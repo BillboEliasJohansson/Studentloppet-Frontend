@@ -11,7 +11,11 @@ class UniLeaderboardItemWidget extends StatelessWidget {
   final List<String> points;
 
   UniLeaderboardItemWidget(
-      {Key? key, required this.uni, required this.category, required this.names, required this.points})
+      {Key? key,
+      required this.uni,
+      required this.category,
+      required this.names,
+      required this.points})
       : super(key: key);
 
   @override
@@ -64,8 +68,8 @@ class UniLeaderboardItemWidget extends StatelessWidget {
                 SizedBox(
                   height: 10.h,
                 ),
-                _buildCardWithIcon(
-                    context, Color.fromARGB(255, 243, 142, 230), names[0], points[0]),
+                _buildCardWithIcon(context, Color.fromARGB(255, 243, 142, 230),
+                    names[0], points[0]),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -115,7 +119,7 @@ class UniLeaderboardItemWidget extends StatelessWidget {
           size: 40,
         )),
         SizedBox(
-          width: 35,
+          width: 25,
         ),
         Container(
           height: 30.adaptSize,
@@ -129,23 +133,26 @@ class UniLeaderboardItemWidget extends StatelessWidget {
               )),
         ),
         SizedBox(
-          width: 10,
+          width: 5,
         ),
-        Text(
-          name,
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                fontSize: 12,
-              ),
+        Expanded(
+          child: Text(
+            name,
+            style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                  fontSize: 12,
+                ),
+          ),
         ),
-        SizedBox(
-          width: 20,
+        Spacer(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            points,
+            style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                  fontSize: 26,
+                ),
+          ),
         ),
-        Text(
-          points,
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                fontSize: 26,
-              ),
-        )
       ]),
     );
   }
@@ -172,7 +179,7 @@ class UniLeaderboardItemWidget extends StatelessWidget {
               ),
         )),
         SizedBox(
-          width: 50,
+          width: 40,
         ),
         Container(
           height: 30.adaptSize,
@@ -186,22 +193,25 @@ class UniLeaderboardItemWidget extends StatelessWidget {
               )),
         ),
         SizedBox(
-          width: 10,
+          width: 5,
         ),
-        Text(
-          name,
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                fontSize: 12,
-              ),
+        Expanded(
+          child: Text(
+            name,
+            style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                  fontSize: 12,
+                ),
+          ),
         ),
-        SizedBox(
-          width: 20,
-        ),
-        Text(
-          points,
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                fontSize: 26,
-              ),
+        Spacer(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            points,
+            style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                  fontSize: 26,
+                ),
+          ),
         )
       ]),
     );

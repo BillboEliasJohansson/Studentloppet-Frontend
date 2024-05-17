@@ -260,20 +260,27 @@ class LeaderboardState extends State<Leaderboard> {
 
   Widget _buildUniLeaderboard() {
     List<String> names = userData!.keys.toList();
-    List<int> points = userData!.values.toList();
-    List<String> pointsString = points.map((e) => e.toString()).toList();
+    List<double> points = userData!.values.map((e) => e.toDouble()).toList();
+    // Avrunda poängen och konvertera till strängar
+    List<String> pointsString =
+        points.map((e) => e.round().toString()).toList();
 
     List<String> namesDistance = userDataDistance!.keys.toList();
-    List<double> distance = userDataDistance!.values.toList();
-    List<String> distanceString = distance.map((e) => e.toString()).toList();
+    List<double> distance =
+        userDataDistance!.values.map((e) => e.toDouble()).toList();
+    // Konvertera till strängar med två decimaler
+    List<String> distanceString =
+        distance.map((e) => e.toStringAsFixed(2)).toList();
 
     List<String> namesSpeed = userDataSpeed!.keys.toList();
-    List<double> speed = userDataSpeed!.values.toList();
-    List<String> speedString = speed.map((e) => e.toString()).toList();
+    List<double> speed =
+        userDataSpeed!.values.map((e) => e.toDouble()).toList();
+    // Konvertera till strängar med två decimaler
+    List<String> speedString = speed.map((e) => e.toStringAsFixed(2)).toList();
 
-    List<List<String>> allNames = [namesDistance,names,namesSpeed];
+    List<List<String>> allNames = [namesDistance, names, namesSpeed];
     List<List<String>> allScores = [distanceString, pointsString, speedString];
-    
+
     return SizedBox(
         height: 300.v,
         child: ListView.separated(
@@ -290,11 +297,10 @@ class LeaderboardState extends State<Leaderboard> {
               "Kalorier brända",
             ];
             return UniLeaderboardItemWidget(
-              uni: uni!,
-              category: category[index],
-              names: allNames[index],
-              points: allScores[index]
-            );
+                uni: uni!,
+                category: category[index],
+                names: allNames[index],
+                points: allScores[index]);
           },
         ));
   }
