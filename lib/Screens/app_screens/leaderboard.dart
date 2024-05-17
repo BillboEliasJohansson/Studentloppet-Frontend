@@ -34,6 +34,7 @@ class LeaderboardState extends State<Leaderboard> {
   String? uni;
 
   Map<String, dynamic> activityData = {};
+
   bool dataFetched = false;
 
   @override
@@ -44,10 +45,14 @@ class LeaderboardState extends State<Leaderboard> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-    fetchUniLeaderboardScore(user);
-    fetchUniLeaderboardDistance(user);
-    fetchUniLeaderboardSpeed(user);
+    if (!dataFetched) {
+      final user = Provider.of<User>(context);
+      fetchUniLeaderboardScore(user);
+      fetchUniLeaderboardDistance(user);
+      fetchUniLeaderboardSpeed(user);
+      dataFetched = true;
+    }
+
     return SafeArea(
         child: universityData == null ||
                 userData == null ||
@@ -388,6 +393,7 @@ class LeaderboardState extends State<Leaderboard> {
     try {
       Map<String, double> data =
           await network.getUniLeaderboardSpeed(user.university);
+      print("DATA FETCHED");
       setState(() {
         userDataSpeed = data;
       });
