@@ -52,44 +52,63 @@ class UniLeaderboardItemWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  uni,
-                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                        fontSize: 26,
-                      ),
-                ),
-                Text(
-                  category,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displaySmall!
-                      .copyWith(fontSize: 13, fontWeight: FontWeight.w400),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                _buildCardWithIcon(context, Color.fromARGB(255, 243, 142, 230),
-                    names[0], points[0]),
-                SizedBox(
-                  height: 10.h,
-                ),
-                _buildCardWithNumber(
-                    context, appTheme.orange, names[1], points[1], "2"),
-                SizedBox(
-                  height: 10.h,
-                ),
-                _buildCardWithNumber(
-                    context, appTheme.purple300, names[2], points[2], "3"),
-                SizedBox(
-                  height: 10.h,
-                ),
-                _buildCardWithNumber(context, Color.fromARGB(255, 82, 217, 235),
-                    names[3], points[3], "4"),
-                SizedBox(
-                  height: 10.h,
-                ),
-                _buildCardWithNumber(context, Color.fromARGB(255, 212, 93, 163),
-                    names[4], points[4], "5"),
+                if (names.length < 5)
+                  Padding(
+                    padding: const EdgeInsets.all(22.0),
+                    child: Text(
+                        "Ditt universitet har inte tillräckligt många registerade studenter",
+                        style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                              fontSize: 26,
+                            )),
+                  )
+                else ...[
+                  Text(
+                    uni,
+                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                          fontSize: 26,
+                        ),
+                  ),
+                  Text(
+                    category,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall!
+                        .copyWith(fontSize: 13, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  _buildCardWithIcon(context,
+                      Color.fromARGB(255, 243, 142, 230), names[0], points[0]),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  _buildCardWithNumber(
+                      context, appTheme.orange, names[1], points[1], "2"),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  _buildCardWithNumber(
+                      context, appTheme.purple300, names[2], points[2], "3"),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  _buildCardWithNumber(
+                      context,
+                      Color.fromARGB(255, 82, 217, 235),
+                      names[3],
+                      points[3],
+                      "4"),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  _buildCardWithNumber(
+                      context,
+                      Color.fromARGB(255, 212, 93, 163),
+                      names[4],
+                      points[4],
+                      "5"),
+                ],
               ],
             ),
           ),

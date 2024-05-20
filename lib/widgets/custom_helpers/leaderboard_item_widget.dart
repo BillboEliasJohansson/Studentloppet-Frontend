@@ -61,7 +61,7 @@ class LeaderboardItemWidget extends StatelessWidget {
                 Expanded(
                   child: BarChart(BarChartData(
                     alignment: BarChartAlignment.spaceAround,
-                    maxY: 100000,
+                    maxY: 200000,
                     barTouchData: BarTouchData(enabled: false),
                     barGroups: data,
                     borderData: FlBorderData(show: false),

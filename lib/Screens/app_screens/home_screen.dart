@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studentloppet/User/user.dart';
@@ -17,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<University> universityData = [];
+  List<University>? universityData;
   Map<String, dynamic> activityData = {};
   bool dataFetched = false;
 
@@ -58,7 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
       dataFetched = true;
     }
     return SafeArea(
-      child: Scaffold(
+      child: universityData == null
+            ? Text("")
+            : Scaffold(
         appBar: _buildAppBar(context),
         body: Container(
           width: SizeUtils.width,
@@ -330,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
       child: Container(
-        height: 210.v,
+        height: 300.v,
         width: 360.h,
         padding: EdgeInsets.all(7.h),
         decoration: AppDecoration.outlinePurple.copyWith(
@@ -340,7 +343,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Align(
               child: Container(
-                height: 220.v,
+                height: 300.v,
                 width: 330.h,
                 decoration: BoxDecoration(
                   color: appTheme.deepPurple500,
@@ -351,6 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             _buildCardHeader(context, header),
+            _buildLeaderboardList(context)
           ],
         ),
       ),
@@ -375,6 +379,105 @@ class _HomeScreenState extends State<HomeScreen> {
         )),
       ),
     );
+  }
+
+  Widget _buildLeaderboardList(BuildContext context) {
+    List<String> titles = [
+      universityData![0].university!.substring(0, 3),
+      universityData![1].university!.substring(0, 3),
+      universityData![2].university!.substring(0, 3),
+      universityData![3].university!.substring(0, 3),
+    ];
+
+    List<BarChartGroupData> data = [
+      BarChartGroupData(
+        x: 0,
+        barRods: [
+          BarChartRodData(
+              toY: universityData![0].score!.toDouble(),
+              color: Colors.blue,
+              width: 40,
+              borderRadius: BorderRadius.zero)
+        ],
+      ),
+      BarChartGroupData(
+        x: 1,
+        barRods: [
+          BarChartRodData(
+              toY: universityData![1].score!.toDouble(),
+              color: Colors.orange,
+              width: 40,
+              borderRadius: BorderRadius.zero)
+        ],
+      ),
+      BarChartGroupData(
+        x: 2,
+        barRods: [
+          BarChartRodData(
+              toY: universityData![2].score!.toDouble(),
+              color: Colors.deepPurple,
+              width: 40,
+              borderRadius: BorderRadius.zero)
+        ],
+      ),
+      BarChartGroupData(
+        x: 3,
+        barRods: [
+          BarChartRodData(
+              toY: universityData![3].score!.toDouble(),
+              color: Colors.red,
+              width: 40,
+              borderRadius: BorderRadius.zero)
+        ],
+      ),
+    ];
+
+    return BarChart(BarChartData(
+      alignment: BarChartAlignment.spaceAround,
+      maxY: 200000,
+      barTouchData: BarTouchData(enabled: false),
+      barGroups: data,
+      borderData: FlBorderData(show: false),
+      titlesData: FlTitlesData(
+        leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+          reservedSize: 35,
+          showTitles: true,
+          getTitlesWidget: (value, meta) {
+            const style = TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+              fontSize: 20,
+            );
+            switch (value.toInt()) {
+              case 0:
+                return SideTitleWidget(
+                    child: Text(titles[0], style: style),
+                    axisSide: AxisSide.bottom);
+              case 1:
+                return SideTitleWidget(
+                    child: Text(titles[1], style: style),
+                    axisSide: AxisSide.bottom);
+              case 2:
+                return SideTitleWidget(
+                    child: Text(titles[2], style: style),
+                    axisSide: AxisSide.bottom);
+              case 3:
+                return SideTitleWidget(
+                    child: Text(titles[3], style: style),
+                    axisSide: AxisSide.bottom);
+              default:
+                return SideTitleWidget(
+                    child: Text("error", style: style),
+                    axisSide: AxisSide.bottom);
+            }
+          },
+        )),
+      ),
+    ));
   }
 }
 
