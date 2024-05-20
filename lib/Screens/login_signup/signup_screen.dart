@@ -43,6 +43,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   String? uni;
 
+  String error = "";
+
   @override
   void initState() {
     super.initState();
@@ -97,9 +99,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           borderRadius: BorderRadiusStyle.roundedBorder10,
                         ),
                         child: Container(
-                          height: 400.v,
+                          height: 410.v,
                           width: 313.h,
-                          padding: EdgeInsets.all(5.h),
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
@@ -118,49 +119,54 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                               Align(
                                 alignment: Alignment.center,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 16.h,
-                                    right: 25.h,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: 10.v),
-                                      Text(
-                                        "Skapa konto",
-                                        style: theme.textTheme.headlineSmall,
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 10.v),
+                                    Text(
+                                      "Skapa konto",
+                                      style: theme.textTheme.headlineSmall,
+                                    ),
+                                    _buildErrorBar(),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: 16.h,
+                                        right: 25.h,
                                       ),
-                                      SizedBox(height: 20.v),
-                                      _buildInputUniversityDropDown(),
-                                      SizedBox(height: 14.v),
-                                      _buildInputEmail(context),
-                                      SizedBox(height: 14.v),
-                                      _buildInputPassword(context),
-                                      SizedBox(height: 14.v),
-                                      _buildInputRepeatPassword(context),
-                                      SizedBox(height: 20.v),
-                                      _buildButton(user),
-                                      SizedBox(height: 8.v),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.pushNamed(context,
-                                                AppRoutes.initialRoute);
-                                          },
-                                          child: Text(
-                                            "Tillbaka till inloggningssidan",
-                                            style: CustomTextStyles
-                                                .bodySmallBlack900
-                                                .copyWith(
-                                              decoration:
-                                                  TextDecoration.underline,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 10.v),
+                                          _buildInputUniversityDropDown(),
+                                          SizedBox(height: 10.v),
+                                          _buildInputEmail(context),
+                                          SizedBox(height: 10.v),
+                                          _buildInputPassword(context),
+                                          SizedBox(height: 14.v),
+                                          _buildInputRepeatPassword(context),
+                                          SizedBox(height: 22.v),
+                                          _buildButton(user),
+                                          SizedBox(height: 8.v),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.pushNamed(context,
+                                                    AppRoutes.initialRoute);
+                                              },
+                                              child: Text(
+                                                "Tillbaka till inloggningssidan",
+                                                style: CustomTextStyles
+                                                    .bodySmallBlack900
+                                                    .copyWith(
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
                                 ),
                               )
                             ],
@@ -169,6 +175,50 @@ class _SignupScreenState extends State<SignupScreen> {
                       )),
                 ])),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorBar() {
+    return Opacity(
+      opacity: (error.isEmpty) ? 0.0 : 1.0,
+      child: Container(
+        width: SizeUtils.width,
+        height: 40.h,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(41, 202, 80, 71),
+          border: Border(
+            top: BorderSide(color: Colors.red),
+            bottom: BorderSide(color: Colors.red),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              error,
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: Color.fromARGB(255, 136, 30, 23),
+                  ),
+            ),
+            SizedBox(
+              width: 12.h,
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  error = "";
+                });
+              },
+              child: Text(
+                "   X   ",
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      color: Color.fromARGB(255, 136, 30, 23),
+                    ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -184,36 +234,50 @@ class _SignupScreenState extends State<SignupScreen> {
     }
 
     if (uni == null) {
-      showErrorSnackbar(context, emptyUniversity);
+      setState(() {
+        error = emptyUniversity;
+      });
       return;
     }
 
     if (uni!.isEmpty) {
-      showErrorSnackbar(context, emptyUniversity);
+      setState(() {
+        error = emptyUniversity;
+      });
       return;
     }
 
     if (emailController.text.isEmpty) {
-      showErrorSnackbar(context, emptyEmail);
+      setState(() {
+        error = emptyEmail;
+      });
       return;
     }
 
     if (!isValidEmail(emailController.text)) {
-      showErrorSnackbar(context, invalidEmail);
+      setState(() {
+        error = invalidEmail;
+      });
       return;
     }
 
     if (passwordController.text.isEmpty) {
-      showErrorSnackbar(context, emptyPassword);
+      setState(() {
+        error = emptyPassword;
+      });
       return;
     }
 
     if (!isValidPassword(passwordController.text)) {
-      showErrorSnackbar(context, invalidPassword);
+      setState(() {
+        error = invalidPassword;
+      });
       return;
     }
     if (passwordController.text != passwordRepeatController.text) {
-      showErrorSnackbar(context, passwordNotSame);
+      setState(() {
+        error = passwordNotSame;
+      });
       return;
     }
 
@@ -223,17 +287,22 @@ class _SignupScreenState extends State<SignupScreen> {
     if (response.statusCode == 200) {
       print("Response: " + response.body);
       if (response.body.contains("User registered successfully")) {
-        showSuccesfulSnackbar(context, "Success");
         Navigator.pushNamed(context, AppRoutes.signUpDetailsScreen);
       }
       if (response.body.contains("Invalid email address")) {
-        showErrorSnackbar(context, "Email not valid");
+        setState(() {
+          error = invalidEmail;
+        });
       }
       if (response.body.contains("Email already exists")) {
-        showErrorSnackbar(context, "Email already exists");
+        setState(() {
+          error = invalidEmail;
+        });
       }
     } else {
-      showErrorSnackbar(context, "Internal Server Error");
+      setState(() {
+        error = "Server Error";
+      });
       print("Error: " + response.statusCode.toString());
     }
   }

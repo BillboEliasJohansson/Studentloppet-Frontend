@@ -16,7 +16,6 @@ import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/Constants/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
-import 'package:studentloppet/utils/snackbars_util.dart';
 import 'package:studentloppet/utils/validation_functions.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
@@ -36,6 +35,8 @@ class _SignupScreenState extends State<LoginScreen> {
   TextEditingController userNameController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
+
+  String error = "";
 
   @override
   void initState() {
@@ -85,14 +86,12 @@ class _SignupScreenState extends State<LoginScreen> {
                         shape: RoundedRectangleBorder(
                           side: BorderSide(
                             color: theme.colorScheme.onPrimaryContainer,
-                            width: 1.h,
                           ),
                           borderRadius: BorderRadiusStyle.roundedBorder10,
                         ),
                         child: Container(
-                          height: 275.v,
+                          height: 300.v,
                           width: 313.h,
-                          padding: EdgeInsets.all(5.h),
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
@@ -102,7 +101,6 @@ class _SignupScreenState extends State<LoginScreen> {
                                   height: 546.v,
                                   width: 298.h,
                                   decoration: BoxDecoration(
-                                    color: theme.colorScheme.onPrimaryContainer,
                                     borderRadius: BorderRadius.circular(
                                       5.h,
                                     ),
@@ -111,49 +109,55 @@ class _SignupScreenState extends State<LoginScreen> {
                               ),
                               Align(
                                 alignment: Alignment.center,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 16.h,
-                                    right: 25.h,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: 10.v),
-                                      Text(
-                                        "Logga in",
-                                        style: theme.textTheme.headlineSmall,
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 10.v),
+                                    Text(
+                                      "Välkommen tillbaka!",
+                                      style: theme.textTheme.headlineSmall,
+                                    ),
+                                    SizedBox(height: 5.v),
+                                    _buildErrorBar(),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: 21.h,
+                                        right: 30.h,
                                       ),
-                                      SizedBox(height: 14.v),
-                                      _buildInputEmail(context),
-                                      SizedBox(height: 14.v),
-                                      _buildInputPassword(context),
-                                      SizedBox(height: 20.v),
-                                      _buildButton(user),
-                                      SizedBox(height: 14.v),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ForgotPasswordScreen()),
-                                            );
-                                          },
-                                          child: Text(
-                                            "Glömt ditt lösenord",
-                                            style: CustomTextStyles
-                                                .bodySmallBlack900
-                                                .copyWith(
-                                              decoration:
-                                                  TextDecoration.underline,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 8.v),
+                                          _buildInputEmail(context),
+                                          SizedBox(height: 14.v),
+                                          _buildInputPassword(context),
+                                          SizedBox(height: 20.v),
+                                          _buildButton(user),
+                                          SizedBox(height: 14.v),
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ForgotPasswordScreen()),
+                                                );
+                                              },
+                                              child: Text(
+                                                "Glömt ditt lösenord",
+                                                style: CustomTextStyles
+                                                    .bodySmallBlack900
+                                                    .copyWith(
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               )
                             ],
@@ -161,7 +165,7 @@ class _SignupScreenState extends State<LoginScreen> {
                         ),
                       )),
                   SizedBox(
-                    height: 150.h,
+                    height: 120.h,
                   ),
                   Align(
                     alignment: Alignment.center,
@@ -197,6 +201,48 @@ class _SignupScreenState extends State<LoginScreen> {
                   ),
                 ])),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorBar() {
+    return Opacity(
+      opacity: (error.isEmpty) ? 0.0 : 1.0,
+      child: Container(
+        width: SizeUtils.width,
+        height: 40.h,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(41, 202, 80, 71),
+          border: Border(
+            top: BorderSide(color: Colors.red),
+            bottom: BorderSide(color: Colors.red),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              error,
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: Color.fromARGB(255, 136, 30, 23),
+                  ),
+            ),
+            SizedBox(width: 12.h,),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  error = "";
+                });
+              },
+              child: Text(
+                "   X   ",
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      color: Color.fromARGB(255, 136, 30, 23),
+                    ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -311,22 +357,30 @@ class _SignupScreenState extends State<LoginScreen> {
     }
 
     if (userNameController.text.isEmpty) {
-      showErrorSnackbar(context, emptyEmail);
+      setState(() {
+        error = emptyEmail;
+      });
       return;
     }
 
     if (passwordController.text.isEmpty) {
-      showErrorSnackbar(context, emptyPassword);
+      setState(() {
+        error = emptyPassword;
+      });
       return;
     }
 
     if (!isValidEmail(userNameController.text)) {
-      showErrorSnackbar(context, invalidEmail);
+      setState(() {
+        error = invalidEmail;
+      });
       return;
     }
 
     if (!isValidPassword(passwordController.text)) {
-      showErrorSnackbar(context, invalidPassword);
+      setState(() {
+        error = invalidPassword;
+      });
       return;
     }
 
@@ -347,11 +401,15 @@ class _SignupScreenState extends State<LoginScreen> {
         print(user.email);
         Navigator.pushNamed(context, AppRoutes.homeScreen);
       } else {
-        showErrorSnackbar(context, "Invalid email or password");
+        setState(() {
+          error = "Felaktigt användarnamn eller lösenord";
+        });
       }
     } else {
       print("Error: " + response.statusCode.toString());
-      showErrorSnackbar(context, "invalid email or password");
+      setState(() {
+        error = "Felaktigt användarnamn eller lösenord";
+      });
     }
   }
 
