@@ -110,10 +110,10 @@ class SignUpSuccess extends StatelessWidget {
             ),
             backgroundColor:
                 MaterialStateColor.resolveWith((states) => appTheme.purple300)),
-        text: "Börja Spring!",
+        text: "Logga in!",
         buttonTextStyle: theme.textTheme.labelSmall,
         onPressed: () async {
-          Navigator.pushNamed(context, AppRoutes.homeScreen);
+          Navigator.pushNamed(context, AppRoutes.initialRoute);
         },
       ),
     );

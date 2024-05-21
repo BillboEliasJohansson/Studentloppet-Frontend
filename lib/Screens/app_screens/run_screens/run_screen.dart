@@ -186,7 +186,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
                 ),
                 SizedBox(width: 10),
                 Text(
-                  "Distance är noll",
+                  "Distans är noll",
                   style: TextStyle(color: Colors.white),
                 ),
               ],

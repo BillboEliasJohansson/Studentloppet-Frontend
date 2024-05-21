@@ -493,7 +493,7 @@ class _SignupScreenState extends State<SignupScreen> {
         SizedBox(height: 4.v),
         CustomTextFormField(
           controller: emailController,
-          hintText: "Skriv in ditt universitets email",
+          hintText: "Skriv in ditt universitets-email",
           textInputType: TextInputType.emailAddress,
         )
       ],

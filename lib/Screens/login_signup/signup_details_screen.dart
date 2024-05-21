@@ -115,7 +115,7 @@ class SignupDetailsScreen extends StatelessWidget {
                                       _buildInputDate(context),
                                       SizedBox(height: 14.v),
                                       _buildButton(context, user),
-                                      SizedBox(height: 2.v),
+                                      SizedBox(height: 10.v),
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: GestureDetector(
@@ -215,8 +215,8 @@ class SignupDetailsScreen extends StatelessWidget {
       children: [
         Text(
           "Förnamn",
-          style: theme.textTheme.titleSmall,
-        ),
+          style: CustomTextStyles.bodySmallBlack900_1
+                      .copyWith(color: appTheme.black900.withOpacity(0.63))),
         SizedBox(height: 4.v),
         CustomTextFormField(
           controller: firstName,
@@ -233,8 +233,8 @@ class SignupDetailsScreen extends StatelessWidget {
       children: [
         Text(
           "Efternamn",
-          style: theme.textTheme.titleSmall,
-        ),
+          style: CustomTextStyles.bodySmallBlack900_1
+                      .copyWith(color: appTheme.black900.withOpacity(0.63))),
         SizedBox(height: 4.v),
         CustomTextFormField(
           controller: lastName,
@@ -251,13 +251,12 @@ class SignupDetailsScreen extends StatelessWidget {
       children: [
         Text(
           "Födelsedatum",
-          style: theme.textTheme.titleSmall,
-        ),
+          style: CustomTextStyles.bodySmallBlack900_1
+                      .copyWith(color: appTheme.black900.withOpacity(0.63))),
         Text(
-          "Krävs för autentisering",
-          style: theme.textTheme.bodySmall!
-              .copyWith(color: Colors.black.withOpacity(0.5)),
-        ),
+          "Krävs för autentisering*",
+          style: CustomTextStyles.bodySmallBlack900_1
+                      .copyWith(color: appTheme.black900)),
         SizedBox(height: 4.v),
         CustomTextFormField(
           controller: date,
@@ -274,12 +273,12 @@ class SignupDetailsScreen extends StatelessWidget {
       children: [
         Text(
           "Vikt (frivilligt)",
-          style: theme.textTheme.titleSmall,
-        ),
+          style: CustomTextStyles.bodySmallBlack900_1
+                      .copyWith(color: appTheme.black900.withOpacity(0.63))),
         Text(
-          "Krävs för kalloriberäkning*",
+          "Krävs för kaloriberäkning*",
           style: theme.textTheme.bodySmall!
-              .copyWith(color: Colors.black.withOpacity(0.5)),
+              .copyWith(color: Colors.black),
         ),
         SizedBox(height: 4.v),
         CustomTextFormField(
@@ -296,11 +295,9 @@ class SignupDetailsScreen extends StatelessWidget {
     if (response.statusCode == 200) {
       // Visa en framgångsrik snackbar om vikten uppdaterades korrekta
       print(user.weight);
-      showSuccesfulSnackbar(context, "Weight updated successfully");
     } else {
       print(response.body);
       // Visa ett felmeddelande om det uppstod problem med att uppdatera vikten
-      showErrorSnackbar(context, "Failed to update weight");
     }
   }
 
@@ -310,12 +307,10 @@ class SignupDetailsScreen extends StatelessWidget {
     }
 
     if (firstName.text.isEmpty) {
-      showErrorSnackbar(context, emptyFirstName);
       return;
     }
 
     if (lastName.text.isEmpty) {
-      showErrorSnackbar(context, emptyLastName);
       return;
     }
 
@@ -324,13 +319,10 @@ class SignupDetailsScreen extends StatelessWidget {
 
     if (response.statusCode == 200) {
       if (response.body.contains("true")) {
-        showSuccesfulSnackbar(context, "Success");
         Navigator.pushNamed(context, AppRoutes.signUpSuccess);
       } else {
-        showErrorSnackbar(context, "Internal Server Error");
       }
     } else {
-      showErrorSnackbar(context, "Internal Server Error");
     }
   }
 }
