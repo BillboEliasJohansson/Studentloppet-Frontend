@@ -736,19 +736,28 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
     return CustomAppBar(
       leadingWidth: 30.h,
       leading: AppbarLeadingImage(
-          onTap: () {
-            Navigator.pushNamed(context, AppRoutes.homeScreen);
-          },
-          imagePath: ImageConstant.imgArrowLeftWhite,
-          margin: EdgeInsets.only(
-            left: 5.h,
-            top: 16.v,
-            bottom: 17.v,
-          )),
+        onTap: () {
+          Navigator.pushNamed(context, AppRoutes.homeScreen);
+        },
+        imagePath: ImageConstant.imgArrowLeftWhite,
+        margin: EdgeInsets.only(
+          left: 5.h,
+          top: 16.v,
+          bottom: 17.v,
+        ),
+      ),
       centerTitle: true,
       title: AppbarTitle(
         text: "Profil",
       ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.logout, color: Colors.white),
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoutes.initialRoute);
+          },
+        ),
+      ],
       styleType: Style.bgFill,
     );
   }
