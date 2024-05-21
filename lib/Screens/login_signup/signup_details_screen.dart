@@ -31,7 +31,7 @@ class SignupDetailsScreen extends StatelessWidget {
       top: false,
       bottom: false,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
@@ -42,107 +42,109 @@ class SignupDetailsScreen extends StatelessWidget {
                 ),
                 fit: BoxFit.fill),
           ),
-          child: SizedBox(
-            width: SizeUtils.width,
-            child: Container(
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12.h,
-                  vertical: 13.v,
-                ),
-                child: Column(children: [
-                  SizedBox(
-                    height: 25.h,
+          child: SingleChildScrollView(
+            child: SizedBox(
+              width: SizeUtils.width,
+              child: Container(
+                  width: double.maxFinite,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.h,
+                    vertical: 13.v,
                   ),
-                  _buildTopBar(),
-                  Container(
-                      margin: EdgeInsets.all(10),
-                      decoration: AppDecoration.outlineWhite.copyWith(
-                        borderRadius: BorderRadiusStyle.roundedBorder11,
-                      ),
-                      child: Card(
-                        clipBehavior: Clip.antiAlias,
-                        elevation: 0,
+                  child: Column(children: [
+                    SizedBox(
+                      height: 25.h,
+                    ),
+                    _buildTopBar(),
+                    Container(
                         margin: EdgeInsets.all(10),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: theme.colorScheme.onPrimaryContainer,
-                            width: 1.h,
-                          ),
-                          borderRadius: BorderRadiusStyle.roundedBorder10,
+                        decoration: AppDecoration.outlineWhite.copyWith(
+                          borderRadius: BorderRadiusStyle.roundedBorder11,
                         ),
-                        child: Container(
-                          height: 415.v,
-                          width: 313.h,
-                          padding: EdgeInsets.all(5.h),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: Container(
-                                  height: 546.v,
-                                  width: 298.h,
-                                  decoration: BoxDecoration(
-                                    color: theme.colorScheme.onPrimaryContainer,
-                                    borderRadius: BorderRadius.circular(
-                                      5.h,
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          elevation: 0,
+                          margin: EdgeInsets.all(10),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: theme.colorScheme.onPrimaryContainer,
+                              width: 1.h,
+                            ),
+                            borderRadius: BorderRadiusStyle.roundedBorder10,
+                          ),
+                          child: Container(
+                            height: 415.v,
+                            width: 313.h,
+                            padding: EdgeInsets.all(5.h),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    height: 546.v,
+                                    width: 298.h,
+                                    decoration: BoxDecoration(
+                                      color: theme.colorScheme.onPrimaryContainer,
+                                      borderRadius: BorderRadius.circular(
+                                        5.h,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 16.h,
-                                    right: 25.h,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: 10.v),
-                                      Text(
-                                        "Skapa konto",
-                                        style: theme.textTheme.headlineSmall,
-                                      ),
-                                      SizedBox(height: 20.v),
-                                      _buildInputFirstName(context),
-                                      SizedBox(height: 14.v),
-                                      _buildInputLastName(context),
-                                      SizedBox(height: 14.v),
-                                      _buildInputWeight(context),
-                                      SizedBox(height: 14.v),
-                                      _buildInputDate(context),
-                                      SizedBox(height: 14.v),
-                                      _buildButton(context, user),
-                                      SizedBox(height: 10.v),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.pushNamed(context,
-                                                AppRoutes.initialRoute);
-                                          },
-                                          child: Text(
-                                            "Tillbaka till inloggningssidan",
-                                            style: CustomTextStyles
-                                                .bodySmallBlack900
-                                                .copyWith(
-                                              decoration:
-                                                  TextDecoration.underline,
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 16.h,
+                                      right: 25.h,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 10.v),
+                                        Text(
+                                          "Skapa konto",
+                                          style: theme.textTheme.headlineSmall,
+                                        ),
+                                        SizedBox(height: 20.v),
+                                        _buildInputFirstName(context),
+                                        SizedBox(height: 14.v),
+                                        _buildInputLastName(context),
+                                        SizedBox(height: 14.v),
+                                        _buildInputWeight(context),
+                                        SizedBox(height: 14.v),
+                                        _buildInputDate(context),
+                                        SizedBox(height: 14.v),
+                                        _buildButton(context, user),
+                                        SizedBox(height: 10.v),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.pushNamed(context,
+                                                  AppRoutes.initialRoute);
+                                            },
+                                            child: Text(
+                                              "Tillbaka till inloggningssidan",
+                                              style: CustomTextStyles
+                                                  .bodySmallBlack900
+                                                  .copyWith(
+                                                decoration:
+                                                    TextDecoration.underline,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      )
-                                    ],
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      )),
-                ])),
+                        )),
+                  ])),
+            ),
           ),
         ),
       ),
