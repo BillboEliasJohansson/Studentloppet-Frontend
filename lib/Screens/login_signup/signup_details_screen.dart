@@ -286,7 +286,7 @@ class SignupDetailsScreen extends StatelessWidget {
         CustomTextFormField(
           controller: weight,
           hintText: "Skriv din vikt här",
-          textInputType: TextInputType.numberWithOptions(decimal: true),
+          textInputType: TextInputType.numberWithOptions(),
         )
       ],
     );
