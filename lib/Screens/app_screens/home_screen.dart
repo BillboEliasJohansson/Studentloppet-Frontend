@@ -452,6 +452,9 @@ class _HomeScreenState extends State<HomeScreen> {
       barTouchData: BarTouchData(enabled: false),
       barGroups: data,
       borderData: FlBorderData(show: false),
+      gridData: FlGridData(
+        show: false
+      ),
       titlesData: FlTitlesData(
         leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
