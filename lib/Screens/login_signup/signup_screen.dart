@@ -400,23 +400,61 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  /// Method to show password rules dialog
+  void _showPasswordRulesDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Password Rules"),
+          content: Text(
+            "Ditt lösenord måste vara minst 8 tecken långt, innehålla en stor och en liten bokstav, och minst ett nummer. \n \n Obs: Inga tecken!",
+          ),
+          actions: [
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   /// Section Widget
   Widget _buildInputPassword(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Lösenord",
-          style: CustomTextStyles.bodySmallBlack900_1.copyWith(
-            color: appTheme.black900.withOpacity(0.63),
-          ),
+        Row(
+          children: [
+            Text(
+              "Lösenord",
+              style: CustomTextStyles.bodySmallBlack900_1.copyWith(
+                color: appTheme.black900.withOpacity(0.63),
+              ),
+            ),
+            SizedBox(width: 5.h),
+            GestureDetector(
+              onTap: () {
+                _showPasswordRulesDialog(context);
+              },
+              child: Icon(
+                Icons.info_outline,
+                size: 20.h,
+                color: appTheme.black900.withOpacity(0.63),
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 5.v),
         CustomTextFormField(
           controller: passwordController,
           hintText: "Skriv in ditt lösenord",
           obscureText: true,
-        )
+        ),
       ],
     );
   }
