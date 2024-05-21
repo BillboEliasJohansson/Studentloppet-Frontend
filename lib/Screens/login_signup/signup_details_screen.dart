@@ -252,7 +252,7 @@ class SignupDetailsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Födelsedatum",
+          "Födelseår",
           style: CustomTextStyles.bodySmallBlack900_1
                       .copyWith(color: appTheme.black900.withOpacity(0.63))),
         Text(

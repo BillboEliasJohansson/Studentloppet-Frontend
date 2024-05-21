@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class User with ChangeNotifier {
   String _email = '';
+  String _password = '';
+  int _age = 0;
   int _score = 0;
   String _firstName = '';
   String _lastName = '';
@@ -65,6 +67,36 @@ class User with ChangeNotifier {
     notifyListeners(); // Notify listeners of change
   }
 
+  
+  set password(String newEmail) {
+    _email = newEmail;
+    notifyListeners(); // Notify listeners of change
+  }
+
+
+  set age(String newEmail) {
+    _email = newEmail;
+    notifyListeners(); // Notify listeners of change
+  }
+
+
+  set firstName(String newEmail) {
+    _email = newEmail;
+    notifyListeners(); // Notify listeners of change
+  }
+
+
+  set lastname(String newEmail) {
+    _email = newEmail;
+    notifyListeners(); // Notify listeners of change
+  }
+
+
+  set university(String newEmail) {
+    _email = newEmail;
+    notifyListeners(); // Notify listeners of change
+  }
+
   void reset() {
     _email = ''; // Reset to empty string
     _score = 0; // Reset to 0
@@ -75,4 +107,17 @@ class User with ChangeNotifier {
 
     notifyListeners(); // Notify listeners that the state has changed
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'email': _email,
+      'password': _password,
+      'age': _age,
+      'firstName': _firstName,
+      'lastName': _lastName,
+      'university': _university,
+      'score': _score,
+    };
+  }
+  
 }
