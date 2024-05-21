@@ -253,7 +253,7 @@ class VerifyOtpScreen extends StatelessWidget {
 
     if (response.statusCode == 200) {
       print("Response: " + response.body);
-      if (response.body.contains("token verified!")) {
+      if (response.body.contains("Token verified!")) {
         showSuccesfulSnackbar(context, "Success");
         Navigator.pushNamed(context, AppRoutes.updatePasswordScreen);
       }

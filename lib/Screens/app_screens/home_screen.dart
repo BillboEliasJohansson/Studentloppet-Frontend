@@ -84,8 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(height: 5.h),
                           _buildButton(
                               "Registering för Midnattsloppet",
-                              () => null, //TO DO denna ska bort
-                              //() => _launchUrl(), Min emulator krashar när jag går in till webben, inne och utanför appen, därför commenterar jag bort detta
+                              () => _launchUrl(),
                               MaterialStateColor.resolveWith(
                                   (states) => appTheme.deepPurple500),
                               AppDecoration.outlineDeepPurple.copyWith(

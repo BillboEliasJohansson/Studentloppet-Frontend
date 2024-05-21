@@ -14,7 +14,6 @@ import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/Constants/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/utils/validation_functions.dart';
-import 'package:studentloppet/utils/snackbars_util.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_dropdownmenu.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
