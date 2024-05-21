@@ -71,7 +71,7 @@ class SignupDetailsScreen extends StatelessWidget {
                           borderRadius: BorderRadiusStyle.roundedBorder10,
                         ),
                         child: Container(
-                          height: 350.v,
+                          height: 415.v,
                           width: 313.h,
                           padding: EdgeInsets.all(5.h),
                           child: Stack(
@@ -114,7 +114,7 @@ class SignupDetailsScreen extends StatelessWidget {
                                       _buildInputDate(context),
                                       SizedBox(height: 14.v),
                                       _buildButton(context, user),
-                                      SizedBox(height: 14.v),
+                                      SizedBox(height: 2.v),
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: GestureDetector(
