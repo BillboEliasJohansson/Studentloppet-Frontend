@@ -300,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
       leadingWidth: 30.h,
       centerTitle: true,
       title: AppbarTitle(
-        text: "Hemskärm",
+        text: "Studentloppet",
       ),
       styleType: Style.bgFill,
     );

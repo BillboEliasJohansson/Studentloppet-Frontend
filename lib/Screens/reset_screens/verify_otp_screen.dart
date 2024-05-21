@@ -208,7 +208,7 @@ class VerifyOtpScreen extends StatelessWidget {
             ),
             backgroundColor:
                 MaterialStateColor.resolveWith((states) => appTheme.orange)),
-        text: "Skicka",
+        text: "Verifiera",
         buttonTextStyle: theme.textTheme.labelSmall,
         onPressed: () async {
           await verifyOtp(context, user);
