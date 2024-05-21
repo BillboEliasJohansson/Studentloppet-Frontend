@@ -22,6 +22,7 @@ class SignupDetailsScreen extends StatelessWidget {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController weight = TextEditingController();
+  TextEditingController date = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -259,7 +260,7 @@ class SignupDetailsScreen extends StatelessWidget {
         ),
         SizedBox(height: 4.v),
         CustomTextFormField(
-          controller: weight,
+          controller: date,
           hintText: "Skriv ditt födelsedatum här",
           textInputType: TextInputType.numberWithOptions(decimal: true),
         ),
