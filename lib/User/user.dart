@@ -16,6 +16,7 @@ class User with ChangeNotifier {
   String get lastName => _lastName;
   String get university => _university;
   double get weight => _weight;
+  int get year => _age;
 
   void setUser({
     String? newEmail,
@@ -67,30 +68,25 @@ class User with ChangeNotifier {
     notifyListeners(); // Notify listeners of change
   }
 
-  
   set password(String newEmail) {
     _email = newEmail;
     notifyListeners(); // Notify listeners of change
   }
-
 
   set age(String newEmail) {
     _email = newEmail;
     notifyListeners(); // Notify listeners of change
   }
 
-
   set firstName(String newEmail) {
     _email = newEmail;
     notifyListeners(); // Notify listeners of change
   }
 
-
   set lastname(String newEmail) {
     _email = newEmail;
     notifyListeners(); // Notify listeners of change
   }
-
 
   set university(String newEmail) {
     _email = newEmail;
@@ -119,5 +115,4 @@ class User with ChangeNotifier {
       'score': _score,
     };
   }
-  
 }

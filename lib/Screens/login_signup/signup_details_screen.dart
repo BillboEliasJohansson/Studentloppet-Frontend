@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:studentloppet/Constants/constants.dart';
 import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/networking/network.dart';
 import 'package:studentloppet/routes/app_routes.dart';
@@ -11,12 +10,9 @@ import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/Constants/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
-import 'package:studentloppet/utils/snackbars_util.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_text_form_field.dart';
-
-//TODO updatera user klassen
 
 class SignupDetailsScreen extends StatelessWidget {
   TextEditingController firstName = TextEditingController();
@@ -85,7 +81,8 @@ class SignupDetailsScreen extends StatelessWidget {
                                     height: 546.v,
                                     width: 298.h,
                                     decoration: BoxDecoration(
-                                      color: theme.colorScheme.onPrimaryContainer,
+                                      color:
+                                          theme.colorScheme.onPrimaryContainer,
                                       borderRadius: BorderRadius.circular(
                                         5.h,
                                       ),
@@ -205,6 +202,7 @@ class SignupDetailsScreen extends StatelessWidget {
         buttonTextStyle: theme.textTheme.labelSmall,
         onPressed: () async {
           await setWeight(context, user);
+          await setYear(context, user);
           await setName(context, user);
         },
       ),
@@ -215,10 +213,9 @@ class SignupDetailsScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Förnamn",
-          style: CustomTextStyles.bodySmallBlack900_1
-                      .copyWith(color: appTheme.black900.withOpacity(0.63))),
+        Text("Förnamn",
+            style: CustomTextStyles.bodySmallBlack900_1
+                .copyWith(color: appTheme.black900.withOpacity(0.63))),
         SizedBox(height: 4.v),
         CustomTextFormField(
           controller: firstName,
@@ -233,10 +230,9 @@ class SignupDetailsScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Efternamn",
-          style: CustomTextStyles.bodySmallBlack900_1
-                      .copyWith(color: appTheme.black900.withOpacity(0.63))),
+        Text("Efternamn",
+            style: CustomTextStyles.bodySmallBlack900_1
+                .copyWith(color: appTheme.black900.withOpacity(0.63))),
         SizedBox(height: 4.v),
         CustomTextFormField(
           controller: lastName,
@@ -251,14 +247,12 @@ class SignupDetailsScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Födelseår",
-          style: CustomTextStyles.bodySmallBlack900_1
-                      .copyWith(color: appTheme.black900.withOpacity(0.63))),
-        Text(
-          "Krävs för autentisering*",
-          style: CustomTextStyles.bodySmallBlack900_1
-                      .copyWith(color: appTheme.black900)),
+        Text("Födelseår",
+            style: CustomTextStyles.bodySmallBlack900_1
+                .copyWith(color: appTheme.black900.withOpacity(0.63))),
+        Text("Krävs för autentisering*",
+            style: CustomTextStyles.bodySmallBlack900_1
+                .copyWith(color: appTheme.black900)),
         SizedBox(height: 4.v),
         CustomTextFormField(
           controller: date,
@@ -273,14 +267,12 @@ class SignupDetailsScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Vikt (frivilligt)",
-          style: CustomTextStyles.bodySmallBlack900_1
-                      .copyWith(color: appTheme.black900.withOpacity(0.63))),
+        Text("Vikt (frivilligt)",
+            style: CustomTextStyles.bodySmallBlack900_1
+                .copyWith(color: appTheme.black900.withOpacity(0.63))),
         Text(
           "Krävs för kaloriberäkning*",
-          style: theme.textTheme.bodySmall!
-              .copyWith(color: Colors.black),
+          style: theme.textTheme.bodySmall!.copyWith(color: Colors.black),
         ),
         SizedBox(height: 4.v),
         CustomTextFormField(
@@ -296,10 +288,17 @@ class SignupDetailsScreen extends StatelessWidget {
     final response = await network.setWeight(user.email, weight.text);
     if (response.statusCode == 200) {
       // Visa en framgångsrik snackbar om vikten uppdaterades korrekta
-      print(user.weight);
     } else {
       print(response.body);
       // Visa ett felmeddelande om det uppstod problem med att uppdatera vikten
+    }
+  }
+
+  Future<void> setYear(BuildContext context, user) async {
+    final response = await network.setYear(user.email, date.text);
+    if (response.statusCode == 200) {
+    } else {
+      print(response.body);
     }
   }
 
@@ -322,9 +321,7 @@ class SignupDetailsScreen extends StatelessWidget {
     if (response.statusCode == 200) {
       if (response.body.contains("true")) {
         Navigator.pushNamed(context, AppRoutes.signUpSuccess);
-      } else {
-      }
-    } else {
-    }
+      } else {}
+    } else {}
   }
 }

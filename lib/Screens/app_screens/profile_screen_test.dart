@@ -472,15 +472,32 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
             ),
           ),
           Spacer(),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 7.v, horizontal: 10),
-            child: Text(
-              detail,
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    color: Colors.white,
+          title == "Universitet"
+              ? Flexible(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 7.v, horizontal: 10),
+                    child: Text(
+                      detail,
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.white,
+                            fontSize: 10, // Mindre textstorlek
+                          ),
+                      maxLines: 2, // Tillåter texten att gå till nästa rad
+                      overflow: TextOverflow
+                          .ellipsis, // Lägger till ellips för overflowed text
+                    ),
                   ),
-            ),
-          )
+                )
+              : Padding(
+                  padding: EdgeInsets.symmetric(vertical: 7.v, horizontal: 10),
+                  child: Text(
+                    detail,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Colors.white,
+                        ),
+                  ),
+                ),
         ],
       ),
     );

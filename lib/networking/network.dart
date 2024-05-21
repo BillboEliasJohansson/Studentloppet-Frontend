@@ -6,7 +6,7 @@ import 'package:studentloppet/Screens/app_screens/home_screen.dart'; // for JSON
 class network {
   static Future<http.Response> callSignUp(
       String university, String email, String password) async {
-    final response = await http.get(Uri.parse(
+    final response = await http.post(Uri.parse(
         'https://group-15-2.pvt.dsv.su.se/studentloppet/addwithuni/' +
             email +
             "/" +
@@ -78,13 +78,14 @@ class network {
 
   static Future<http.Response> updateName(
       String email, String first, String last) async {
-    final response = await http.get(Uri.parse(
+    final response = await http.post(Uri.parse(
         "https://group-15-2.pvt.dsv.su.se/studentloppet/set/" +
             email +
             "/" +
             first +
             "/" +
             last));
+    print(response.body);
     return response;
   }
 
@@ -94,6 +95,15 @@ class network {
             email +
             "/" +
             weight));
+    return response;
+  }
+
+  static Future<http.Response> setYear(String email, String year) async {
+    final response = await http.post(Uri.parse(
+        "https://group-15-2.pvt.dsv.su.se/studentloppet/setYearOfBirth/" +
+            email +
+            "/" +
+            year));
     return response;
   }
 

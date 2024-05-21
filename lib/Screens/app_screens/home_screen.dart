@@ -452,9 +452,7 @@ class _HomeScreenState extends State<HomeScreen> {
       barTouchData: BarTouchData(enabled: false),
       barGroups: data,
       borderData: FlBorderData(show: false),
-      gridData: FlGridData(
-        show: false
-      ),
+      gridData: FlGridData(show: false),
       titlesData: FlTitlesData(
         leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -509,21 +507,21 @@ class University {
   factory University.scoreFromJson(Map<String, dynamic> json) {
     return University(
       university: json['universityDisplayName'] ?? '',
-      score: json['score'] ?? 0,
+      score: json['metric'] ?? 0,
     );
   }
 
   factory University.distanceFromJson(Map<String, dynamic> json) {
     return University(
       university: json['universityDisplayName'] ?? '',
-      distance: json['score'] ?? 0,
+      distance: json['metric'] ?? 0,
     );
   }
 
   factory University.usercountFromJson(Map<String, dynamic> json) {
     return University(
       university: json['universityDisplayName'] ?? '',
-      users: json['score'] ?? 0,
+      users: json['metric'] ?? 0,
     );
   }
 }
