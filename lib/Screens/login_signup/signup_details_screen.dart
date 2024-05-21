@@ -16,7 +16,6 @@ import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_text_form_field.dart';
 
-
 //TODO updatera user klassen
 
 class SignupDetailsScreen extends StatelessWidget {
@@ -111,6 +110,8 @@ class SignupDetailsScreen extends StatelessWidget {
                                       _buildInputLastName(context),
                                       SizedBox(height: 14.v),
                                       _buildInputWeight(context),
+                                      SizedBox(height: 14.v),
+                                      _buildInputDate(context),
                                       SizedBox(height: 14.v),
                                       _buildButton(context, user),
                                       SizedBox(height: 14.v),
@@ -239,6 +240,29 @@ class SignupDetailsScreen extends StatelessWidget {
           hintText: "Skriv ditt efternamn här",
           textInputType: TextInputType.visiblePassword,
         )
+      ],
+    );
+  }
+
+  Widget _buildInputDate(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Födelsedatum",
+          style: theme.textTheme.titleSmall,
+        ),
+        Text(
+          "Krävs för autentisering",
+          style: theme.textTheme.bodySmall!
+              .copyWith(color: Colors.black.withOpacity(0.5)),
+        ),
+        SizedBox(height: 4.v),
+        CustomTextFormField(
+          controller: weight,
+          hintText: "Skriv ditt födelsedatum här",
+          textInputType: TextInputType.numberWithOptions(decimal: true),
+        ),
       ],
     );
   }

@@ -49,6 +49,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
   Duration _elapsedTime = Duration.zero;
   double totalDistance = 0.0;
   Map<String, dynamic> response = {};
+  bool isGifLoaded = false;
 
   Weather? w;
   WeatherFactory wf =
@@ -163,6 +164,13 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
     });
   }
 
+  void preloadGif() async {
+    await precacheImage(AssetImage('assets/images/confety.gif'), context);
+    setState(() {
+      isGifLoaded = true;
+    });
+  }
+
   void stopRun(User user) async {
     if (totalDistance == 0) {
       showDialog(
@@ -226,15 +234,69 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
 
     print(user.email);
 
-    response =
-        await network.postActivity(user.email, totalDistance, _elapsedTime);
+    int elapsedSeconds = _elapsedTime.inSeconds;
+    if (elapsedSeconds == 0) {
+      elapsedSeconds = 1;
+    }
+
+    response = await network.postActivity(
+        user.email, totalDistance, Duration(seconds: elapsedSeconds));
 
     print(response.toString());
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color.fromARGB(255, 217, 238, 248),
+          title: Row(
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Color.fromARGB(255, 0, 128, 0),
+              ),
+              SizedBox(width: 10),
+              Text(
+                "Löprunda Avslutad",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Du har tjänat ${response['scoreGained']} poäng!",
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 10),
+              isGifLoaded // Check if GIF is loaded
+                  ? Gif(
+                      duration: const Duration(seconds: 5),
+                      autostart: Autostart.loop,
+                      controller: controller1,
+                      image: const AssetImage('assets/images/confety.gif'),
+                    )
+                  : const Center(child: CircularProgressIndicator()),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+    preloadGif(); // Preload GIF here
     return SafeArea(
       child: Scaffold(
         appBar: _buildAppBar(context),

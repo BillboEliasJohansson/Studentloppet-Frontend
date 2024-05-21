@@ -11,6 +11,8 @@ import 'package:studentloppet/widgets/ProfileHelpers/appbar_title_profile.dart';
 import 'package:studentloppet/widgets/ProfileHelpers/custom_app_bar.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
 import 'package:studentloppet/widgets/custom_nav_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:studentloppet/Screens/app_screens/run_screens/run_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<University>? universityData;
   Map<String, dynamic> activityData = {};
   bool dataFetched = false;
+  final Uri _url = Uri.parse('https://midnattsloppet.com');
 
   @override
   void initState() {
@@ -60,56 +63,62 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     return SafeArea(
       child: universityData == null
-            ? Text("")
-            : Scaffold(
-        appBar: _buildAppBar(context),
-        body: Container(
-          width: SizeUtils.width,
-          height: SizeUtils.height,
-          padding: EdgeInsets.only(
-            top: 5.v,
-            left: 10,
-            right: 10,
-            bottom: 1,
-          ),
-          child: SingleChildScrollView(
-            child: Consumer<User>(
-              builder: (context, user, _) {
-                return Column(
-                  children: [
-                    _buildPageHeader(),
-                    SizedBox(height: 5.h),
-                    _buildButton(
-                        "Registering för Midnattsloppet",
-                        () => null,
-                        MaterialStateColor.resolveWith(
-                            (states) => appTheme.deepPurple500),
-                        AppDecoration.outlineDeepPurple.copyWith(
-                            borderRadius: BorderRadiusStyle.roundedBorder10)),
-                    SizedBox(height: 5.h),
-                    _buildButton(
-                        "Påbörja en ny löprunda",
-                        () => null,
-                        MaterialStateColor.resolveWith(
-                            (states) => appTheme.orange),
-                        AppDecoration.outlineOrange.copyWith(
-                            borderRadius: BorderRadiusStyle.roundedBorder10)),
-                    SizedBox(height: 5.h),
-                    _buildPersonalStatisticsCard(
-                        context, user, "Min Löpstatistik"),
-                    SizedBox(height: 5.h),
-                    _buildCardLeaderboard(
-                        context, user, "Universitetstävlingen"),
-                  ],
-                );
-              },
+          ? Text("")
+          : Scaffold(
+              appBar: _buildAppBar(context),
+              body: Container(
+                width: SizeUtils.width,
+                height: SizeUtils.height,
+                padding: EdgeInsets.only(
+                  top: 5.v,
+                  left: 10,
+                  right: 10,
+                  bottom: 1,
+                ),
+                child: SingleChildScrollView(
+                  child: Consumer<User>(
+                    builder: (context, user, _) {
+                      return Column(
+                        children: [
+                          _buildPageHeader(),
+                          SizedBox(height: 5.h),
+                          _buildButton(
+                              "Registering för Midnattsloppet",
+                              () => null, //TO DO denna ska bort
+                              //() => _launchUrl(), Min emulator krashar när jag går in till webben, inne och utanför appen, därför commenterar jag bort detta
+                              MaterialStateColor.resolveWith(
+                                  (states) => appTheme.deepPurple500),
+                              AppDecoration.outlineDeepPurple.copyWith(
+                                  borderRadius:
+                                      BorderRadiusStyle.roundedBorder10)),
+                          SizedBox(height: 5.h),
+                          _buildButton(
+                              "Påbörja en ny löprunda",
+                              () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RunScreen())),
+                              MaterialStateColor.resolveWith(
+                                  (states) => appTheme.orange),
+                              AppDecoration.outlineOrange.copyWith(
+                                  borderRadius:
+                                      BorderRadiusStyle.roundedBorder10)),
+                          SizedBox(height: 5.h),
+                          _buildPersonalStatisticsCard(
+                              context, user, "Min Löpstatistik"),
+                          SizedBox(height: 5.h),
+                          _buildCardLeaderboard(
+                              context, user, "Universitetstävlingen"),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+              bottomNavigationBar: CustomNavBar(
+                PageIndex: 1,
+              ),
             ),
-          ),
-        ),
-        bottomNavigationBar: CustomNavBar(
-          PageIndex: 1,
-        ),
-      ),
     );
   }
 
@@ -166,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
         "Tid",
         activityData['totalDuration'] == null
             ? "..."
-            : activityData['totalDuration'].toString(),
+            : activityData['totalDuration'].toString() + " min",
         ImageConstant.imgTimer,
       ),
       SizedBox(height: 0.v),
@@ -181,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
         "Avstånd",
         activityData['totalDistance'] == null
             ? "..."
-            : activityData['totalDistance'].toStringAsFixed(2),
+            : activityData['totalDistance'].toStringAsFixed(2) + " km",
         ImageConstant.imgFeet,
       ),
       SizedBox(height: 0.v),
@@ -196,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
         "Genomsnittlig Hastighet",
         activityData['averageSpeed'] == null
             ? "..."
-            : activityData['averageSpeed'].toStringAsFixed(2),
+            : activityData['averageSpeed'].toStringAsFixed(2) + " km/h",
         ImageConstant.imgRun,
       ),
       SizedBox(height: 0.v),
@@ -211,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
         "Kalorier brända",
         activityData['caloriesBurned'] == null
             ? "..."
-            : activityData['caloriesBurned'].toString(),
+            : activityData['caloriesBurned'].toStringAsFixed(2) + " kcal",
         ImageConstant.imgFire,
       ),
       SizedBox(height: 0.v),
@@ -296,6 +305,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       styleType: Style.bgFill,
     );
+  }
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 
   Widget _buildButton(String buttonText, Function()? f,

@@ -67,7 +67,7 @@ class network {
             "/" +
             (distance / 1000).toString() +
             "/" +
-            duration.inMinutes.toString();
+            duration.inSeconds.toString();
 
     final response = await http.post(Uri.parse(url));
 
@@ -211,7 +211,8 @@ class network {
     }
   }
 
-  static Future<Map<String, double>> getUniLeaderboardDistance(String uni) async {
+  static Future<Map<String, double>> getUniLeaderboardDistance(
+      String uni) async {
     final response = await http.get(Uri.parse(
         'https://group-15-2.pvt.dsv.su.se/api/leaderboard/sortedByDistance/' +
             uni));
@@ -246,7 +247,7 @@ class network {
     }
   }
 
-   static Future<Map<String, double>> getUniLeaderboardSpeed(String uni) async {
+  static Future<Map<String, double>> getUniLeaderboardSpeed(String uni) async {
     final response = await http.get(Uri.parse(
         'https://group-15-2.pvt.dsv.su.se/api/leaderboard/sortedBySpeed/' +
             uni));

@@ -386,7 +386,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         "Tid",
         activityData['totalDuration'] == null
             ? "..."
-            : activityData['totalDuration'].toString(),
+            : activityData['totalDuration'].toString() + " min",
         ImageConstant.imgTimer,
       ),
       SizedBox(height: 0.v),
@@ -401,7 +401,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         "Avstånd",
         activityData['totalDistance'] == null
             ? "..."
-            : activityData['totalDistance'].toStringAsFixed(2),
+            : activityData['totalDistance'].toStringAsFixed(2) + " km",
         ImageConstant.imgFeet,
       ),
       SizedBox(height: 0.v),
@@ -416,7 +416,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         "Genomsnittlig Hastighet",
         activityData['averageSpeed'] == null
             ? "..."
-            : activityData['averageSpeed'].toStringAsFixed(2),
+            : activityData['averageSpeed'].toStringAsFixed(2) + " km/m",
         ImageConstant.imgRun,
       ),
       SizedBox(height: 0.v),
@@ -431,7 +431,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         "Kalorier brända",
         activityData['caloriesBurned'] == null
             ? "..."
-            : activityData['caloriesBurned'].toString(),
+            : activityData['caloriesBurned'].toStringAsFixed(2) + " kcal",
         ImageConstant.imgFire,
       ),
       SizedBox(height: 0.v),
