@@ -462,7 +462,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
             child: _buildInformationCard(
                 "Tempo",
                 calculatePace(_elapsedTime, totalDistance),
-                ImageConstant.imgRunner),
+                ImageConstant.imgTimer),
           ),
           SizedBox(height: 10.v),
           Padding(
@@ -470,7 +470,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
             child: _buildInformationCard(
                 "Genomsnitlig Hastighet",
                 calculateSpeed(_elapsedTime, totalDistance),
-                ImageConstant.imgHatNew),
+                ImageConstant.imgRun),
           ),
           SizedBox(height: 10.v),
           Padding(
@@ -480,7 +480,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
                 response["scoreGained"] == null
                     ? "..."
                     : response["caloriesBurned"].toStringAsFixed(2),
-                ImageConstant.imgHatNew),
+                ImageConstant.imgFire),
           ),
           SizedBox(height: 10.v),
           Padding(
@@ -490,7 +490,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
                 response["scoreGained"] == null
                     ? "..."
                     : response["scoreGained"].toString(),
-                ImageConstant.imgHatNew),
+                ImageConstant.imgTrophy),
           ),
           SizedBox(height: 10.v),
           Padding(
@@ -556,7 +556,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
                 imagePath,
                 width: 32.h, // Adjust the size based on your layout needs
                 height: 32.v,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ],
           ),
