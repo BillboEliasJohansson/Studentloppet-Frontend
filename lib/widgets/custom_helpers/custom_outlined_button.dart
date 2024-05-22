@@ -34,23 +34,50 @@ class CustomOutlinedButton extends BaseButton {
         );
 
   final BoxDecoration? decoration;
-
   final Widget? leftIcon;
-
   final Widget? rightIcon;
-
   final Widget? label;
 
   @override
   Widget build(BuildContext context) {
-    return alignment != null
-        ? Align(
-            alignment: alignment ?? Alignment.center,
-            child: buildOutlinedButtonWidget)
-        : buildOutlinedButtonWidget;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double fontSize = buttonTextStyle?.fontSize ?? 30;
+        double buttonWidth = constraints.maxWidth;
+
+        // Measure the text width
+        TextPainter textPainter = TextPainter(
+          text: TextSpan(
+            text: text,
+            style: buttonTextStyle?.copyWith(fontSize: fontSize),
+          ),
+          maxLines: 1,
+          textDirection: TextDirection.ltr,
+        )..layout();
+
+        // Reduce font size until text fits within the button width
+        while (textPainter.width > buttonWidth - 40 && fontSize > 8) {
+          fontSize -= 1;
+          textPainter = TextPainter(
+            text: TextSpan(
+              text: text,
+              style: buttonTextStyle?.copyWith(fontSize: fontSize),
+            ),
+            maxLines: 1,
+            textDirection: TextDirection.ltr,
+          )..layout();
+        }
+
+        return alignment != null
+            ? Align(
+                alignment: alignment ?? Alignment.center,
+                child: buildOutlinedButtonWidget(fontSize))
+            : buildOutlinedButtonWidget(fontSize);
+      },
+    );
   }
 
-  Widget get buildOutlinedButtonWidget => Container(
+  Widget buildOutlinedButtonWidget(double fontSize) => Container(
         height: height ?? 32.v,
         width: width ?? double.maxFinite,
         margin: margin,
@@ -62,12 +89,16 @@ class CustomOutlinedButton extends BaseButton {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              leftIcon ?? const SizedBox.shrink(),
-              Text(
-                text,
-                style: buttonTextStyle,
+              if (leftIcon != null) leftIcon!,
+              Flexible(
+                child: Text(
+                  text,
+                  style: buttonTextStyle?.copyWith(fontSize: fontSize),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              rightIcon ?? const SizedBox.shrink()
+              if (rightIcon != null) rightIcon!,
             ],
           ),
         ),

@@ -119,32 +119,30 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         ),
         borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
-      child: Container(
-        height: 160.v,
-        width: 340.h,
-        padding: EdgeInsets.all(7.h),
-        decoration: AppDecoration.outlinePurple.copyWith(
-          borderRadius: BorderRadiusStyle.roundedBorder10,
-        ),
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: 200.v,
-                width: 330.h,
-                decoration: BoxDecoration(
-                  color: appTheme.deepPurple500,
-                  borderRadius: BorderRadius.circular(
-                    5.h,
+      child: IntrinsicHeight(
+        child: Container(
+          width: 340.h,
+          padding: EdgeInsets.all(7.h),
+          decoration: AppDecoration.outlinePurple.copyWith(
+            borderRadius: BorderRadiusStyle.roundedBorder10,
+          ),
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 330.h,
+                  decoration: BoxDecoration(
+                    color: appTheme.deepPurple500,
+                    borderRadius: BorderRadius.circular(5.h),
                   ),
                 ),
               ),
-            ),
-            _buildCardHeader(context, header),
-            _buildInfoCard2(context, user),
-          ],
+              _buildCardHeader(context, header),
+              _buildInfoCard2(context, user),
+            ],
+          ),
         ),
       ),
     );
@@ -162,32 +160,30 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         ),
         borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
-      child: Container(
-        height: 210.v,
-        width: 340.h,
-        padding: EdgeInsets.all(7.h),
-        decoration: AppDecoration.outlinePurple.copyWith(
-          borderRadius: BorderRadiusStyle.roundedBorder10,
-        ),
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: 220.v,
-                width: 330.h,
-                decoration: BoxDecoration(
-                  color: appTheme.deepPurple500,
-                  borderRadius: BorderRadius.circular(
-                    5.h,
+      child: IntrinsicHeight(
+        child: Container(
+          width: 340.h,
+          padding: EdgeInsets.all(7.h),
+          decoration: AppDecoration.outlinePurple.copyWith(
+            borderRadius: BorderRadiusStyle.roundedBorder10,
+          ),
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 330.h,
+                  decoration: BoxDecoration(
+                    color: appTheme.deepPurple500,
+                    borderRadius: BorderRadius.circular(5.h),
                   ),
                 ),
               ),
-            ),
-            _buildCardHeader(context, header),
-            _buildInfoCard3(context, user),
-          ],
+              _buildCardHeader(context, header),
+              _buildInfoCard3(context, user),
+            ],
+          ),
         ),
       ),
     );
@@ -205,32 +201,30 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         ),
         borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
-      child: Container(
-        height: 210.v,
-        width: 340.h,
-        padding: EdgeInsets.all(7.h),
-        decoration: AppDecoration.outlinePurple.copyWith(
-          borderRadius: BorderRadiusStyle.roundedBorder10,
-        ),
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: 200.v,
-                width: 330.h,
-                decoration: BoxDecoration(
-                  color: appTheme.deepPurple500,
-                  borderRadius: BorderRadius.circular(
-                    5.h,
+      child: IntrinsicHeight(
+        child: Container(
+          width: 340.h,
+          padding: EdgeInsets.all(7.h),
+          decoration: AppDecoration.outlinePurple.copyWith(
+            borderRadius: BorderRadiusStyle.roundedBorder10,
+          ),
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 330.h,
+                  decoration: BoxDecoration(
+                    color: appTheme.deepPurple500,
+                    borderRadius: BorderRadius.circular(5.h),
                   ),
                 ),
               ),
-            ),
-            _buildCardHeader(context, header),
-            _buildInfoCard4(context, user),
-          ],
+              _buildCardHeader(context, header),
+              _buildInfoCard4(context, user),
+            ],
+          ),
         ),
       ),
     );
@@ -280,7 +274,8 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         indent: 20.h,
         color: Colors.white.withOpacity(0.80),
         endIndent: 20,
-      )
+      ),
+      SizedBox(height: 10),
     ]);
   }
 
@@ -350,6 +345,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         color: Colors.white.withOpacity(0.80),
         endIndent: 20,
       ),
+      SizedBox(height: 10),
     ]);
   }
 
@@ -419,6 +415,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         color: Colors.white.withOpacity(0.80),
         endIndent: 20,
       ),
+      SizedBox(height: 10),
     ]);
   }
 
