@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           _buildPageHeader(),
                           SizedBox(height: 5.h),
                           _buildButton(
-                              "Registering för Midnattsloppet WOOOOooo",
+                              "Registering för Midnattsloppet",
                               () => _launchUrl(),
                               MaterialStateColor.resolveWith(
                                   (states) => appTheme.deepPurple500),
