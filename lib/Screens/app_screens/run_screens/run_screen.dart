@@ -50,6 +50,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
   double totalDistance = 0.0;
   Map<String, dynamic> response = {};
   bool isGifLoaded = false;
+  bool isWeatherFetched = false;
 
   Weather? w;
   WeatherFactory wf =
@@ -65,6 +66,7 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
     getCurrentLocation();
     setCustomMarkers();
     getPolyPoints();
+    fetchWeatherOnce();
   }
 
   @override
@@ -434,9 +436,17 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
     );
   }
 
-  Future<void> getWeather() async {
-    w = await wf.currentWeatherByLocation(
-        currentLocation!.latitude!, currentLocation!.longitude!);
+  void fetchWeatherOnce() async {
+    if (!isWeatherFetched) {
+      // Fetch weather based on initial location
+      Location location = Location();
+      LocationData initialLocation = await location.getLocation();
+      w = await wf.currentWeatherByLocation(
+          initialLocation.latitude!, initialLocation.longitude!);
+      setState(() {
+        isWeatherFetched = true; // Set flag to true after fetching weather
+      });
+    }
   }
 
   Widget buildAfterRunContent(User user) {
@@ -587,7 +597,6 @@ class _RunScreenState extends State<RunScreen> with TickerProviderStateMixin {
   Widget buildContentBasedOnState(User user) {
     switch (currentState) {
       case RunState.before:
-        currentLocation == null ? CircularProgressIndicator() : getWeather();
         return buildBeforeRunContent(user);
 
       case RunState.during:

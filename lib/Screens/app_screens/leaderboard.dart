@@ -219,7 +219,7 @@ class LeaderboardState extends State<Leaderboard> {
         barRods: [
           BarChartRodData(
               toY: universityDataUsers![1].users!.toDouble(),
-              color: Colors.blue,
+              color: Colors.orange,
               width: 40,
               borderRadius: BorderRadius.zero)
         ],
@@ -229,7 +229,7 @@ class LeaderboardState extends State<Leaderboard> {
         barRods: [
           BarChartRodData(
               toY: universityDataUsers![2].users!.toDouble(),
-              color: Colors.blue,
+              color: Colors.green,
               width: 40,
               borderRadius: BorderRadius.zero)
         ],
@@ -239,7 +239,7 @@ class LeaderboardState extends State<Leaderboard> {
         barRods: [
           BarChartRodData(
               toY: universityDataUsers![3].users!.toDouble(),
-              color: Colors.blue,
+              color: Colors.red,
               width: 40,
               borderRadius: BorderRadius.zero)
         ],
