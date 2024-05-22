@@ -40,6 +40,8 @@ class LeaderboardState extends State<Leaderboard> {
   @override
   void initState() {
     fetchLeaderboardData();
+    fetchLeaderboardDataDistance();
+    fetchLeaderboardDataUsercount();
     super.initState();
   }
 
@@ -55,6 +57,8 @@ class LeaderboardState extends State<Leaderboard> {
 
     return SafeArea(
         child: universityData == null ||
+                universityDataDistance == null ||
+                universityDataUsers == null ||
                 userData == null ||
                 userDataDistance == null ||
                 userDataSpeed == null
@@ -93,10 +97,10 @@ class LeaderboardState extends State<Leaderboard> {
 
   Widget _buildLeaderboardList(BuildContext context) {
     List<String> titles1 = [
-      universityData![0].university!.substring(0, 3),
-      universityData![1].university!.substring(0, 3),
-      universityData![2].university!.substring(0, 3),
-      universityData![3].university!.substring(0, 3),
+      universityDataDistance![0].university!.substring(0, 3),
+      universityDataDistance![1].university!.substring(0, 3),
+      universityDataDistance![2].university!.substring(0, 3),
+      universityDataDistance![3].university!.substring(0, 3),
     ];
 
     List<String> titles2 = [
@@ -107,10 +111,10 @@ class LeaderboardState extends State<Leaderboard> {
     ];
 
     List<String> titles3 = [
-      universityData![0].university!.substring(0, 3),
-      universityData![1].university!.substring(0, 3),
-      universityData![2].university!.substring(0, 3),
-      universityData![3].university!.substring(0, 3),
+      universityDataUsers![0].university!.substring(0, 3),
+      universityDataUsers![1].university!.substring(0, 3),
+      universityDataUsers![2].university!.substring(0, 3),
+      universityDataUsers![3].university!.substring(0, 3),
     ];
 
     List<BarChartGroupData> data1 = [
@@ -118,7 +122,7 @@ class LeaderboardState extends State<Leaderboard> {
         x: 0,
         barRods: [
           BarChartRodData(
-              toY: 50000,
+              toY: universityDataDistance![0].distance!.toDouble(),
               color: Colors.blue,
               width: 40,
               borderRadius: BorderRadius.zero)
@@ -128,7 +132,7 @@ class LeaderboardState extends State<Leaderboard> {
         x: 1,
         barRods: [
           BarChartRodData(
-              toY: 30000,
+              toY: universityDataDistance![1].distance!.toDouble(),
               color: Colors.orange,
               width: 40,
               borderRadius: BorderRadius.zero)
@@ -138,7 +142,7 @@ class LeaderboardState extends State<Leaderboard> {
         x: 2,
         barRods: [
           BarChartRodData(
-              toY: 70000,
+              toY: universityDataDistance![2].distance!.toDouble(),
               color: Colors.green,
               width: 40,
               borderRadius: BorderRadius.zero)
@@ -148,7 +152,7 @@ class LeaderboardState extends State<Leaderboard> {
         x: 3,
         barRods: [
           BarChartRodData(
-              toY: 10000,
+              toY: universityDataDistance![3].distance!.toDouble(),
               color: Colors.pink,
               width: 40,
               borderRadius: BorderRadius.zero)
@@ -204,7 +208,7 @@ class LeaderboardState extends State<Leaderboard> {
         x: 0,
         barRods: [
           BarChartRodData(
-              toY: 50000,
+              toY: universityDataUsers![0].users!.toDouble(),
               color: Colors.blue,
               width: 40,
               borderRadius: BorderRadius.zero)
@@ -214,7 +218,7 @@ class LeaderboardState extends State<Leaderboard> {
         x: 1,
         barRods: [
           BarChartRodData(
-              toY: 2,
+              toY: universityDataUsers![1].users!.toDouble(),
               color: Colors.blue,
               width: 40,
               borderRadius: BorderRadius.zero)
@@ -224,7 +228,7 @@ class LeaderboardState extends State<Leaderboard> {
         x: 2,
         barRods: [
           BarChartRodData(
-              toY: 2,
+              toY: universityDataUsers![2].users!.toDouble(),
               color: Colors.blue,
               width: 40,
               borderRadius: BorderRadius.zero)
@@ -234,7 +238,7 @@ class LeaderboardState extends State<Leaderboard> {
         x: 3,
         barRods: [
           BarChartRodData(
-              toY: 8,
+              toY: universityDataUsers![3].users!.toDouble(),
               color: Colors.blue,
               width: 40,
               borderRadius: BorderRadius.zero)
@@ -254,8 +258,16 @@ class LeaderboardState extends State<Leaderboard> {
           itemBuilder: (context, index) {
             List<List<BarChartGroupData>> data = [data1, data2, data3];
             List<List<String>> titles = [titles1, titles2, titles3];
+            List<String> category = [
+              "Totala kilometer sprugna",
+              "Totala mängd poäng",
+              "Flest löpare registrerade"
+            ];
+            List<double> scale = [1000, 200000, 100];
 
             return LeaderboardItemWidget(
+              maxY: scale[index],
+              category: category[index],
               data: data[index],
               titles: titles[index],
             );

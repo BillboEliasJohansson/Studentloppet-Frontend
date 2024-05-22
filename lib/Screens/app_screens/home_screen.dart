@@ -499,7 +499,7 @@ class _HomeScreenState extends State<HomeScreen> {
 class University {
   String? university;
   int? score;
-  int? distance;
+  double? distance;
   int? users;
 
   University({this.university, this.score, this.distance, this.users});

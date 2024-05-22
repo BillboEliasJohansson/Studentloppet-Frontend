@@ -7,8 +7,15 @@ import 'package:studentloppet/utils/size_utils.dart';
 class LeaderboardItemWidget extends StatelessWidget {
   final List<BarChartGroupData> data;
   final List<String> titles;
+  final String category;
+  final double maxY;
 
-  LeaderboardItemWidget({Key? key, required this.data, required this.titles})
+  LeaderboardItemWidget(
+      {Key? key,
+      required this.category,
+      required this.data,
+      required this.maxY,
+      required this.titles})
       : super(key: key);
 
   @override
@@ -52,7 +59,7 @@ class LeaderboardItemWidget extends StatelessWidget {
                       ),
                 ),
                 Text(
-                  "Totala mängd poäng",
+                  category,
                   style: Theme.of(context)
                       .textTheme
                       .displaySmall!
@@ -62,7 +69,7 @@ class LeaderboardItemWidget extends StatelessWidget {
                   child: BarChart(BarChartData(
                     gridData: FlGridData(show: false),
                     alignment: BarChartAlignment.spaceAround,
-                    maxY: 200000,
+                    maxY: maxY,
                     barTouchData: BarTouchData(enabled: false),
                     barGroups: data,
                     borderData: FlBorderData(show: false),
