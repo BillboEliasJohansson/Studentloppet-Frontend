@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           _buildPageHeader(),
                           SizedBox(height: 5.h),
                           _buildButton(
-                              "Registering för Midnattsloppet",
+                              "Registering för Midnattsloppet WOOOOooo",
                               () => _launchUrl(),
                               MaterialStateColor.resolveWith(
                                   (states) => appTheme.deepPurple500),
@@ -133,102 +133,97 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
-      child: Container(
-        height: 210.v,
-        width: 360.h,
-        padding: EdgeInsets.all(7.h),
-        decoration: AppDecoration.outlinePurple.copyWith(
-          borderRadius: BorderRadiusStyle.roundedBorder10,
-        ),
-        child: Stack(
-          children: [
-            Align(
-              child: Container(
-                height: 220.v,
-                width: 330.h,
-                decoration: BoxDecoration(
-                  color: appTheme.deepPurple500,
-                  borderRadius: BorderRadius.circular(
-                    5.h,
+      child: IntrinsicHeight(
+        child: Container(
+          padding: EdgeInsets.all(7.h),
+          decoration: AppDecoration.outlinePurple.copyWith(
+            borderRadius: BorderRadiusStyle.roundedBorder10,
+          ),
+          child: Stack(
+            children: [
+              Align(
+                child: Container(
+                  width: 330.h,
+                  decoration: BoxDecoration(
+                    color: appTheme.deepPurple500,
+                    borderRadius: BorderRadius.circular(
+                      5.h,
+                    ),
                   ),
                 ),
               ),
-            ),
-            _buildCardHeader(context, header),
-            _buildInfoCard(context, user),
-          ],
+              _buildCardHeader(context, header),
+              _buildInfoCard(context, user),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildInfoCard(
-    context,
-    user,
-  ) {
-    return Column(children: [
-      SizedBox(height: 40),
-      _buildRowView(
-        context,
-        user,
-        "Tid",
-        activityData['totalDuration'] == null
-            ? "..."
-            : activityData['totalDuration'].toString() + " min",
-        ImageConstant.imgTimer,
-      ),
-      SizedBox(height: 0.v),
-      Divider(
-        indent: 20.h,
-        color: Colors.white.withOpacity(0.80),
-        endIndent: 20,
-      ),
-      _buildRowView(
-        context,
-        user,
-        "Avstånd",
-        activityData['totalDistance'] == null
-            ? "..."
-            : activityData['totalDistance'].toStringAsFixed(2) + " km",
-        ImageConstant.imgFeet,
-      ),
-      SizedBox(height: 0.v),
-      Divider(
-        indent: 20.h,
-        color: Colors.white.withOpacity(0.80),
-        endIndent: 20,
-      ),
-      _buildRowView(
-        context,
-        user,
-        "Genomsnittlig Hastighet",
-        activityData['averageSpeed'] == null
-            ? "..."
-            : activityData['averageSpeed'].toStringAsFixed(2) + " km/h",
-        ImageConstant.imgRun,
-      ),
-      SizedBox(height: 0.v),
-      Divider(
-        indent: 20.h,
-        color: Colors.white.withOpacity(0.80),
-        endIndent: 20,
-      ),
-      _buildRowView(
-        context,
-        user,
-        "Kalorier brända",
-        activityData['caloriesBurned'] == null
-            ? "..."
-            : activityData['caloriesBurned'].toStringAsFixed(2) + " kcal",
-        ImageConstant.imgFire,
-      ),
-      SizedBox(height: 0.v),
-      Divider(
-        indent: 20.h,
-        color: Colors.white.withOpacity(0.80),
-        endIndent: 20,
-      ),
-    ]);
+  Widget _buildInfoCard(BuildContext context, User user) {
+    return Column(
+      children: [
+        SizedBox(height: 40),
+        _buildRowView(
+          context,
+          user,
+          "Tid",
+          activityData['totalDuration'] == null
+              ? "..."
+              : activityData['totalDuration'].toString() + " min",
+          ImageConstant.imgTimer,
+        ),
+        Divider(
+          indent: 20.h,
+          color: Colors.white.withOpacity(0.80),
+          endIndent: 20,
+        ),
+        _buildRowView(
+          context,
+          user,
+          "Avstånd",
+          activityData['totalDistance'] == null
+              ? "..."
+              : activityData['totalDistance'].toStringAsFixed(2) + " km",
+          ImageConstant.imgFeet,
+        ),
+        Divider(
+          indent: 20.h,
+          color: Colors.white.withOpacity(0.80),
+          endIndent: 20,
+        ),
+        _buildRowView(
+          context,
+          user,
+          "Genomsnittlig Hastighet",
+          activityData['averageSpeed'] == null
+              ? "..."
+              : activityData['averageSpeed'].toStringAsFixed(2) + " km/h",
+          ImageConstant.imgRun,
+        ),
+        Divider(
+          indent: 20.h,
+          color: Colors.white.withOpacity(0.80),
+          endIndent: 20,
+        ),
+        _buildRowView(
+          context,
+          user,
+          "Kalorier brända",
+          activityData['caloriesBurned'] == null
+              ? "..."
+              : activityData['caloriesBurned'].toStringAsFixed(2) + " kcal",
+          ImageConstant.imgFire,
+        ),
+        Divider(
+          indent: 20.h,
+          color: Colors.white.withOpacity(0.80),
+          endIndent: 20,
+        ),
+        SizedBox(height: 20),
+      ],
+    );
   }
 
   Widget _buildRowView(BuildContext context, User user, String title,
@@ -318,20 +313,20 @@ class _HomeScreenState extends State<HomeScreen> {
       margin: EdgeInsets.all(5),
       decoration: outline,
       child: CustomOutlinedButton(
-          margin: EdgeInsets.all(5),
-          buttonStyle: ButtonStyle(
-            side: MaterialStateBorderSide.resolveWith(
-                (states) => BorderSide(style: BorderStyle.none)),
-            shape: MaterialStateProperty.resolveWith<OutlinedBorder?>(
-              (states) => RoundedRectangleBorder(
-                  borderRadius: BorderRadiusStyle.roundedBorder6),
-            ),
-            backgroundColor: color,
+        margin: EdgeInsets.all(5),
+        buttonStyle: ButtonStyle(
+          side: MaterialStateBorderSide.resolveWith(
+              (states) => BorderSide(style: BorderStyle.none)),
+          shape: MaterialStateProperty.resolveWith<OutlinedBorder?>(
+            (states) => RoundedRectangleBorder(
+                borderRadius: BorderRadiusStyle.roundedBorder6),
           ),
-          text: buttonText,
-          buttonTextStyle:
-              theme.textTheme.displayMedium!.copyWith(fontSize: 30),
-          onPressed: f),
+          backgroundColor: color,
+        ),
+        text: buttonText,
+        buttonTextStyle: theme.textTheme.displayMedium!.copyWith(fontSize: 30),
+        onPressed: f,
+      ),
     );
   }
 
