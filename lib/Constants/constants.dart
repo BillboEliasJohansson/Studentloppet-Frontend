@@ -1,6 +1,6 @@
 const String google_api_key = "AIzaSyB5mSpGiD6KzsDSlJcPss9H3cv0kgiCN1k";
 
-const String weather_api_key = "1791f87f961583bc104568c1ad371401";
+const String weather_api_key = "0e0e3e4c280cdbd7a38c71d7e0b23873";
 //ERROR MESSAGES
 const String emptyPassword = "Lösenord kan inte vara tomt";
 
