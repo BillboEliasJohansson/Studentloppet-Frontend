@@ -165,7 +165,7 @@ class _SignupScreenState extends State<LoginScreen> {
                         ),
                       )),
                   SizedBox(
-                    height: 120.h,
+                    height: 100.h,
                   ),
                   Align(
                     alignment: Alignment.center,
@@ -174,7 +174,7 @@ class _SignupScreenState extends State<LoginScreen> {
                       children: [
                         Text(
                           "Har du inget konto? ",
-                          style: CustomTextStyles.smallTextWhite,
+                          style: CustomTextStyles.smallTextWhite
                         ),
                         GestureDetector(
                           onTap: () {

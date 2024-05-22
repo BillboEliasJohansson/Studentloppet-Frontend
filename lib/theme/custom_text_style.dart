@@ -79,11 +79,11 @@ class CustomTextStyles {
       );
   static get smallTextWhite => theme.textTheme.bodyLarge!.copyWith(
         color: appTheme.whiteA700,
-        fontSize: 13.fSize,
+        fontSize: 16.fSize,
       );
   static get smallTextWhiteUnderlined => theme.textTheme.bodyLarge!.copyWith(
       color: appTheme.whiteA700,
-      fontSize: 13.fSize,
+      fontSize: 16.fSize,
       decoration: TextDecoration.underline);
 
   static get titleLargePassionOne =>
