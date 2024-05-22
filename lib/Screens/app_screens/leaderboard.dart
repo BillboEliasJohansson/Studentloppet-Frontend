@@ -311,7 +311,7 @@ class LeaderboardState extends State<Leaderboard> {
             List<String> category = [
               "Kilometer sprunga",
               "Totala mängd poäng",
-              "Hastighet",
+              "Hastighet - min/km",
             ];
             print(allNames[0].length);
             return UniLeaderboardItemWidget(
