@@ -1,6 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/networking/network.dart';
 import 'package:studentloppet/theme/app_decoration.dart';
@@ -22,8 +25,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<University>? universityData;
   Map<String, dynamic> activityData = {};
+  Map<String, dynamic> weeklyActivityData = {};
   bool dataFetched = false;
-  final Uri _url = Uri.parse('https://midnattsloppet.com');
+  final Uri _url =
+      Uri.parse('https://midnattsloppet.com/anmalan-till-midnattsloppet/');
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
@@ -54,11 +60,24 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void fetchPersonalWeeklyData(user) async {
+    try {
+      Map<String, dynamic> data = await network.getWeeklyActivity(user.email);
+      setState(() {
+        weeklyActivityData = data;
+      });
+      return;
+    } catch (e) {
+      print("Error fetching leaderboard: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!dataFetched) {
       User user = Provider.of<User>(context);
       fetchPersonalData(user);
+      fetchPersonalWeeklyData(user);
       dataFetched = true;
     }
     return SafeArea(
@@ -79,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Consumer<User>(
                     builder: (context, user, _) {
                       return Column(
-                        children: [
+                        children: <Widget>[
                           _buildPageHeader(),
                           SizedBox(height: 5.h),
                           _buildButton(
@@ -103,8 +122,33 @@ class _HomeScreenState extends State<HomeScreen> {
                                   borderRadius:
                                       BorderRadiusStyle.roundedBorder10)),
                           SizedBox(height: 5.h),
-                          _buildPersonalStatisticsCard(
-                              context, user, "Min Löpstatistik"),
+                          Column(
+                            children: [
+                              Container(
+                                height: 305, // Adjust height as necessary
+                                child: PageView(
+                                  controller: _pageController,
+                                  children: [
+                                    _buildPersonalStatisticsCard(
+                                        context, user, "Min Löpstatistik"),
+                                    _buildWeeklyPersonalStatisticsCard(
+                                        context, user, "Min Löpstatistik denna vecka"),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              SmoothPageIndicator(
+                                controller: _pageController,
+                                count: 2,
+                                effect: WormEffect(
+                                  dotHeight: 10,
+                                  dotWidth: 10,
+                                  type: WormType.thin,
+                                  strokeWidth: 5,
+                                ),
+                              ),
+                            ],
+                          ),
                           SizedBox(height: 5.h),
                           _buildCardLeaderboard(
                               context, user, "Universitetstävlingen"),
@@ -158,6 +202,112 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildWeeklyPersonalStatisticsCard(
+      BuildContext context, User user, String header) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: appTheme.deepPurple500,
+          width: 2.h,
+        ),
+        borderRadius: BorderRadiusStyle.roundedBorder10,
+      ),
+      child: IntrinsicHeight(
+        child: Container(
+          padding: EdgeInsets.all(7.h),
+          decoration: AppDecoration.outlinePurple.copyWith(
+            borderRadius: BorderRadiusStyle.roundedBorder10,
+          ),
+          child: Stack(
+            children: [
+              Align(
+                child: Container(
+                  width: 330.h,
+                  decoration: BoxDecoration(
+                    color: appTheme.deepPurple500,
+                    borderRadius: BorderRadius.circular(
+                      5.h,
+                    ),
+                  ),
+                ),
+              ),
+              _buildCardHeader(context, header),
+              _buildWeeklyInfoCard(context, user),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWeeklyInfoCard(BuildContext context, User user) {
+    return Column(
+      children: [
+        SizedBox(height: 40),
+        _buildRowView(
+          context,
+          user,
+          "Tid",
+          weeklyActivityData['totalDuration'] == null
+              ? "..."
+              : weeklyActivityData['totalDuration'].toString() + " min",
+          ImageConstant.imgTimer,
+        ),
+        Divider(
+          indent: 20.h,
+          color: Colors.white.withOpacity(0.80),
+          endIndent: 20,
+        ),
+        _buildRowView(
+          context,
+          user,
+          "Avstånd",
+          weeklyActivityData['totalDistance'] == null
+              ? "..."
+              : weeklyActivityData['totalDistance'].toStringAsFixed(2) + " km",
+          ImageConstant.imgFeet,
+        ),
+        Divider(
+          indent: 20.h,
+          color: Colors.white.withOpacity(0.80),
+          endIndent: 20,
+        ),
+        _buildRowView(
+          context,
+          user,
+          "Genomsnittlig Hastighet",
+          weeklyActivityData['averageSpeed'] == null
+              ? "..."
+              : weeklyActivityData['averageSpeed'].toStringAsFixed(2) + " km/h",
+          ImageConstant.imgRun,
+        ),
+        Divider(
+          indent: 20.h,
+          color: Colors.white.withOpacity(0.80),
+          endIndent: 20,
+        ),
+        _buildRowView(
+          context,
+          user,
+          "Kalorier brända",
+          weeklyActivityData['caloriesBurned'] == null
+              ? "..."
+              : weeklyActivityData['caloriesBurned'].toStringAsFixed(2) +
+                  " kcal",
+          ImageConstant.imgFire,
+        ),
+        Divider(
+          indent: 20.h,
+          color: Colors.white.withOpacity(0.80),
+          endIndent: 20,
+        ),
+        SizedBox(height: 20),
+      ],
     );
   }
 
@@ -443,7 +593,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return BarChart(BarChartData(
       alignment: BarChartAlignment.spaceAround,
-      maxY: 200000,
+      maxY: 350000,
       barTouchData: BarTouchData(enabled: false),
       barGroups: data,
       borderData: FlBorderData(show: false),

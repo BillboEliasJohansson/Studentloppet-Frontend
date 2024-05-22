@@ -263,7 +263,7 @@ class LeaderboardState extends State<Leaderboard> {
               "Totala mängd poäng",
               "Flest löpare registrerade"
             ];
-            List<double> scale = [1000, 200000, 100];
+            List<double> scale = [1000, 350000, 100];
 
             return LeaderboardItemWidget(
               maxY: scale[index],
