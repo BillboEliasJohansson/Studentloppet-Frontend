@@ -313,10 +313,11 @@ class network {
     }
   }
 
-    static Future<Map<String, dynamic>> getWeeklyActivity(String email) async {
+  static Future<Map<String, dynamic>> getWeeklyActivity(String email) async {
     final response = await http.get(
       Uri.parse(
-          'https://group-15-2.pvt.dsv.su.se/api/activities/totalWeekSummary/' + email),
+          'https://group-15-2.pvt.dsv.su.se/api/activities/totalWeekSummary/' +
+              email),
     );
 
     if (response.statusCode == 200) {
@@ -372,10 +373,6 @@ class network {
     final response = await http.get(Uri.parse(
         'https://group-15-2.pvt.dsv.su.se/api/profile-pictures/by-email/$email'));
 
-    if (response.statusCode == 200) {
-      return response;
-    } else {
-      throw Exception("Failed to load profile picture");
-    }
+    return response;
   }
 }
