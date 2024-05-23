@@ -366,7 +366,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         "Tid",
         activityData['totalDuration'] == null
             ? "..."
-            : activityData['totalDuration'].toString() + " min",
+            : activityData['totalDuration'].toStringAsFixed(2) + " min",
         ImageConstant.imgTimer,
       ),
       SizedBox(height: 0.v),

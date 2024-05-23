@@ -253,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
           "Tid",
           weeklyActivityData['totalDuration'] == null
               ? "..."
-              : weeklyActivityData['totalDuration'].toString() + " min",
+              : weeklyActivityData['totalDuration'].toStringAsFixed(2) + " min",
           ImageConstant.imgTimer,
         ),
         Divider(
@@ -319,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
           "Tid",
           activityData['totalDuration'] == null
               ? "..."
-              : activityData['totalDuration'].toString() + " min",
+              : activityData['totalDuration'].toStringAsFixed(2) + " min",
           ImageConstant.imgTimer,
         ),
         Divider(
