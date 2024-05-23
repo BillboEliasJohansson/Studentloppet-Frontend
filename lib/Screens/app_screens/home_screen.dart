@@ -129,8 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     _buildPersonalStatisticsCard(
                                         context, user, "Min Löpstatistik"),
-                                    _buildWeeklyPersonalStatisticsCard(
-                                        context, user, "Min Löpstatistik denna vecka"),
+                                    _buildWeeklyPersonalStatisticsCard(context,
+                                        user, "Min Löpstatistik denna vecka"),
                                   ],
                                 ),
                               ),

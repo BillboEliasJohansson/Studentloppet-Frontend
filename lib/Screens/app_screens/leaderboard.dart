@@ -263,7 +263,11 @@ class LeaderboardState extends State<Leaderboard> {
               "Totala mängd poäng",
               "Flest löpare registrerade"
             ];
-            List<double> scale = [universityDataDistance![0].distance!.toDouble() + 500, universityData![0].score!.toDouble() + 50000, universityDataUsers![0].users!.toDouble() + 10];
+            List<double> scale = [
+              universityDataDistance![0].distance!.toDouble() + 500,
+              universityData![0].score!.toDouble() + 50000,
+              universityDataUsers![0].users!.toDouble() + 10
+            ];
 
             return LeaderboardItemWidget(
               maxY: scale[index],
@@ -300,7 +304,7 @@ class LeaderboardState extends State<Leaderboard> {
     List<List<String>> allScores = [distanceString, pointsString, speedString];
 
     return SizedBox(
-        height: 300.v,
+        height: 320.v,
         child: ListView.separated(
           dragStartBehavior: DragStartBehavior.start,
           padding: EdgeInsets.only(left: 12.h, right: 12.h),
