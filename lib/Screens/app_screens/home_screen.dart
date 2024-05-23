@@ -14,6 +14,7 @@ import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart
 import 'package:studentloppet/widgets/custom_nav_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:studentloppet/Screens/app_screens/run_screens/run_screen.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -428,11 +429,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: Align(
         alignment: Alignment.topLeft,
-        child: Text(
+        child: AutoSizeText(
           header,
           style: Theme.of(context).textTheme.displaySmall!.copyWith(
                 fontSize: 26,
               ),
+          maxLines: 1,
+          minFontSize: 12,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
     );
