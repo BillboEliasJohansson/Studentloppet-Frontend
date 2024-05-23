@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class User with ChangeNotifier {
   String _email = '';
@@ -9,6 +13,8 @@ class User with ChangeNotifier {
   String _lastName = '';
   String _university = '';
   double _weight = 0;
+  String? _profilePictureUrl;
+  Uint8List? _profilePictureBytes;
 
   String get email => _email;
   int get score => _score;
@@ -17,6 +23,7 @@ class User with ChangeNotifier {
   String get university => _university;
   double get weight => _weight;
   int get year => _age;
+  Uint8List? get profilePictureBytes => _profilePictureBytes;
 
   void setUser({
     String? newEmail,
@@ -25,6 +32,7 @@ class User with ChangeNotifier {
     String? newLastName,
     String? newUniversity,
     double? newWeight,
+    String? newProfilePicture,
   }) {
     bool shouldNotify = false;
 
@@ -57,10 +65,21 @@ class User with ChangeNotifier {
       _weight = newWeight;
       shouldNotify = true;
     }
+    if (newProfilePicture != null) {
+      _profilePictureUrl = newProfilePicture;
+      _profilePictureBytes = base64Decode(newProfilePicture.split(',')[1]);
+      shouldNotify = true;
+    }
 
     if (shouldNotify) {
       notifyListeners();
     }
+  }
+
+  void updateProfilePicture(String url) {
+    _profilePictureUrl = url;
+    _profilePictureBytes = base64Decode(url.split(',')[1]);
+    notifyListeners();
   }
 
   set email(String newEmail) {
@@ -100,6 +119,8 @@ class User with ChangeNotifier {
     _lastName = ''; // Reset to empty string
     _university = ''; // Reset to empty string
     _weight = 0;
+    _profilePictureUrl = null;
+    _profilePictureBytes = null;
 
     notifyListeners(); // Notify listeners that the state has changed
   }
@@ -113,6 +134,7 @@ class User with ChangeNotifier {
       'lastName': _lastName,
       'university': _university,
       'score': _score,
+      'profilePictureUrl': _profilePictureUrl,
     };
   }
 }

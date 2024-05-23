@@ -277,6 +277,7 @@ class LeaderboardState extends State<Leaderboard> {
 
   Widget _buildUniLeaderboard() {
     List<String> names = userData!.keys.toList();
+
     List<double> points = userData!.values.map((e) => e.toDouble()).toList();
     // Avrunda poängen och konvertera till strängar
     List<String> pointsString =

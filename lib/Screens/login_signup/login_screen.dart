@@ -172,10 +172,8 @@ class _SignupScreenState extends State<LoginScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "Har du inget konto? ",
-                          style: CustomTextStyles.smallTextWhite
-                        ),
+                        Text("Har du inget konto? ",
+                            style: CustomTextStyles.smallTextWhite),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -228,7 +226,9 @@ class _SignupScreenState extends State<LoginScreen> {
                     color: Color.fromARGB(255, 136, 30, 23),
                   ),
             ),
-            SizedBox(width: 12.h,),
+            SizedBox(
+              width: 12.h,
+            ),
             GestureDetector(
               onTap: () {
                 setState(() {
@@ -398,6 +398,15 @@ class _SignupScreenState extends State<LoginScreen> {
           newLastName: responseBody['lastName'] as String?,
           newUniversity: responseBody['university'] as String?,
         );
+
+        // Fetch profile picture
+        final profileResponse = await network.getProfilePicture(user.email);
+        if (profileResponse.statusCode == 200) {
+          final base64Image = base64Encode(profileResponse.bodyBytes);
+          final profilePictureUrl = 'data:image/jpeg;base64,$base64Image';
+          user.updateProfilePicture(profilePictureUrl);
+        }
+
         print(user.email);
         Navigator.pushNamed(context, AppRoutes.homeScreen);
       } else {

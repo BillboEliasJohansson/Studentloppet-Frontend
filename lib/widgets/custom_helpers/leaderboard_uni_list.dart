@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:studentloppet/Constants/image_constant.dart';
 import 'package:studentloppet/theme/app_decoration.dart';
@@ -10,13 +13,13 @@ class UniLeaderboardItemWidget extends StatelessWidget {
   final List<String> names;
   final List<String> points;
 
-  UniLeaderboardItemWidget(
-      {Key? key,
-      required this.uni,
-      required this.category,
-      required this.names,
-      required this.points})
-      : super(key: key);
+  UniLeaderboardItemWidget({
+    Key? key,
+    required this.uni,
+    required this.category,
+    required this.names,
+    required this.points,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +60,10 @@ class UniLeaderboardItemWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(22.0),
                     child: Text(
                         "Ditt universitet har inte tillräckligt många registerade studenter",
-                        style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                              fontSize: 26,
-                            )),
+                        style:
+                            Theme.of(context).textTheme.displaySmall!.copyWith(
+                                  fontSize: 26,
+                                )),
                   )
                 else ...[
                   Text(
@@ -147,7 +151,7 @@ class UniLeaderboardItemWidget extends StatelessWidget {
               color: appTheme.black900.withOpacity(0.00),
               borderRadius: BorderRadius.circular(30.h),
               image: DecorationImage(
-                image: AssetImage(ImageConstant.imgRunningGuy),
+                image: AssetImage(ImageConstant.imgFrog),
                 fit: BoxFit.contain,
               )),
         ),
@@ -207,7 +211,7 @@ class UniLeaderboardItemWidget extends StatelessWidget {
               color: appTheme.black900.withOpacity(0.00),
               borderRadius: BorderRadius.circular(30.h),
               image: DecorationImage(
-                image: AssetImage(ImageConstant.imgRunningGuy),
+                image: AssetImage(ImageConstant.imgFrog),
                 fit: BoxFit.contain,
               )),
         ),

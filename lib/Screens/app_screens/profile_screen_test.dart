@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/networking/network.dart';
@@ -10,10 +14,10 @@ import 'package:studentloppet/Constants/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/widgets/ProfileHelpers/appbar_title_profile.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
-
 import 'package:studentloppet/widgets/ProfileHelpers/custom_app_bar.dart';
 import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
 import 'package:studentloppet/widgets/custom_nav_bar.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class ProfileScreenTest extends StatefulWidget {
   @override
@@ -25,6 +29,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
   Map<String, dynamic> activityData = {};
   Map<String, dynamic> userRankData = {};
   bool dataFetched = false;
+  CroppedFile? _image;
 
   @override
   void initState() {
@@ -32,6 +37,78 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
     textController = TextEditingController(
       text: "",
     );
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+        cropStyle: CropStyle.circle,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 90,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Beskär bild',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true,
+          ),
+          IOSUiSettings(
+            minimumAspectRatio: 1.0,
+          ),
+        ],
+      );
+
+      if (croppedFile != null) {
+        setState(() {
+          _image = CroppedFile(croppedFile.path);
+        });
+        // Ladda upp bilden till servern
+        await _setProfilePicture(context);
+      }
+    }
+  }
+
+  Future<void> _setProfilePicture(BuildContext context) async {
+    User user = Provider.of<User>(context, listen: false);
+    String email = user.email;
+
+    if (_image == null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Vänligen välj en bild")));
+      return;
+    }
+
+    try {
+      final response = await network.uploadProfilePicture(email, _image!);
+
+      if (response.statusCode == 200) {
+        if (response.body.contains("Profile picture uploaded successfully")) {
+          final profileResponse = await network.getProfilePicture(email);
+          if (profileResponse.statusCode == 200) {
+            final base64Image = base64Encode(profileResponse.bodyBytes);
+            final profilePictureUrl = 'data:image/jpeg;base64,$base64Image';
+            user.updateProfilePicture(profilePictureUrl);
+          }
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Profilbild uppladdad")));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Misslyckades med att ladda upp profilbild")));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Fel vid uppladdning av profilbild")));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Fel: $e")));
+    }
   }
 
   void fetchLeaderboardData(user) async {
@@ -552,7 +629,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildProfilePicture(),
+            _buildProfilePicture(context, user),
             _buildProfileText(context),
             _buildEditButton(context),
           ],
@@ -561,7 +638,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
     );
   }
 
-  Widget _buildProfilePicture() {
+  Widget _buildProfilePicture(BuildContext context, User user) {
     return Container(
       height: 90.adaptSize,
       width: 90.adaptSize,
@@ -570,17 +647,54 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         bottom: 20.v,
         left: 10.v,
       ),
-      padding: EdgeInsets.all(2.h),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white, width: 2.h),
-      ),
-      child: CustomImageView(
-        imagePath: ImageConstant.imgFrog,
-        height: 78.adaptSize,
-        width: 78.adaptSize,
-        radius: BorderRadius.circular(39.h),
-        alignment: Alignment.center,
+      child: Stack(
+        children: [
+          Container(
+            height: 90.adaptSize,
+            width: 90.adaptSize,
+            padding: EdgeInsets.all(2.h),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 2.h),
+            ),
+            child: ClipOval(
+              child: user.profilePictureBytes == null
+                  ? Image.asset(
+                      ImageConstant.imgRunner,
+                      height: 78.adaptSize,
+                      width: 78.adaptSize,
+                      fit: BoxFit.contain,
+                    )
+                  : Image.memory(
+                      user.profilePictureBytes!,
+                      fit: BoxFit.cover,
+                      width: 78,
+                      height: 78,
+                    ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: _pickImage,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Icon(
+                    Icons.add_a_photo,
+                    color: Colors.black,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
