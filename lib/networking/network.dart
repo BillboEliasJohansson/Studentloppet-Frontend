@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'dart:convert';
 import 'package:studentloppet/Screens/app_screens/home_screen.dart'; // for JSON parsing
 
@@ -233,6 +236,7 @@ class network {
 
       for (int i = 0; i < data.length; i++) {
         var user = data[i];
+        print(data);
         String userName = user['fullName'];
         double score = user['value'];
 
@@ -325,6 +329,36 @@ class network {
     } else {
       // Hantera fel
       throw Exception("Failed to load activity data");
+    }
+  }
+
+  static Future<http.Response> uploadProfilePicture(
+      String email, CroppedFile image) async {
+    var request = http.MultipartRequest(
+      'put',
+      Uri.parse('https://group-15-2.pvt.dsv.su.se/api/profile-pictures/update'),
+    );
+    request.fields['email'] = email;
+    request.files.add(await http.MultipartFile.fromPath('file', image.path));
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      return http.Response('Profile picture uploaded successfully', 200);
+    } else {
+      return http.Response(
+          'Error uploading profile picture', response.statusCode);
+    }
+  }
+
+  static Future<http.Response> getProfilePicture(String email) async {
+    final response = await http.get(Uri.parse(
+        'https://group-15-2.pvt.dsv.su.se/api/profile-pictures/by-email/$email'));
+
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw Exception("Failed to load profile picture");
     }
   }
 }
