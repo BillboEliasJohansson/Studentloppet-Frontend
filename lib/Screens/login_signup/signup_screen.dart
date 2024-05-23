@@ -44,6 +44,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   String error = "";
 
+  bool _passwordVisible = false;
+
   @override
   void initState() {
     super.initState();
@@ -454,7 +456,20 @@ class _SignupScreenState extends State<SignupScreen> {
         CustomTextFormField(
           controller: passwordController,
           hintText: "Skriv in ditt lösenord",
-          obscureText: true,
+          obscureText: !_passwordVisible,
+          suffix: IconButton(
+            icon: Icon(
+               _passwordVisible
+               ? Icons.visibility
+               : Icons.visibility_off,
+               color: Color.fromARGB(101, 0, 0, 0),
+            ),
+            onPressed: () {
+              setState(() {
+                   _passwordVisible = !_passwordVisible;
+               });
+            },
+          )
         ),
       ],
     );
@@ -475,7 +490,20 @@ class _SignupScreenState extends State<SignupScreen> {
         CustomTextFormField(
           controller: passwordRepeatController,
           hintText: "Skriv in samma lösenord",
-          obscureText: true,
+          obscureText: !_passwordVisible,
+          suffix: IconButton(
+            icon: Icon(
+               _passwordVisible
+               ? Icons.visibility
+               : Icons.visibility_off,
+               color: Color.fromARGB(101, 0, 0, 0),
+            ),
+            onPressed: () {
+              setState(() {
+                   _passwordVisible = !_passwordVisible;
+               });
+            },
+          )
         )
       ],
     );
