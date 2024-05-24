@@ -458,7 +458,7 @@ class LeaderboardState extends State<Leaderboard> {
       });
 
       setState(() {
-        uni = user.university;
+        uni = user.universityDisplayName;
         userData = userDataDistanceTemp;
         userDataProfilePictures = userDataProfilePicturesTemp;
       });

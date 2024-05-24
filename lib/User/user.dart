@@ -11,9 +11,15 @@ class User with ChangeNotifier {
   String _firstName = '';
   String _lastName = '';
   String _university = '';
+  String _universityDisplayName = "";
   double _weight = 0;
   String? _profilePictureUrl;
   Uint8List? _profilePictureBytes;
+
+  bool _registered = false;
+  int _startNumber = 0;
+  String _clubOrCityOrCompany = "";
+  int startGroup = 0;
 
   String get email => _email;
   int get score => _score;
@@ -22,6 +28,10 @@ class User with ChangeNotifier {
   String get university => _university;
   double get weight => _weight;
   int get year => _age;
+  String get universityDisplayName => _universityDisplayName;
+  bool get registered => _registered;
+  String get clubOrCityOrCompany => _clubOrCityOrCompany;
+  int get startNumber => _startNumber;
   Uint8List? get profilePictureBytes => _profilePictureBytes;
 
   void setUser({
@@ -32,8 +42,38 @@ class User with ChangeNotifier {
     String? newUniversity,
     double? newWeight,
     String? newProfilePicture,
+    String? newUniversityDisplayName,
+    bool? newRegistered,
+    int? newStartNumber,
+    String? newClubOrCityOrCompany,
+    int? newStartGroup,
   }) {
     bool shouldNotify = false;
+
+    if (newUniversityDisplayName != null) {
+      _universityDisplayName = newUniversityDisplayName;
+      shouldNotify = true;
+    }
+
+    if (newRegistered != null) {
+      _registered = newRegistered;
+      shouldNotify = true;
+    }
+
+    if (newStartNumber != null) {
+      _startNumber = newStartNumber;
+      shouldNotify = true;
+    }
+
+    if (newClubOrCityOrCompany != null) {
+      _clubOrCityOrCompany = newClubOrCityOrCompany;
+      shouldNotify = true;
+    }
+
+    if (newStartGroup != null) {
+      startGroup = newStartGroup;
+      shouldNotify = true;
+    }
 
     if (newEmail != null) {
       _email = newEmail;
@@ -111,6 +151,11 @@ class User with ChangeNotifier {
     notifyListeners(); // Notify listeners of change
   }
 
+  set profilePictureBytes(Uint8List? newProfilepicture) {
+    _profilePictureBytes = newProfilepicture;
+    notifyListeners(); // Notify listeners of change
+  }
+
   void reset() {
     _email = ''; // Reset to empty string
     _score = 0; // Reset to 0
@@ -120,8 +165,17 @@ class User with ChangeNotifier {
     _weight = 0;
     _profilePictureUrl = null;
     _profilePictureBytes = null;
+    _registered = false; // Reset to false
+    _startNumber = 0; // Reset to 0
+    _clubOrCityOrCompany = ''; // Reset to empty string
+    startGroup = 0; // Reset to
 
     notifyListeners(); // Notify listeners that the state has changed
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Map<String, dynamic> toJson() {

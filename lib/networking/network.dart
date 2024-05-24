@@ -195,7 +195,8 @@ class network {
             uni));
 
     if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body);
+      List<dynamic> data = json.decode(utf8.decode(response.bodyBytes));
+
       Map<String, Map<String, dynamic>> topFiveUsers = {};
 
       for (int i = 0; i < data.length; i++) {

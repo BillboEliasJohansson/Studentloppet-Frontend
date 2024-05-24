@@ -403,6 +403,11 @@ class _SignupScreenState extends State<LoginScreen> {
           newFirstName: responseBody['firstName'] as String?,
           newLastName: responseBody['lastName'] as String?,
           newUniversity: responseBody['university'] as String?,
+          newUniversityDisplayName:
+              responseBody['universityDisplayName'] as String?,
+          newClubOrCityOrCompany: responseBody['university'] as String?,
+          newRegistered: responseBody['registered'] as bool?,
+          newStartGroup: responseBody['startNumber'] as int?,
         );
 
         // Fetch profile picture

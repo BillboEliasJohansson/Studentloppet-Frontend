@@ -71,6 +71,19 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Widget _buildContentBasedOnState(User user) {
+    if (user.registered) {
+      return SizedBox.shrink();
+    } else {
+      return _buildButton(
+          "Registering för Midnattsloppet",
+          () => _launchUrl(),
+          MaterialStateColor.resolveWith((states) => appTheme.deepPurple500),
+          AppDecoration.outlineDeepPurple
+              .copyWith(borderRadius: BorderRadiusStyle.roundedBorder10));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!dataFetched) {
@@ -100,14 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: <Widget>[
                           _buildPageHeader(),
                           SizedBox(height: 5.h),
-                          _buildButton(
-                              "Registering för Midnattsloppet",
-                              () => _launchUrl(),
-                              MaterialStateColor.resolveWith(
-                                  (states) => appTheme.deepPurple500),
-                              AppDecoration.outlineDeepPurple.copyWith(
-                                  borderRadius:
-                                      BorderRadiusStyle.roundedBorder10)),
+                          _buildContentBasedOnState(user),
                           SizedBox(height: 5.h),
                           _buildButton(
                               "Påbörja en ny löprunda",
@@ -515,8 +521,30 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             _buildCardHeader(context, header),
+            _buildInfoText(context),
             _buildLeaderboardList(context)
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoText(context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 19.h,
+        top: 27.v,
+      ),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: AutoSizeText(
+          "Totala mängd poäng",
+          style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                fontSize: 16,
+              ),
+          maxLines: 1,
+          minFontSize: 12,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
     );
@@ -595,7 +623,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return BarChart(BarChartData(
       alignment: BarChartAlignment.spaceAround,
-      maxY: universityData![0].score!.toDouble() + 1000000,
+      maxY: universityData![0].score!.toDouble() * 1.5,
       barTouchData: BarTouchData(enabled: false),
       barGroups: data,
       borderData: FlBorderData(show: false),

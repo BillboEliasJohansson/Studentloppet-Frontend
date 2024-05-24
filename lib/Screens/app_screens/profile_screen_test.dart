@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -6,16 +7,16 @@ import 'package:studentloppet/User/user.dart';
 import 'package:studentloppet/networking/network.dart';
 import 'package:studentloppet/routes/app_routes.dart';
 import 'package:studentloppet/theme/app_decoration.dart';
-import 'package:studentloppet/theme/custom_text_style.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/Constants/image_constant.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/widgets/ProfileHelpers/appbar_title_profile.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
 import 'package:studentloppet/widgets/ProfileHelpers/custom_app_bar.dart';
-import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_outlined_button.dart';
 import 'package:studentloppet/widgets/custom_nav_bar.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreenTest extends StatefulWidget {
   @override
@@ -28,6 +29,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
   Map<String, dynamic> userRankData = {};
   bool dataFetched = false;
   CroppedFile? _image;
+  final Uri _url = Uri.parse('https://www.strava.com');
 
   @override
   void initState() {
@@ -143,9 +145,10 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       dataFetched =
           true; // Uppdatera flaggan när data hämtats för första gången
     }
+    User user = Provider.of<User>(context);
     return SafeArea(
       child: Scaffold(
-        appBar: _buildAppBar(context),
+        appBar: _buildAppBar(context, user),
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
@@ -163,11 +166,17 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
                     SizedBox(height: 5.h),
                     _buildTopCard(context, user),
                     SizedBox(height: 5.h),
-                    _buildCard2(context, user, "Mitt Midnattslopp"),
-                    SizedBox(height: 5.h),
                     _buildCard3(context, user, "Min Löpstatistik"),
                     SizedBox(height: 5.h),
-                    _buildCard4(context, user, "Min statistik på universitet"),
+                    _buildCard4(context, user, "Min Statistik på Universitet"),
+                    SizedBox(height: 5.h),
+                    _buildButton(
+                        "Koppla med Strava",
+                        () => _launchUrl(),
+                        MaterialStateColor.resolveWith(
+                            (states) => appTheme.orange),
+                        AppDecoration.outlineOrange.copyWith(
+                            borderRadius: BorderRadiusStyle.roundedBorder10)),
                     SizedBox(height: 5.h),
                   ],
                 );
@@ -182,47 +191,6 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
     );
   }
 
-  Widget _buildCard2(BuildContext context, User user, String header) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      elevation: 0,
-      margin: EdgeInsets.all(1),
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: appTheme.purple200,
-          width: 2.h,
-        ),
-        borderRadius: BorderRadiusStyle.roundedBorder10,
-      ),
-      child: IntrinsicHeight(
-        child: Container(
-          width: 340.h,
-          padding: EdgeInsets.all(7.h),
-          decoration: AppDecoration.outlinePurple.copyWith(
-            borderRadius: BorderRadiusStyle.roundedBorder10,
-          ),
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: 330.h,
-                  decoration: BoxDecoration(
-                    color: appTheme.deepPurple500,
-                    borderRadius: BorderRadius.circular(5.h),
-                  ),
-                ),
-              ),
-              _buildCardHeader(context, header),
-              _buildInfoCard2(context, user),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildCard3(BuildContext context, User user, String header) {
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -230,7 +198,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       margin: EdgeInsets.all(1),
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          color: appTheme.purple200,
+          color: appTheme.deepPurple500,
           width: 2.h,
         ),
         borderRadius: BorderRadiusStyle.roundedBorder10,
@@ -271,7 +239,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       margin: EdgeInsets.all(1),
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          color: appTheme.purple200,
+          color: appTheme.deepPurple500,
           width: 2.h,
         ),
         borderRadius: BorderRadiusStyle.roundedBorder10,
@@ -303,55 +271,6 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         ),
       ),
     );
-  }
-
-  Widget _buildInfoCard2(
-    context,
-    user,
-  ) {
-    return Column(children: [
-      SizedBox(height: 30),
-      _buildRowView(
-        context,
-        user,
-        "Namn",
-        user.firstName.toString() + " " + user.lastName.toString(),
-        ImageConstant.imgRunner,
-      ),
-      SizedBox(height: 0.v),
-      Divider(
-        indent: 20.h,
-        color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.80),
-        endIndent: 20,
-      ),
-      _buildRowView(
-        context,
-        user,
-        "PlaceHolder",
-        "PlaceHolder",
-        ImageConstant.imgCloud,
-      ),
-      SizedBox(height: 0.v),
-      Divider(
-        indent: 20.h,
-        color: Colors.white.withOpacity(0.80),
-        endIndent: 20,
-      ),
-      _buildRowView(
-        context,
-        user,
-        "Universitet",
-        user.university,
-        ImageConstant.imgHatNew,
-      ),
-      SizedBox(height: 0.v),
-      Divider(
-        indent: 20.h,
-        color: Colors.white.withOpacity(0.80),
-        endIndent: 20,
-      ),
-      SizedBox(height: 10),
-    ]);
   }
 
   Widget _buildInfoCard3(
@@ -484,7 +403,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
             : userRankData["caloriesRank"].toString() + ":a plats",
         ImageConstant.imgFire,
       ),
-      SizedBox(height: 0.v),
+      SizedBox(height: 2.v),
       Divider(
         indent: 20.h,
         color: Colors.white.withOpacity(0.80),
@@ -582,13 +501,13 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       margin: EdgeInsets.all(1),
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          color: appTheme.orange.withOpacity(0.94),
+          color: appTheme.orange.withOpacity(1),
           width: 2.h,
         ),
         borderRadius: BorderRadiusStyle.roundedBorder10,
       ),
       child: Container(
-        height: 130.v,
+        height: 155.v,
         width: 340.h,
         padding: EdgeInsets.all(7.h),
         decoration: AppDecoration.outlineOrange.copyWith(
@@ -600,7 +519,7 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
             Align(
               alignment: Alignment.center,
               child: Container(
-                height: 135.v,
+                height: 155.v,
                 width: 330.h,
                 decoration: BoxDecoration(
                   color: appTheme.orange.withOpacity(0.94),
@@ -621,15 +540,14 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
     return Align(
       alignment: Alignment.topCenter,
       child: Padding(
-        padding: EdgeInsets.only(top: 10.v),
+        padding: EdgeInsets.only(top: 0.v),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildProfilePicture(context, user),
-            _buildProfileText(context),
-            _buildEditButton(context),
+            _buildProfileText(context, user),
           ],
         ),
       ),
@@ -641,9 +559,10 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
       height: 90.adaptSize,
       width: 90.adaptSize,
       margin: EdgeInsets.only(
-        top: 5.v,
-        bottom: 20.v,
-        left: 10.v,
+        top: 0.v,
+        bottom: 40.v,
+        left: 0.v,
+        right: 5.v,
       ),
       child: Stack(
         children: [
@@ -697,78 +616,125 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
     );
   }
 
-  Widget _buildProfileText(BuildContext context) {
+  Widget _buildProfileText(BuildContext context, User user) {
     return Padding(
-      padding: EdgeInsets.only(
-        left: 15.h,
-        top: 8.v,
-      ),
+      padding: EdgeInsets.only(left: 15.h, top: 8.v, right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            Provider.of<User>(context).firstName,
-            style: Theme.of(context).textTheme.displaySmall,
-          ),
           SizedBox(
-            width: 141.h,
-            child: Text(
-              textController.text,
-              maxLines: 5,
-              overflow: TextOverflow.ellipsis,
-              style: CustomTextStyles.bodySmall10.copyWith(
-                color: Colors.white,
-              ),
+            width: 200.0, // Sätt önskad bredd här
+            child: AutoSizeText(
+              Provider.of<User>(context).firstName +
+                  " " +
+                  Provider.of<User>(context).lastName,
+              style: Theme.of(context).textTheme.displaySmall,
+              maxLines: 1,
+              minFontSize: 10, // Minimum font size to shrink to
+              overflow: TextOverflow.ellipsis, // Optionally add an ellipsis
             ),
-          )
+          ),
+          Container(
+            width: 200,
+            child: Column(
+              children: [
+                SizedBox(height: 10),
+                Divider(
+                  indent: 0.h,
+                  color: Colors.white.withOpacity(0.80),
+                  endIndent: 0,
+                ),
+                SizedBox(height: 10),
+                _buildTopRowView(
+                    context,
+                    user,
+                    "Startplats",
+                    user.startNumber == 0
+                        ? "ej registerad"
+                        : user.startNumber.toString(),
+                    ImageConstant.imgFlag),
+                SizedBox(height: 10),
+                Divider(
+                  indent: 0.h,
+                  color: Colors.white.withOpacity(0.80),
+                  endIndent: 0,
+                ),
+                SizedBox(height: 10),
+                _buildTopRowView(context, user, "Universitet: ",
+                    user.universityDisplayName, ImageConstant.imgHatNew),
+                SizedBox(height: 10),
+                Divider(
+                  indent: 0.h,
+                  color: Colors.white.withOpacity(0.80),
+                  endIndent: 0,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildEditButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _editText(context),
-      child: CustomImageView(
-        imagePath: ImageConstant.imgEdit,
-        height: 20.v,
-        width: 21.h,
-        margin: EdgeInsets.only(
-          left: 34.h,
-          bottom: 89.v,
-        ),
+  Widget _buildTopRowView(BuildContext context, User user, String title,
+      String detail, String imagePath) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 1, left: 0, bottom: 1, right: 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: 20.adaptSize,
+            width: 20.adaptSize,
+            decoration: BoxDecoration(
+              color: appTheme.black900.withOpacity(0.00),
+              borderRadius: BorderRadius.circular(0.h),
+              image: DecorationImage(
+                image: AssetImage(imagePath),
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              left: 8.h,
+              top: 1.v,
+              bottom: 1.v,
+            ),
+            child: AutoSizeText(
+              title,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: Colors.white,
+                  ),
+              maxLines: 1,
+              minFontSize: 8,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Spacer(),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 1.v, horizontal: 1),
+            child: SizedBox(
+              width: 80,
+              child: AutoSizeText(
+                detail,
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: Colors.white,
+                      fontSize: 12, // Mindre textstorlek
+                    ),
+                maxLines: 2,
+                minFontSize: 8, // Minimum font size to shrink to
+                overflow: TextOverflow
+                    .ellipsis, // Lägger till ellips för overflowed text
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  void _editText(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Redigera Text"),
-          content: TextField(
-            controller: textController,
-            maxLines: null,
-            keyboardType: TextInputType.multiline,
-          ),
-          actions: [
-            TextButton(
-              child: Text('Spara'),
-              onPressed: () {
-                setState(() {
-                  // Update the text with the new value from the text field
-                  Navigator.of(context).pop();
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar(BuildContext context, User user) {
     return CustomAppBar(
       leadingWidth: 30.h,
       leading: AppbarLeadingImage(
@@ -790,11 +756,41 @@ class _ProfileScreenTestState extends State<ProfileScreenTest> {
         IconButton(
           icon: Icon(Icons.logout, color: Colors.white),
           onPressed: () {
+            user.reset();
             Navigator.pushNamed(context, AppRoutes.initialRoute);
           },
         ),
       ],
       styleType: Style.bgFill,
     );
+  }
+
+  Widget _buildButton(String buttonText, Function()? f,
+      MaterialStateProperty<Color> color, Decoration outline) {
+    return Container(
+      margin: EdgeInsets.all(5),
+      decoration: outline,
+      child: CustomOutlinedButton(
+        margin: EdgeInsets.all(5),
+        buttonStyle: ButtonStyle(
+          side: MaterialStateBorderSide.resolveWith(
+              (states) => BorderSide(style: BorderStyle.none)),
+          shape: MaterialStateProperty.resolveWith<OutlinedBorder?>(
+            (states) => RoundedRectangleBorder(
+                borderRadius: BorderRadiusStyle.roundedBorder6),
+          ),
+          backgroundColor: color,
+        ),
+        text: buttonText,
+        buttonTextStyle: theme.textTheme.displayMedium!.copyWith(fontSize: 30),
+        onPressed: f,
+      ),
+    );
+  }
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 }

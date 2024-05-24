@@ -62,4 +62,6 @@ class ImageConstant {
   static String imgHomeScreenHeaderGif = '$imagePath/DagarKvarGif.gif';
 
   static String imgConfety = '$imagePath/confety.gif';
+
+  static String imgFlag = '$imagePath/sports_score.png';
 }

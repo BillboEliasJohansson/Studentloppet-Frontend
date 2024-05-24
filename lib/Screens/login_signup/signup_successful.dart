@@ -48,7 +48,7 @@ class SignUpSuccess extends StatelessWidget {
                       ),
                     )),
                 SizedBox(
-                  height: 70.h,
+                  height: 30.h,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
