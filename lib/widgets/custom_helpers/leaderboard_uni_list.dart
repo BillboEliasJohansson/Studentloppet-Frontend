@@ -1,6 +1,7 @@
-
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:studentloppet/Constants/image_constant.dart';
+
 import 'package:studentloppet/theme/app_decoration.dart';
 import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/size_utils.dart';
@@ -10,14 +11,16 @@ class UniLeaderboardItemWidget extends StatelessWidget {
   final String category;
   final List<String> names;
   final List<String> points;
+  final List<String> profilePictures;
 
-  UniLeaderboardItemWidget({
-    Key? key,
-    required this.uni,
-    required this.category,
-    required this.names,
-    required this.points,
-  }) : super(key: key);
+  UniLeaderboardItemWidget(
+      {Key? key,
+      required this.uni,
+      required this.category,
+      required this.names,
+      required this.points,
+      required this.profilePictures})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,18 +83,22 @@ class UniLeaderboardItemWidget extends StatelessWidget {
                   SizedBox(
                     height: 10.h,
                   ),
-                  _buildCardWithIcon(context,
-                      Color.fromARGB(255, 243, 142, 230), names[0], points[0]),
+                  _buildCardWithIcon(
+                      context,
+                      Color.fromARGB(255, 243, 142, 230),
+                      names[0],
+                      points[0],
+                      profilePictures[0]),
                   SizedBox(
                     height: 10.h,
                   ),
-                  _buildCardWithNumber(
-                      context, appTheme.orange, names[1], points[1], "2"),
+                  _buildCardWithNumber(context, appTheme.orange, names[1],
+                      points[1], "2", profilePictures[1]),
                   SizedBox(
                     height: 10.h,
                   ),
-                  _buildCardWithNumber(
-                      context, appTheme.purple300, names[2], points[2], "3"),
+                  _buildCardWithNumber(context, appTheme.purple300, names[2],
+                      points[2], "3", profilePictures[2]),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -100,7 +107,8 @@ class UniLeaderboardItemWidget extends StatelessWidget {
                       Color.fromARGB(255, 82, 217, 235),
                       names[3],
                       points[3],
-                      "4"),
+                      "4",
+                      profilePictures[3]),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -109,7 +117,8 @@ class UniLeaderboardItemWidget extends StatelessWidget {
                       Color.fromARGB(255, 212, 93, 163),
                       names[4],
                       points[4],
-                      "5"),
+                      "5",
+                      profilePictures[4]),
                 ],
               ],
             ),
@@ -119,8 +128,9 @@ class UniLeaderboardItemWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildCardWithIcon(
-      BuildContext context, Color color, String name, String points) {
+  Widget _buildCardWithIcon(BuildContext context, Color color, String name,
+      String points, String base64Image) {
+    Uint8List imageBytes = base64Decode(base64Image);
     return Container(
       height: 45.h,
       decoration: BoxDecoration(
@@ -146,12 +156,19 @@ class UniLeaderboardItemWidget extends StatelessWidget {
           height: 30.adaptSize,
           width: 30.adaptSize,
           decoration: BoxDecoration(
-              color: appTheme.black900.withOpacity(0.00),
-              borderRadius: BorderRadius.circular(30.h),
-              image: DecorationImage(
-                image: AssetImage(ImageConstant.imgFrog),
-                fit: BoxFit.contain,
-              )),
+            color: appTheme.black900.withOpacity(0.00),
+            borderRadius: BorderRadius.circular(30.h),
+            image: base64Image.isEmpty
+                ? null
+                : DecorationImage(
+                    image: MemoryImage(imageBytes),
+                    fit: BoxFit.contain,
+                  ),
+          ),
+          child: base64Image.isEmpty
+              ? Icon(Icons.person,
+                  size: 30) // Visa en standardikon om ingen bild finns
+              : null,
         ),
         SizedBox(
           width: 5,
@@ -179,7 +196,8 @@ class UniLeaderboardItemWidget extends StatelessWidget {
   }
 
   Widget _buildCardWithNumber(BuildContext context, Color color, String name,
-      String points, String number) {
+      String points, String number, String base64Image) {
+    Uint8List imageBytes = base64Decode(base64Image);
     return Container(
       height: 45.h,
       decoration: BoxDecoration(
@@ -209,7 +227,7 @@ class UniLeaderboardItemWidget extends StatelessWidget {
               color: appTheme.black900.withOpacity(0.00),
               borderRadius: BorderRadius.circular(30.h),
               image: DecorationImage(
-                image: AssetImage(ImageConstant.imgFrog),
+                image: MemoryImage(imageBytes),
                 fit: BoxFit.contain,
               )),
         ),

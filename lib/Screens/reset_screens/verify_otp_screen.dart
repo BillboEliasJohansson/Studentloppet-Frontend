@@ -238,12 +238,6 @@ class VerifyOtpScreen extends StatelessWidget {
   }
 
   Future<void> verifyOtp(BuildContext context, User user) async {
-    //TODO REMOVE
-    if (otpController.text.contains("hej")) {
-      Navigator.pushNamed(context, AppRoutes.updatePasswordScreen);
-      return;
-    }
-
     if (otpController.text.isEmpty) {
       showErrorSnackbar(context, emptyCode);
       return;

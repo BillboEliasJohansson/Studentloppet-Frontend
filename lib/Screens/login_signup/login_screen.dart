@@ -38,6 +38,8 @@ class _SignupScreenState extends State<LoginScreen> {
 
   String error = "";
 
+  bool _passwordVisible = true;
+
   @override
   void initState() {
     super.initState();
@@ -320,10 +322,20 @@ class _SignupScreenState extends State<LoginScreen> {
         ),
         SizedBox(height: 5.v),
         CustomTextFormField(
-          controller: passwordController,
-          hintText: "Skriv in ditt lösenord",
-          obscureText: true,
-        )
+            controller: passwordController,
+            hintText: "Skriv in ditt lösenord",
+            obscureText: _passwordVisible,
+            suffix: IconButton(
+              icon: Icon(
+                _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                color: Color.fromARGB(101, 0, 0, 0),
+              ),
+              onPressed: () {
+                setState(() {
+                  _passwordVisible = !_passwordVisible;
+                });
+              },
+            ))
       ],
     );
   }
@@ -350,12 +362,6 @@ class _SignupScreenState extends State<LoginScreen> {
   }
 
   Future<void> Signin(BuildContext context, User user) async {
-    //TODO REMOVE
-    if (passwordController.text.contains("hej")) {
-      Navigator.pushNamed(context, AppRoutes.homeScreen);
-      return;
-    }
-
     if (userNameController.text.isEmpty) {
       setState(() {
         error = emptyEmail;

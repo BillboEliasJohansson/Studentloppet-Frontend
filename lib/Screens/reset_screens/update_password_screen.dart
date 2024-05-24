@@ -20,6 +20,7 @@ import 'package:studentloppet/widgets/custom_helpers/custom_text_form_field.dart
 class UpdatePasswordScreen extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordControllerTwo = TextEditingController();
+  bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                           borderRadius: BorderRadiusStyle.roundedBorder10,
                         ),
                         child: Container(
-                          height: 260.v,
+                          height: 280.v,
                           width: 313.h,
                           padding: EdgeInsets.all(5.h),
                           child: Stack(
@@ -198,7 +199,7 @@ class UpdatePasswordScreen extends StatelessWidget {
           controller: passwordController,
           hintText: "Skriv in ditt nya lösenord",
           textInputType: TextInputType.visiblePassword,
-          obscureText: true,
+          obscureText: _passwordVisible,
         )
       ],
     );
@@ -219,7 +220,7 @@ class UpdatePasswordScreen extends StatelessWidget {
           controller: passwordControllerTwo,
           hintText: "Skriv in ditt nya lösenord igen",
           textInputType: TextInputType.visiblePassword,
-          obscureText: true,
+          obscureText: _passwordVisible,
         )
       ],
     );

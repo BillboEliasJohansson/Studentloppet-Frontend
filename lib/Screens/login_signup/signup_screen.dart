@@ -112,7 +112,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     height: 546.v,
                                     width: 298.h,
                                     decoration: BoxDecoration(
-                                      color: theme.colorScheme.onPrimaryContainer,
+                                      color:
+                                          theme.colorScheme.onPrimaryContainer,
                                       borderRadius: BorderRadius.circular(
                                         5.h,
                                       ),
@@ -159,8 +160,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                                   style: CustomTextStyles
                                                       .bodySmallBlack900
                                                       .copyWith(
-                                                    decoration:
-                                                        TextDecoration.underline,
+                                                    decoration: TextDecoration
+                                                        .underline,
                                                   ),
                                                 ),
                                               ),
@@ -229,12 +230,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future<void> Signup(BuildContext context, User user) async {
     user.email = emailController.text;
-
-    //TODO REMOVE
-    if (emailController.text.contains("hej")) {
-      Navigator.pushNamed(context, AppRoutes.signUpDetailsScreen);
-      return;
-    }
 
     if (uni == null) {
       setState(() {
@@ -454,23 +449,20 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
         SizedBox(height: 5.v),
         CustomTextFormField(
-          controller: passwordController,
-          hintText: "Skriv in ditt lösenord",
-          obscureText: !_passwordVisible,
-          suffix: IconButton(
-            icon: Icon(
-               _passwordVisible
-               ? Icons.visibility
-               : Icons.visibility_off,
-               color: Color.fromARGB(101, 0, 0, 0),
-            ),
-            onPressed: () {
-              setState(() {
-                   _passwordVisible = !_passwordVisible;
-               });
-            },
-          )
-        ),
+            controller: passwordController,
+            hintText: "Skriv in ditt lösenord",
+            obscureText: !_passwordVisible,
+            suffix: IconButton(
+              icon: Icon(
+                _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                color: Color.fromARGB(101, 0, 0, 0),
+              ),
+              onPressed: () {
+                setState(() {
+                  _passwordVisible = !_passwordVisible;
+                });
+              },
+            )),
       ],
     );
   }
@@ -488,23 +480,20 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
         SizedBox(height: 5.v),
         CustomTextFormField(
-          controller: passwordRepeatController,
-          hintText: "Skriv in samma lösenord",
-          obscureText: !_passwordVisible,
-          suffix: IconButton(
-            icon: Icon(
-               _passwordVisible
-               ? Icons.visibility
-               : Icons.visibility_off,
-               color: Color.fromARGB(101, 0, 0, 0),
-            ),
-            onPressed: () {
-              setState(() {
-                   _passwordVisible = !_passwordVisible;
-               });
-            },
-          )
-        )
+            controller: passwordRepeatController,
+            hintText: "Skriv in samma lösenord",
+            obscureText: !_passwordVisible,
+            suffix: IconButton(
+              icon: Icon(
+                _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                color: Color.fromARGB(101, 0, 0, 0),
+              ),
+              onPressed: () {
+                setState(() {
+                  _passwordVisible = !_passwordVisible;
+                });
+              },
+            ))
       ],
     );
   }

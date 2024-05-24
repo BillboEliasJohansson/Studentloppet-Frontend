@@ -12,6 +12,7 @@ import 'package:studentloppet/theme/theme_helper.dart';
 import 'package:studentloppet/utils/size_utils.dart';
 import 'package:studentloppet/widgets/ProfileHelpers/custom_app_bar.dart';
 import 'package:studentloppet/widgets/app_bar/appbar_leading_image.dart';
+import 'package:studentloppet/widgets/custom_helpers/custom_image_view.dart';
 import 'package:studentloppet/widgets/custom_helpers/leaderboard_item_widget.dart';
 import 'package:studentloppet/widgets/custom_helpers/leaderboard_uni_list.dart';
 import 'package:studentloppet/widgets/custom_nav_bar.dart';
@@ -27,15 +28,22 @@ class LeaderboardState extends State<Leaderboard> {
   List<University>? universityData;
   List<University>? universityDataDistance;
   List<University>? universityDataUsers;
+
   Map<String, int>? userData;
   Map<String, double>? userDataDistance;
   Map<String, double>? userDataSpeed;
+
+  Map<String, String>? userDataProfilePictures;
+  Map<String, String>? userDataDistanceProfilePictures;
+  Map<String, String>? userDataSpeedProfilePictures;
 
   String? uni;
 
   Map<String, dynamic> activityData = {};
 
   bool dataFetched = false;
+
+  bool leaderBoardBuilt = false;
 
   @override
   void initState() {
@@ -54,15 +62,53 @@ class LeaderboardState extends State<Leaderboard> {
       fetchUniLeaderboardSpeed(user);
       dataFetched = true;
     }
-
     return SafeArea(
         child: universityData == null ||
                 universityDataDistance == null ||
                 universityDataUsers == null ||
                 userData == null ||
                 userDataDistance == null ||
-                userDataSpeed == null
-            ? Text("")
+                userDataSpeed == null ||
+                userDataProfilePictures == null ||
+                userDataDistanceProfilePictures == null ||
+                userDataSpeedProfilePictures == null
+            ? Scaffold(
+                body: Container(
+                  width: SizeUtils.width,
+                  height: SizeUtils.height,
+                  decoration: BoxDecoration(color: appTheme.purple200),
+                  child: SizedBox(
+                      width: SizeUtils.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CustomImageView(
+                              imagePath: ImageConstant.imgLogo,
+                              height: 56.v,
+                              width: 400.h,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Text("Kom ihåg att dricka vatten!",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall!
+                                  .copyWith(
+                                    fontSize: 20,
+                                  )),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          CircularProgressIndicator()
+                        ],
+                      )),
+                ),
+              )
             : Scaffold(
                 appBar: _buildAppBar(context),
                 body: Container(
@@ -84,7 +130,7 @@ class LeaderboardState extends State<Leaderboard> {
                         Text("Mitt universitet",
                             style: theme.textTheme.headlineSmall!
                                 .copyWith(fontSize: 20)),
-                        _buildUniLeaderboard()
+                        _buildUniLeaderboard(),
                       ],
                     ),
                   ),
@@ -303,9 +349,18 @@ class LeaderboardState extends State<Leaderboard> {
     List<List<String>> allNames = [namesDistance, names, namesSpeed];
     List<List<String>> allScores = [distanceString, pointsString, speedString];
 
+    List<List<String>> allProfilePictures = [
+      namesDistance
+          .map((name) => userDataDistanceProfilePictures![name]!)
+          .toList(),
+      names.map((name) => userDataProfilePictures![name]!).toList(),
+      namesSpeed.map((name) => userDataSpeedProfilePictures![name]!).toList(),
+    ];
+
     return SizedBox(
         height: 320.v,
         child: ListView.separated(
+          cacheExtent: 4000,
           dragStartBehavior: DragStartBehavior.start,
           padding: EdgeInsets.only(left: 12.h, right: 12.h),
           scrollDirection: Axis.horizontal,
@@ -318,12 +373,14 @@ class LeaderboardState extends State<Leaderboard> {
               "Totala mängd poäng",
               "Hastighet - min/km",
             ];
-            print(allNames[0].length);
+            print("Längd: " + allProfilePictures.length.toString());
             return UniLeaderboardItemWidget(
-                uni: uni!,
-                category: category[index],
-                names: allNames[index],
-                points: allScores[index]);
+              uni: uni!,
+              category: category[index],
+              names: allNames[index],
+              points: allScores[index],
+              profilePictures: allProfilePictures[index],
+            );
           },
         ));
   }
@@ -387,12 +444,23 @@ class LeaderboardState extends State<Leaderboard> {
 
   void fetchUniLeaderboardScore(User user) async {
     try {
-      Map<String, int> data =
+      Map<String, Map<String, dynamic>> data =
           await network.getUniLeaderboardScore(user.university);
       print("DATA FETCHED SCORE");
+
+      Map<String, int> userDataDistanceTemp = {};
+      Map<String, String> userDataProfilePicturesTemp = {};
+
+      data.forEach((userName, userInfo) {
+        userDataDistanceTemp[userName] = userInfo['score'];
+        userDataProfilePicturesTemp[userName] =
+            userInfo['profilePictureBase64'];
+      });
+
       setState(() {
         uni = user.university;
-        userData = data;
+        userData = userDataDistanceTemp;
+        userDataProfilePictures = userDataProfilePicturesTemp;
       });
     } catch (e) {
       print("Error fetching leaderboard: $e");
@@ -401,11 +469,22 @@ class LeaderboardState extends State<Leaderboard> {
 
   void fetchUniLeaderboardDistance(User user) async {
     try {
-      Map<String, double> data =
+      Map<String, Map<String, dynamic>> data =
           await network.getUniLeaderboardDistance(user.university);
       print("DATA FETCHED DISTANCE");
+
+      Map<String, double> userDataDistanceTemp = {};
+      Map<String, String> userDataProfilePicturesTemp = {};
+
+      data.forEach((userName, userInfo) {
+        userDataDistanceTemp[userName] = userInfo['score'];
+        userDataProfilePicturesTemp[userName] =
+            userInfo['profilePictureBase64'];
+      });
+
       setState(() {
-        userDataDistance = data;
+        userDataDistance = userDataDistanceTemp;
+        userDataDistanceProfilePictures = userDataProfilePicturesTemp;
       });
     } catch (e) {
       print("Error fetching leaderboard: $e");
@@ -414,11 +493,22 @@ class LeaderboardState extends State<Leaderboard> {
 
   void fetchUniLeaderboardSpeed(User user) async {
     try {
-      Map<String, double> data =
+      Map<String, Map<String, dynamic>> data =
           await network.getUniLeaderboardSpeed(user.university);
       print("DATA FETCHED SPEED");
+
+      Map<String, double> userDataDistanceTemp = {};
+      Map<String, String> userDataProfilePicturesTemp = {};
+
+      data.forEach((userName, userInfo) {
+        userDataDistanceTemp[userName] = userInfo['score'];
+        userDataProfilePicturesTemp[userName] =
+            userInfo['profilePictureBase64'];
+      });
+
       setState(() {
-        userDataSpeed = data;
+        userDataSpeed = userDataDistanceTemp;
+        userDataSpeedProfilePictures = userDataProfilePicturesTemp;
       });
     } catch (e) {
       print("Error fetching leaderboard: $e");

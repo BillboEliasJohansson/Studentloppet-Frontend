@@ -1,7 +1,7 @@
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:studentloppet/Constants/constants.dart';
 import 'dart:convert';
 import 'package:studentloppet/Screens/app_screens/home_screen.dart'; // for JSON parsing
 
@@ -188,25 +188,34 @@ class network {
     }
   }
 
-  static Future<Map<String, int>> getUniLeaderboardScore(String uni) async {
+  static Future<Map<String, Map<String, dynamic>>> getUniLeaderboardScore(
+      String uni) async {
     final response = await http.get(Uri.parse(
         'https://group-15-2.pvt.dsv.su.se/api/leaderboard/sortedByScore/' +
             uni));
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
-      Map<String, int> topFiveUsers = {};
+      Map<String, Map<String, dynamic>> topFiveUsers = {};
 
       for (int i = 0; i < data.length; i++) {
         var user = data[i];
         String userName = user['userName'];
         int score = user['score'];
+        String profilePictureBase64;
+
+        if (user['profilePictureBase64'] != null) {
+          profilePictureBase64 = user['profilePictureBase64'];
+        } else {
+          profilePictureBase64 = nullImage;
+        }
 
         // Check if the user name already exists in the map
         if (topFiveUsers.containsKey(userName)) {
           // Append a unique identifier to the user name
           int counter = 1;
           String uniqueUserName = userName + '_$counter';
+
           while (topFiveUsers.containsKey(uniqueUserName)) {
             counter++;
             uniqueUserName = userName + '_$counter';
@@ -214,8 +223,10 @@ class network {
           userName = uniqueUserName;
         }
 
-        // Add the user name and score to the map
-        topFiveUsers[userName] = score;
+        topFiveUsers[userName] = {
+          'score': score,
+          'profilePictureBase64': profilePictureBase64,
+        };
       }
       return topFiveUsers;
     } else {
@@ -223,7 +234,7 @@ class network {
     }
   }
 
-  static Future<Map<String, double>> getUniLeaderboardDistance(
+  static Future<Map<String, Map<String, dynamic>>> getUniLeaderboardDistance(
       String uni) async {
     final response = await http.get(Uri.parse(
         'https://group-15-2.pvt.dsv.su.se/api/leaderboard/sortedByDistance/' +
@@ -231,17 +242,21 @@ class network {
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
-      Map<String, double> topFiveUsers = {};
+      Map<String, Map<String, dynamic>> topFiveUsers = {};
 
       for (int i = 0; i < data.length; i++) {
         var user = data[i];
-        print(data);
         String userName = user['fullName'];
         double score = user['value'];
+        String profilePictureBase64;
 
-        // Check if the user name already exists in the map
+        if (user['profilePictureBase64'] != null) {
+          profilePictureBase64 = user['profilePictureBase64'];
+        } else {
+          profilePictureBase64 = nullImage;
+        }
+
         if (topFiveUsers.containsKey(userName)) {
-          // Append a unique identifier to the user name
           int counter = 1;
           String uniqueUserName = userName + '_$counter';
           while (topFiveUsers.containsKey(uniqueUserName)) {
@@ -251,8 +266,10 @@ class network {
           userName = uniqueUserName;
         }
 
-        // Add the user name and score to the map
-        topFiveUsers[userName] = score;
+        topFiveUsers[userName] = {
+          'score': score,
+          'profilePictureBase64': profilePictureBase64,
+        };
       }
       return topFiveUsers;
     } else {
@@ -260,19 +277,28 @@ class network {
     }
   }
 
-  static Future<Map<String, double>> getUniLeaderboardSpeed(String uni) async {
+  static Future<Map<String, Map<String, dynamic>>> getUniLeaderboardSpeed(
+      String uni) async {
     final response = await http.get(Uri.parse(
         'https://group-15-2.pvt.dsv.su.se/api/leaderboard/sortedBySpeed/' +
             uni));
 
+    Map<String, Map<String, dynamic>> topFiveUsers = {};
+
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
-      Map<String, double> topFiveUsers = {};
 
       for (int i = 0; i < data.length; i++) {
         var user = data[i];
         String userName = user['fullName'];
         double score = user['value'];
+        String profilePictureBase64;
+
+        if (user['profilePictureBase64'] != null) {
+          profilePictureBase64 = user['profilePictureBase64'];
+        } else {
+          profilePictureBase64 = nullImage;
+        }
 
         // Check if the user name already exists in the map
         if (topFiveUsers.containsKey(userName)) {
@@ -286,8 +312,10 @@ class network {
           userName = uniqueUserName;
         }
 
-        // Add the user name and score to the map
-        topFiveUsers[userName] = score;
+        topFiveUsers[userName] = {
+          'score': score,
+          'profilePictureBase64': profilePictureBase64,
+        };
       }
       return topFiveUsers;
     } else {

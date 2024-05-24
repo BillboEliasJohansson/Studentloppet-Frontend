@@ -244,13 +244,6 @@ class ForgotPasswordScreen extends StatelessWidget {
   }
 
   Future<void> sendOtp(BuildContext context, User user) async {
-    //TODO REMOVE
-    if (emailController.text.contains("hej")) {
-      user.email = emailController.text;
-      Navigator.pushNamed(context, AppRoutes.verifyOtpScreen);
-      return;
-    }
-
     if (emailController.text.isEmpty) {
       showErrorSnackbar(context, emptyEmail);
       return;
