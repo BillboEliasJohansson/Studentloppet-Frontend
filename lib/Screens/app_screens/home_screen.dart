@@ -595,7 +595,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return BarChart(BarChartData(
       alignment: BarChartAlignment.spaceAround,
-      maxY: universityData![0].score!.toDouble() + 50000,
+      maxY: universityData![0].score!.toDouble() + 1000000,
       barTouchData: BarTouchData(enabled: false),
       barGroups: data,
       borderData: FlBorderData(show: false),
