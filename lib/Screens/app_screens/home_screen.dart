@@ -550,7 +550,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  int daysBetween(DateTime from, DateTime to) {
+    from = DateTime(from.year, from.month, from.day);
+    to = DateTime(to.year, to.month, to.day);
+    return (to.difference(from).inHours / 24).round();
+  }
+
   Widget _buildPageHeader() {
+    final midnattsloppet = DateTime(2024, 08, 17);
+    final today = DateTime.now();
+    final difference = daysBetween(today, midnattsloppet);
+
     return Padding(
       padding: const EdgeInsets.all(3.0),
       child: Container(
@@ -563,7 +573,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fit: BoxFit.fill)),
         child: Center(
             child: Text(
-          "73 dagar kvar",
+          difference.toString() + " dagar kvar",
           style: theme.textTheme.displayMedium!.copyWith(fontSize: 45),
         )),
       ),
